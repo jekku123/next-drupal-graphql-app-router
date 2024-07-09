@@ -5,9 +5,9 @@ import { Meta } from "@/components/meta";
 import { Node } from "@/components/node";
 import {
   createLanguageLinks,
+  getStandardLanguageLinks,
   LanguageLinks,
 } from "@/lib/contexts/language-links-context";
-import { getStandardLanguageLinks } from "@/lib/contexts/language-links-context";
 import {
   drupalClientPreviewer,
   drupalClientViewer,

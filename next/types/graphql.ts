@@ -29,6 +29,14 @@ export type ArticleType = Extract<
   { __typename: "NodeArticle" }
 >;
 
+/**
+ * From TypedRouteEntity, create a type for Product data
+ */
+export type ProductType = Extract<
+  TypedRouteEntity,
+  { __typename: "NodeProduct" }
+>;
+
 export type MenuType = GetMenuQuery["menu"];
 
 export type MenuItemType = MenuType["items"][number];

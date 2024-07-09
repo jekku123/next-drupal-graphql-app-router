@@ -1,6 +1,6 @@
+import { useTranslation } from "next-i18next";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useTranslation } from "next-i18next";
 
 import { FormattedText } from "@/components/formatted-text";
 import { HeadingPage } from "@/components/heading--page";
@@ -38,11 +38,20 @@ export function NodeArticle({ article, ...props }: ArticleProps) {
             priority
           />
           {article.image.title && (
-            <figcaption className="py-2 text-center text-sm text-scapaflow">
+            <figcaption className="py-2 text-sm text-center text-scapaflow">
               {article.image.title}
             </figcaption>
           )}
         </figure>
+      )}
+      {article.tags?.at(0) && (
+        <div className="mt-4">
+          {article.tags.map((tag) => (
+            <span key={tag.id} className="mr-2">
+              {tag.name}
+            </span>
+          ))}
+        </div>
       )}
       {article.body?.processed && (
         <FormattedText

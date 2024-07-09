@@ -10,11 +10,6 @@ commands=(
   "lando drush wunder_next:setup-users-and-consumers"
   "lando drush eshd -y"
   "lando drush eshs"
-  "lando drush en wunder_democontent -y"
-  "lando drush state:set wunder_democontent.disable_revalidation TRUE"
-  "lando drush mim --group=demo_content --execute-dependencies"
-  "lando drush pm-uninstall wunder_democontent migrate migrate_tools migrate_plus -y"
-  "lando drush state:del wunder_democontent.disable_revalidation"
   "lando drush cron"
   "lando npm i"
   "lando npm run build"
@@ -37,16 +32,16 @@ show_help() {
 
 while getopts "ch" opt; do
   case $opt in
-    c)
-      clean_run=true
-      ;;
-    h)
-      show_help
-      ;;
-    \?)
-      echo "Invalid option: -$OPTARG" >&2
-      exit 1
-      ;;
+  c)
+    clean_run=true
+    ;;
+  h)
+    show_help
+    ;;
+  \?)
+    echo "Invalid option: -$OPTARG" >&2
+    exit 1
+    ;;
   esac
 done
 
@@ -56,7 +51,7 @@ run_commands() {
     command="${commands[$i]}"
     echo "➡️ Running command: $command"
     last_successful_command=$i
-    echo $last_successful_command > $status_file
+    echo $last_successful_command >$status_file
     if eval "$command"; then
       echo "✔ Command successful."
     else
@@ -82,7 +77,7 @@ fi
 
 # Check if there's a status file indicating the last successful command
 if [ -f "$status_file" ]; then
-  read -r last_successful_command < "$status_file"
+  read -r last_successful_command <"$status_file"
 fi
 
 run_commands

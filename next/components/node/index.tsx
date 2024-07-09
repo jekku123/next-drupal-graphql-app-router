@@ -1,7 +1,9 @@
 import { NodeArticle } from "@/components/node/node--article";
 import { NodeFrontpage } from "@/components/node/node--frontpage";
 import { NodePage } from "@/components/node/node--page";
+import { NodeProduct } from "@/components/node/node--product";
 import { TypedRouteEntity } from "@/types/graphql";
+import { never } from "zod";
 
 export function Node({ node }: { node: TypedRouteEntity }) {
   if (!node) return null;
@@ -16,10 +18,13 @@ export function Node({ node }: { node: TypedRouteEntity }) {
     case "NodeArticle": {
       return <NodeArticle article={node} />;
     }
+    case "NodeProduct": {
+      return <NodeProduct product={node} />;
+    }
     default: {
+      node === typeof never;
       console.log(
-        // @ts-expect-error
-        `components/node.tsx: Node type not yet implemented: ${node.__typename}`,
+        `components/node.tsx: Node type not yet implemented: ${(node as TypedRouteEntity).__typename}`,
       );
       return null;
     }
