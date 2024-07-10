@@ -19,6 +19,7 @@ export const FRAGMENT_PARAGRAPH_UNION = graphql(`
     ...FragmentParagraphAccordionItem
     ...FragmentParagraphListingArticle
     ...FragmentParagraphLiftupArticle
+    ...FragmentParagraphCallToAction
   }
 `);
 
@@ -96,6 +97,18 @@ export const FRAGMENT_PARAGRAPH_HERO = graphql(`
       ...FragmentLink
     }
     paragraphHeroHeading: heading
+  }
+`);
+
+export const FRAGMENT_PARAGRAPH_CALL_TO_ACTION = graphql(`
+  fragment FragmentParagraphCallToAction on ParagraphCallToAction {
+    paragraphCtaHeading: heading
+    formattedText {
+      ...FragmentText
+    }
+    link {
+      ...FragmentLink
+    }
   }
 `);
 

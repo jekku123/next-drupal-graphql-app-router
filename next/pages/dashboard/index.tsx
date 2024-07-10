@@ -1,9 +1,9 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { getServerSession } from "next-auth/next";
 import { useSession } from "next-auth/react";
 import { useTranslation } from "next-i18next";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { HeadingPage } from "@/components/heading--page";
 import { Meta } from "@/components/meta";
@@ -35,15 +35,15 @@ export default function DashboardPage({
       <p className="my-6 text-justify text-md/xl text-scapaflow sm:text-lg">
         {t("user-dashboard-intro-greeting", { username: data.user.name })}
       </p>
-      <table className="w-full border-collapse text-left">
-        <thead className="border border-primary-700 bg-primary-700 text-heading-xs font-bold text-white">
+      <table className="w-full text-left border-collapse">
+        <thead className="font-bold text-white border border-primary-700 bg-primary-700 text-heading-xs">
           <tr>
             <th className="px-3 py-4">{t("form")}</th>
             <th className="px-3 py-4">{t("date")}</th>
             <th className="px-3 py-4">{t("more-details")}</th>
           </tr>
         </thead>
-        <tbody className="bg-white text-sm text-steelgray">
+        <tbody className="text-sm bg-white text-steelgray">
           {submissions.map((submission) => (
             <tr
               key={submission.uuid[0]["value"]}

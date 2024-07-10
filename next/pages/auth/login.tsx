@@ -1,8 +1,8 @@
 import type { GetStaticPropsContext } from "next";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { signIn, signOut } from "next-auth/react";
 import { useTranslation } from "next-i18next";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -63,7 +63,7 @@ export default function LogIn() {
   return (
     <>
       <Meta title={t("log-in")} metatags={[]} />
-      <div className="max-w-md pb-16 pt-8 font-work">
+      <div className="max-w-md pt-8 pb-16 font-work">
         {passwordJustUpdated && (
           <StatusMessage level="success" className="mb-8">
             {t("password-updated-login-below")}
@@ -86,7 +86,7 @@ export default function LogIn() {
         )}
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex w-full max-w-2xl flex-col"
+          className="flex flex-col w-full max-w-2xl"
         >
           <div className="mb-6">
             <Label htmlFor="username">{t("username")}</Label>
@@ -97,7 +97,7 @@ export default function LogIn() {
               {...register("username", {
                 required: true,
               })}
-              className="inset-0 h-12 w-full rounded border border-neu-200 p-2 text-body-sm text-neu-400 ring-offset-4 focus:ring-4"
+              className="inset-0 w-full h-12 p-2 border rounded border-neu-200 text-body-sm text-neu-400 ring-offset-4 focus:ring-4"
             />
             {errors.username && errors.username.type === "required" && (
               <ErrorRequired fieldTranslatedLabelKey={"username"} />
@@ -114,7 +114,7 @@ export default function LogIn() {
               {...register("password", {
                 required: true,
               })}
-              className="inset-0 h-12 w-full rounded border border-neu-200 p-2 text-body-sm text-neu-400 ring-offset-4 focus:ring-4"
+              className="inset-0 w-full h-12 p-2 border rounded border-neu-200 text-body-sm text-neu-400 ring-offset-4 focus:ring-4"
             />
             {errors.password && errors.password.type === "required" && (
               <ErrorRequired fieldTranslatedLabelKey={"password"} />

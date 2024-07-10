@@ -1,7 +1,7 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import Link from "next/link";
 import { getServerSession } from "next-auth/next";
 import { useTranslation } from "next-i18next";
+import Link from "next/link";
 
 import { HeadingPage } from "@/components/heading--page";
 import { Meta } from "@/components/meta";
@@ -27,20 +27,20 @@ export default function DashboardPage({
     <>
       <Meta title={t("form-submission-details")} metatags={[]} />
       <HeadingPage>{t("form-submission-details")}</HeadingPage>
-      <Link href="/dashboard" className="hyperlink mt-4 block">
+      <Link href="/dashboard" className="block mt-4 hyperlink">
         {t("back-to-dashboard")}
       </Link>
       <p className="my-6 text-justify text-md/xl text-scapaflow sm:text-lg">
         {t("form-submission-intro-text", { form: submission.formTitle })}
       </p>
-      <table className="w-full border-collapse text-left">
-        <thead className="border border-primary-700 bg-primary-700 text-heading-xs font-bold text-white">
+      <table className="w-full text-left border-collapse">
+        <thead className="font-bold text-white border border-primary-700 bg-primary-700 text-heading-xs">
           <tr>
             <th className="px-3 py-4">{t("form-field")}</th>
             <th className="px-3 py-4">{t("form-value")}</th>
           </tr>
         </thead>
-        <tbody className="bg-white text-sm text-steelgray">
+        <tbody className="text-sm bg-white text-steelgray">
           {submission.formData.map(([key, value]) => (
             <tr key={key} className="border border-graysuit">
               <td className="p-3">{key}</td>
