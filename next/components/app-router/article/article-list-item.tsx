@@ -1,22 +1,28 @@
+import classNames from "classnames";
 import { useTranslation } from "next-i18next";
 import Image from "next/image";
 import Link from "next/link";
 
 import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
 import { formatDateTimestamp } from "@/lib/utils";
-interface ArticleTeaserProps {
+
+interface ArticleListItemProps {
   article: FragmentArticleTeaserFragment;
 }
 
-export function ArticleTeaser({ article }: ArticleTeaserProps) {
+export function ArticleListItem({ article }: ArticleListItemProps) {
   const { t } = useTranslation();
   const author = article.author?.name;
-
   const date = formatDateTimestamp(article.created.timestamp, "en");
   return (
     <Link
       href={article.path}
-      className="relative grid h-full p-4 transition-all bg-white border rounded border-finnishwinter hover:shadow-md"
+      className={classNames(
+        "relative mb-4 grid h-full rounded border  p-4 transition-all hover:shadow-md",
+        article.sticky
+          ? "border-primary-100 bg-primary-50"
+          : "border-finnishwinter bg-white",
+      )}
     >
       <h3 className="mb-2 font-bold line-clamp-2 text-heading-xs">
         {article.title}
@@ -25,15 +31,18 @@ export function ArticleTeaser({ article }: ArticleTeaserProps) {
         {author && <>{t("posted-by", { author })} - </>}
         {date}
       </div>
-      {article.image && (
-        <Image
-          src={article.image.url}
-          width={384}
-          height={240}
-          alt={article.image.alt}
-          className="object-cover max-w-full"
-        />
-      )}
+      <div className="flex flex-col items-start gap-4 sm:flex-row">
+        {article.image && (
+          <Image
+            src={article.image.url}
+            width={500}
+            height={300}
+            className="w-full sm:w-40"
+            alt={article.image.alt}
+          />
+        )}
+        <p>{article.excerpt}</p>
+      </div>
     </Link>
   );
 }

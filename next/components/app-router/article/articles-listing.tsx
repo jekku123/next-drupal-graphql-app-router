@@ -1,10 +1,11 @@
+"use client";
+
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "next-i18next";
-import { useRouter } from "next/router";
 
-import { ArticleTeaser } from "@/components/article/article-teaser";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
+import { ArticleTeaser } from "./article-teaser";
 
 export function ArticlesListing({
   listingId,
@@ -14,19 +15,15 @@ export function ArticlesListing({
   limit: number;
 }) {
   const { t } = useTranslation();
-  const router = useRouter();
 
   const { data, isLoading } = useQuery({
-    queryKey: [`articles-${router.locale}-${listingId}`],
+    queryKey: [`articles-en-${listingId}`],
     queryFn: async () => {
-      const response = await fetch(
-        `/api/articles-listing/${router.locale}?limit=${limit}`,
-        {
-          headers: {
-            "accept-language": router.locale,
-          },
+      const response = await fetch(`/api/articles-listing/en?limit=${limit}`, {
+        headers: {
+          "accept-language": "en",
         },
-      );
+      });
 
       return await response.json();
     },

@@ -1,3 +1,5 @@
+"use client";
+
 import { useTranslation } from "next-i18next";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,6 +14,7 @@ export function ArticleTeaser({ article }: ArticleTeaserProps) {
   const { t } = useTranslation();
   const author = article.author?.name;
 
+  // TODO: locale..
   const date = formatDateTimestamp(article.created.timestamp, "en");
   return (
     <Link

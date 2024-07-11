@@ -1,3 +1,5 @@
+"use client";
+
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -19,7 +21,7 @@ export function PreviewBanner({ isVisible }: { isVisible: boolean }) {
   }
 
   return (
-    <div className="absolute top-0 z-50 w-full bg-steelgray px-2 py-2 text-center text-mischka">
+    <div className="absolute top-0 z-50 w-full px-2 py-2 text-center bg-steelgray text-mischka">
       This page is a preview.{" "}
       {/* eslint-disable @next/next/no-html-link-for-pages */}
       <a href="/api/exit-preview" className="underline">
