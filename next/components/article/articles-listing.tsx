@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { LoadingSpinner } from "@/components/loading-spinner";
 import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { ArticleTeaser } from "./article-teaser";
 
 export function ArticlesListing({
@@ -14,16 +14,20 @@ export function ArticlesListing({
   listingId: string;
   limit: number;
 }) {
+  const locale = useLocale();
   const t = useTranslations();
 
   const { data, isLoading } = useQuery({
-    queryKey: [`articles-en-${listingId}`],
+    queryKey: [`articles-${locale}-${listingId}`],
     queryFn: async () => {
-      const response = await fetch(`/api/articles-listing/en?limit=${limit}`, {
-        headers: {
-          "accept-language": "en",
+      const response = await fetch(
+        `/api/articles-listing/${locale}?limit=${limit}`,
+        {
+          headers: {
+            "accept-language": locale,
+          },
         },
-      });
+      );
 
       return await response.json();
     },
