@@ -1,6 +1,7 @@
 import { Footer } from "@/components/app-router/footer/footer";
 import NextAuthProvider from "@/components/app-router/next-auth-provider";
 import { ReactQueryClientProvider } from "@/components/app-router/query-client-provider";
+import { getMenus } from "@/lib/drupal/get-menus";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { inter, overpass } from "@/styles/fonts";
 import { getServerSession } from "next-auth";
@@ -17,6 +18,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
+  const menus = await getMenus({ locale: "en" });
 
   return (
     <html lang="en">
@@ -26,7 +28,7 @@ export default async function RootLayout({
             <Fonts>
               <div className="flex flex-col min-h-screen">
                 {children}
-                <Footer menu={null} />
+                <Footer menu={menus.footer} />
               </div>
             </Fonts>
           </ReactQueryClientProvider>

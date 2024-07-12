@@ -2,7 +2,10 @@ import { Node } from "@/components/app-router/node";
 import { extractMetaDataFromNodeEntity } from "@/lib/contexts/metadata";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
 import { FragmentMetaTagFragment } from "@/lib/gql/graphql";
-import { GET_ENTITY_AT_DRUPAL_PATH } from "@/lib/graphql/queries";
+import {
+  GET_ENTITY_AT_DRUPAL_PATH,
+  GET_STATIC_PATHS,
+} from "@/lib/graphql/queries";
 import {
   extractEntityFromRouteQueryResult,
   extractRedirectFromRouteQueryResult,
@@ -40,6 +43,43 @@ export async function generateMetadata(
   });
 
   return metadata;
+}
+
+export async function generateStaticParams({ params: { locale } }: PageParams) {
+  const locales = ["en", "fi", "sv"] || [];
+
+  const staticPaths: ReturnType<
+    typeof drupalClientViewer.buildStaticPathsParamsFromPaths
+  > = [];
+
+  for (const locale of locales) {
+    // Get the defined paths via graphql for the current locale:
+    const data = await drupalClientViewer.doGraphQlRequest(GET_STATIC_PATHS, {
+      // We will query for the latest 10 items of each content type:
+      number: 10,
+      langcode: locale,
+    });
+
+    // Get all paths from the response:
+    const pathArray = [
+      ...(data?.nodePages?.nodes || []),
+      ...(data?.nodeArticles?.nodes || []),
+    ].map(({ path }) => path);
+
+    // Build static paths for the current locale.
+    const localePaths = drupalClientViewer.buildStaticPathsParamsFromPaths(
+      pathArray,
+      {
+        locale,
+        // Because graphql returns the path with the language prefix, we strip it using the pathPrefix option:
+        pathPrefix: `/${locale}`,
+      },
+    );
+
+    // Add the paths to the static paths array:
+    staticPaths.push(...localePaths);
+  }
+  return staticPaths;
 }
 
 export default async function CustomPage({ params }: PageParams) {
