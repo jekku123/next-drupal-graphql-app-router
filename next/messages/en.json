@@ -1,5 +1,6 @@
 {
   "brand-logos": "Brand logos",
+  "homepage-link-sr": "Homepage",
   "homepage-link": "Homepage",
   "menu-back": "Back",
   "menu": "Menu",
@@ -81,5 +82,6 @@
   "reset-your-password": "Reset your password",
   "your-session-has-expired": "Your session has expired. Please log in again to continue.",
   "field-is-required": "The {field} field is required.",
-  "toggle-menu": "Toggle menu"
+  "toggle-menu": "Toggle menu",
+  "there-was-an-error": "There was an error."
 }

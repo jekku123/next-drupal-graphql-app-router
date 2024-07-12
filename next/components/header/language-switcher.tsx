@@ -1,16 +1,19 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useTranslation } from "next-i18next";
-import { useEffect, useState } from "react";
-import clsx from "clsx";
+"use client";
 
+import clsx from "clsx";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
+import { locales } from "@/i18n";
 import { useLanguageLinks } from "@/lib/contexts/language-links-context";
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
 import LanguageIcon from "@/styles/icons/language.svg";
+import { useLocale, useTranslations } from "next-intl";
 
+// TODO: LOCALE HANDLING FOR APP ROUTER
 export function LanguageSwitcher() {
   const languageLinks = useLanguageLinks();
-  const { locale, locales } = useRouter();
+  const locale = useLocale();
 
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen((o) => !o);
@@ -21,7 +24,7 @@ export function LanguageSwitcher() {
 
   // Close on click outside
   const ref = useOnClickOutside<HTMLDivElement>(close);
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <div ref={ref}>
@@ -35,7 +38,7 @@ export function LanguageSwitcher() {
         <span className="sr-only sm:not-sr-only sm:mr-2 sm:inline">
           {languageLinks[locale].name}
         </span>
-        <LanguageIcon className="inline-block h-6 w-6" aria-hidden="true" />
+        <LanguageIcon className="inline-block w-6 h-6" aria-hidden="true" />
       </button>
       <ul
         className={clsx(

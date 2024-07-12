@@ -1,26 +1,30 @@
-import Link from "next/link";
-import { useTranslation } from "next-i18next";
 import clsx from "clsx";
+import Link from "next/link";
 
-import { ArticleTeaser } from "@/components/article/article-teaser";
 import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
-import ArrowIcon from "@/styles/icons/arrow-down.svg";
 
 import { buttonVariants } from "@/ui/button";
+import { getTranslations } from "next-intl/server";
+import { Icons } from "../icons";
+import { ArticleTeaser } from "./article-teaser";
 
 interface LatestArticlesProps {
   articles?: FragmentArticleTeaserFragment[];
   heading: string;
 }
 
-export function ArticleTeasers({ articles, heading }: LatestArticlesProps) {
-  const { t } = useTranslation();
+export async function ArticleTeasers({
+  articles,
+  heading,
+}: LatestArticlesProps) {
+  const t = await getTranslations();
+
   return (
     <>
-      <h2 className="text-heading-sm font-bold md:text-heading-md">
+      <h2 className="font-bold text-heading-sm md:text-heading-md">
         {heading}
       </h2>
-      <ul className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2 md:grid-cols-3">
         {articles?.map((article) => (
           <li key={article.id}>
             <ArticleTeaser article={article} />
@@ -38,7 +42,7 @@ export function ArticleTeasers({ articles, heading }: LatestArticlesProps) {
             )}
           >
             {t("all-articles")}
-            <ArrowIcon aria-hidden className="ml-3 h-6 w-6 -rotate-90" />
+            <Icons.arrowIcon aria-hidden className="w-6 h-6 ml-3 -rotate-90" />
           </Link>
         )}
       </div>

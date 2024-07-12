@@ -1,21 +1,21 @@
+"use client";
+
+import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useTranslation } from "next-i18next";
-import classNames from "classnames";
 
 import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
 import { formatDateTimestamp } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface ArticleListItemProps {
   article: FragmentArticleTeaserFragment;
 }
 
 export function ArticleListItem({ article }: ArticleListItemProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const author = article.author?.name;
-  const router = useRouter();
-  const date = formatDateTimestamp(article.created.timestamp, router.locale);
+  const date = formatDateTimestamp(article.created.timestamp, "en");
   return (
     <Link
       href={article.path}
@@ -26,7 +26,7 @@ export function ArticleListItem({ article }: ArticleListItemProps) {
           : "border-finnishwinter bg-white",
       )}
     >
-      <h3 className="mb-2 line-clamp-2 text-heading-xs font-bold">
+      <h3 className="mb-2 font-bold line-clamp-2 text-heading-xs">
         {article.title}
       </h3>
       <div className="mb-4 line-clamp-2 text-md text-scapaflow">

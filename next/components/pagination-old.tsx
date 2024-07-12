@@ -1,12 +1,11 @@
-"use client";
-
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 import { useState } from "react";
 
+import Arrow from "@/styles/icons/arrow-down.svg";
+
 import { Button } from "@/ui/button";
-import { useTranslations } from "next-intl";
-import { Icons } from "./icons";
 
 export type PaginationProps = {
   currentPage?: number;
@@ -48,7 +47,7 @@ export function Pagination({
     prevPageHref,
     nextPageHref,
   } = paginationProps;
-  const t = useTranslations();
+  const { t } = useTranslation();
 
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<"forward" | "back" | false>(false);
@@ -72,7 +71,10 @@ export function Pagination({
     if (prevPageHref && focusRestoreRef) {
       e.preventDefault();
       setIsLoading("back");
-      void router.push(prevPageHref, { scroll: false });
+      void router.push(prevPageHref, null, { scroll: false }).then(() => {
+        setIsLoading(false);
+        restoreScroll();
+      });
     } else if (focusRestoreRef) {
       restoreScroll();
     }
@@ -83,7 +85,10 @@ export function Pagination({
     if (nextPageHref && focusRestoreRef) {
       e.preventDefault();
       setIsLoading("forward");
-      void router.push(nextPageHref, { scroll: false });
+      void router.push(nextPageHref, null, { scroll: false }).then(() => {
+        setIsLoading(false);
+        restoreScroll();
+      });
     } else if (focusRestoreRef) {
       restoreScroll();
     }
@@ -98,7 +103,7 @@ export function Pagination({
           onClick={handlePrevClick}
           tabIndex={props["aria-hidden"] ? -1 : undefined}
         >
-          <Icons.arrowIcon className="w-6 h-6 mr-4 rotate-90" aria-hidden />
+          <Arrow className="w-6 h-6 mr-4 rotate-90" aria-hidden />
           {t("search-previous")}
         </Button>
       </MaybeLink>
@@ -111,7 +116,7 @@ export function Pagination({
           tabIndex={props["aria-hidden"] ? -1 : undefined}
         >
           {t("search-next")}
-          <Icons.arrowIcon className="w-6 h-6 ml-4 -rotate-90" aria-hidden />
+          <Arrow className="w-6 h-6 ml-4 -rotate-90" aria-hidden />
         </Button>
       </MaybeLink>
     </div>

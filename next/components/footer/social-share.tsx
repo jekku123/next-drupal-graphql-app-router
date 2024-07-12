@@ -1,13 +1,13 @@
-import { useTranslation } from "next-i18next";
+"use client";
+
 import { useEffect, useState } from "react";
 
-import FacebookIcon from "@/styles/icons/facebook.svg";
-import LinkedInIcon from "@/styles/icons/linkedin.svg";
-import TwitterIcon from "@/styles/icons/twitter.svg";
+import { useTranslations } from "next-intl";
+import { Icons } from "../icons";
 
 export function SocialShare() {
   const [pageUrl, setPageUrl] = useState<string>("");
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   useEffect(() => {
     const currentUrl = encodeURIComponent(window.location.href);
@@ -19,19 +19,19 @@ export function SocialShare() {
       id: 1,
       location: "Facebook",
       url: `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`,
-      icon: <FacebookIcon className="block h-16 w-16 text-primary-600" />,
+      icon: <Icons.facebook className="block w-16 h-16 text-primary-600" />,
     },
     {
       id: 2,
       location: "Twitter",
       url: `https://twitter.com/intent/tweet?url=${pageUrl}`,
-      icon: <TwitterIcon className="block h-16 w-16 text-primary-600" />,
+      icon: <Icons.twitter className="block w-16 h-16 text-primary-600" />,
     },
     {
       id: 3,
       location: "LinkedIn",
       url: `https://www.linkedin.com/shareArticle?mini=true&url=${pageUrl}`,
-      icon: <LinkedInIcon className="block h-16 w-16 text-primary-600" />,
+      icon: <Icons.linkedIn className="block w-16 h-16 text-primary-600" />,
     },
   ];
 

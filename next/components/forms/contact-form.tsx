@@ -1,14 +1,16 @@
-import { useTranslation } from "next-i18next";
-import { useRouter } from "next/router";
+"use client";
+
 import { useForm } from "react-hook-form";
 
-import { AuthGate } from "@/components/auth-gate";
-
+import { contactAction } from "@/lib/drupal/actions/contact";
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
 import { StatusMessage } from "@/ui/status-message";
 import { Textarea } from "@/ui/textarea";
+import { useTranslations } from "next-intl";
+import { useTransition } from "react";
+import { AuthGate } from "../auth-gate";
 
 type Inputs = {
   name: string;
@@ -18,8 +20,8 @@ type Inputs = {
 };
 
 export function ContactForm() {
-  const router = useRouter();
-  const { t } = useTranslation();
+  const t = useTranslations();
+
   const {
     register,
     handleSubmit,
@@ -27,24 +29,15 @@ export function ContactForm() {
     formState: { isSubmitSuccessful },
   } = useForm<Inputs>();
 
-  const onSubmit = async (data: Inputs) => {
-    const response = await fetch(`/api/contact`, {
-      method: "POST",
-      body: JSON.stringify({
-        name: data.name,
-        email: data.email,
-        message: data.message,
-        subject: data.subject,
-      }),
-      // This will record the submission with the right language:
-      headers: {
-        "accept-language": router.locale,
-      },
-    });
+  const [isSubmitting, startTransition] = useTransition();
 
-    if (!response.ok) {
-      alert("Error!");
-    }
+  const onSubmit = async (data: Inputs) => {
+    startTransition(async () => {
+      const response = await contactAction(data);
+      if (response.error) {
+        alert("Error!");
+      }
+    });
   };
 
   const onErrors = (errors) => console.error(errors);
@@ -111,7 +104,9 @@ export function ContactForm() {
             />
           </div>
 
-          <Button type="submit">{t("form-submit")}</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {t("form-submit")}
+          </Button>
         </>
       </AuthGate>
     </form>

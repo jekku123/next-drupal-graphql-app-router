@@ -1,6 +1,6 @@
 import * as AccordionUI from "@radix-ui/react-accordion";
 
-import { Icons } from "@/components/app-router/icons";
+import { Icons } from "@/components/icons";
 import ChevronIcon from "@/styles/icons/chevron-down.svg";
 
 interface AccordionProps {

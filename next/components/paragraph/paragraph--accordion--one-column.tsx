@@ -1,5 +1,5 @@
-import Link from "next/link";
 import clsx from "clsx";
+import Link from "next/link";
 
 import { FormattedText } from "@/components/formatted-text";
 import { HeadingParagraph } from "@/components/heading--paragraph";
@@ -9,10 +9,10 @@ import {
   FragmentParagraphAccordionItemFragment,
   FragmentParagraphUnionFragment,
 } from "@/lib/gql/graphql";
-import ArrowIcon from "@/styles/icons/arrow-down.svg";
 
 import { Accordion } from "@/ui/accordion";
 import { buttonVariants } from "@/ui/button";
+import { Icons } from "../icons";
 
 export function ParagraphAccordionOneColumn({
   paragraph,
@@ -43,7 +43,7 @@ export function ParagraphAccordionOneColumn({
           )}
         >
           {paragraph.primaryLink.title}
-          <ArrowIcon aria-hidden className="ml-3 h-6 w-6 -rotate-90" />
+          <Icons.arrowIcon aria-hidden className="w-6 h-6 ml-3 -rotate-90" />
         </Link>
       )}
 

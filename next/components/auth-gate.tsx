@@ -1,9 +1,9 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useTranslation } from "next-i18next";
 
 import { StatusMessage } from "@/ui/status-message";
+import { useTranslations } from "next-intl";
 
 type AuthGateProps = {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ type AuthGateProps = {
 };
 
 export function AuthGate({ children, text, className }: AuthGateProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { status } = useSession();
 
   if (status === "authenticated") {

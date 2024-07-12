@@ -1,6 +1,7 @@
 {
   "brand-logos": "Varumärkeslogotyper",
   "homepage-link-sr": "Hemsida",
+  "homepage-link": "Hem",
   "menu-back": "Tillbaka",
   "menu": "Meny",
   "menu-toggle": "Visa/dölj meny",
@@ -38,6 +39,7 @@
   "form-label-subject": "Ämne:",
   "form-label-message": "Meddelande:",
   "form-label-submit": "Skicka",
+  "form-submit": "Skicka",
   "form-thank-you-message": "Tack!",
   "form-send-another-message": "Skicka ett annat meddelande",
   "login-to-fill-form": "Logga in för att fylla i detta formulär.",
@@ -81,5 +83,6 @@
   "reset-your-password": "Återställ ditt lösenord",
   "your-session-has-expired": "Din session har gått ut. Logga in igen för att fortsätta.",
   "field-is-required": "{field} är obligatoriskt.",
-  "toggle-menu": "Visa/dölj meny"
+  "toggle-menu": "Visa/dölj meny",
+  "there-was-an-error": "Det uppstod ett fel"
 }

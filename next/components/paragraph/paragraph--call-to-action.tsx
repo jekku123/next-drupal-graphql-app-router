@@ -3,9 +3,9 @@ import Link from "next/link";
 
 import { FormattedText } from "@/components/formatted-text";
 import type { FragmentParagraphCallToActionFragment } from "@/lib/gql/graphql";
-import ArrowIcon from "@/styles/icons/arrow-down.svg";
 
 import { buttonVariants } from "@/ui/button";
+import { Icons } from "../icons";
 
 export function ParagraphCallToAction({
   paragraph,
@@ -38,7 +38,10 @@ export function ParagraphCallToAction({
                 )}
               >
                 {paragraph.link.title}
-                <ArrowIcon aria-hidden className="w-6 h-6 ml-3 -rotate-90" />
+                <Icons.arrowIcon
+                  aria-hidden
+                  className="w-6 h-6 ml-3 -rotate-90"
+                />
               </Link>
             )}
           </div>

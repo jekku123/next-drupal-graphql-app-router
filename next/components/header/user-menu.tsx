@@ -1,16 +1,23 @@
+"use client";
+
 import clsx from "clsx";
 import { signOut, useSession } from "next-auth/react";
-import { useTranslation } from "next-i18next";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
 import AccountIcon from "@/styles/icons/account-circle.svg";
+import { useLocale, useTranslations } from "next-intl";
+import { usePathname, useSearchParams } from "next/navigation";
+import { Icons } from "../icons";
 
 export function UserMenu() {
-  const { locale, asPath, query } = useRouter();
-  const { t } = useTranslation();
+  const locale = useLocale();
+  const t = useTranslations();
+
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const { data, status } = useSession();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +25,8 @@ export function UserMenu() {
   const close = () => setIsOpen(false);
 
   const loginUrl = `/auth/login?callbackUrl=${encodeURIComponent(
-    query.callbackUrl?.toString() || `/${locale}${asPath}`,
+    searchParams.get("callbackUrl") ||
+      `/${locale}/${pathname}?${searchParams.toString()}`,
   )}`;
 
   const ref = useOnClickOutside<HTMLDivElement>(close);
@@ -74,7 +82,7 @@ export function UserMenu() {
         <span className="capitalize sr-only sm:not-sr-only sm:mr-2 sm:inline">
           {t("user-menu-account")}
         </span>
-        <AccountIcon className="inline-block w-6 h-6" />
+        <Icons.accountIcon className="inline-block w-6 h-6" />
       </button>
       <ul
         className={clsx(

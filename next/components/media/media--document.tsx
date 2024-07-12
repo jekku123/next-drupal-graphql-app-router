@@ -1,8 +1,7 @@
-import { useTranslation } from "next-i18next";
-
 import type { FragmentMediaDocumentFragment } from "@/lib/gql/graphql";
 import { formatFileSizeInBytes } from "@/lib/utils";
-import { Icons } from "../app-router/icons";
+import { getTranslations } from "next-intl/server";
+import { Icons } from "../icons";
 
 const getIcon = (fileType: string) => {
   switch (fileType) {
@@ -40,12 +39,12 @@ const getIcon = (fileType: string) => {
   }
 };
 
-export function MediaDocument({
+export async function MediaDocument({
   media,
 }: {
   media: FragmentMediaDocumentFragment;
 }) {
-  const { t } = useTranslation();
+  const t = await getTranslations();
   if (!media) {
     return null;
   }

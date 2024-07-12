@@ -16,8 +16,7 @@ export function MediaImage({ media }: { media: FragmentMediaImageFragment }) {
       height={height}
       alt={alt || "Image"}
       title={title || ""}
-      className="object-cover h-auto max-w-full"
-      priority
+      className="h-auto max-w-full object-cover"
     />
   );
 }

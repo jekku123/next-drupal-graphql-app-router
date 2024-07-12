@@ -1,5 +1,4 @@
-import dynamic from "next/dynamic";
-
+import { ParagraphCallToAction } from "@/components/paragraph/paragraph--call-to-action";
 import { ParagraphFileAttachments } from "@/components/paragraph/paragraph--file-attachments";
 import { ParagraphHero } from "@/components/paragraph/paragraph--hero";
 import { ParagraphImage } from "@/components/paragraph/paragraph--image";
@@ -7,17 +6,18 @@ import { ParagraphLiftupArticle } from "@/components/paragraph/paragraph--liftup
 import { ParagraphLinks } from "@/components/paragraph/paragraph--links";
 import { ParagraphListingArticles } from "@/components/paragraph/paragraph--listing-articles";
 import { ParagraphText } from "@/components/paragraph/paragraph--text";
+
 import type { FragmentParagraphUnionFragment } from "@/lib/gql/graphql";
-import { ParagraphCallToAction } from "./paragraph--call-to-action";
+import dynamic from "next/dynamic";
 
 // Use dynamic imports to defer loading a component until after initial page load: https://nextjs.org/docs/advanced-features/dynamic-import
 const ParagraphVideo = dynamic(() =>
   import("./paragraph--video").then((mod) => mod.ParagraphVideo),
 );
 
-const ParagraphAccordion = dynamic(() =>
-  import("./paragraph--accordion").then((mod) => mod.ParagraphAccordion),
-);
+// const ParagraphAccordion = dynamic(() =>
+//   import("./paragraph--accordion").then((mod) => mod.ParagraphAccordion),
+// );
 
 export function Paragraph({
   paragraph,
@@ -40,9 +40,9 @@ export function Paragraph({
     case "ParagraphImage": {
       return <ParagraphImage paragraph={paragraph} />;
     }
-    case "ParagraphAccordion": {
-      return <ParagraphAccordion paragraph={paragraph} />;
-    }
+    // case "ParagraphAccordion": {
+    //   return <ParagraphAccordion paragraph={paragraph} />;
+    // }
     case "ParagraphVideo": {
       return <ParagraphVideo paragraph={paragraph} />;
     }

@@ -1,6 +1,6 @@
-import { Footer } from "@/components/app-router/footer/footer";
-import NextAuthProvider from "@/components/app-router/next-auth-provider";
-import { ReactQueryClientProvider } from "@/components/app-router/query-client-provider";
+import { Footer } from "@/components/footer/footer";
+import NextAuthProvider from "@/components/next-auth-provider";
+import { ReactQueryClientProvider } from "@/components/query-client-provider";
 import { locales } from "@/i18n";
 import { getMenus } from "@/lib/drupal/get-menus";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";

@@ -1,11 +1,13 @@
-import { useRouter } from "next/router";
+"use client";
+
+import { usePathname, useSearchParams } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-import { useEffectOnce } from "@/lib/hooks/use-effect-once";
 import { useEventListener } from "@/lib/hooks/use-event-listener";
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
 import type { MenuItemType, MenuType } from "@/types/graphql";
 
+import { useLocale } from "next-intl";
 import {
   MenuBack,
   MenuContainer,
@@ -28,7 +30,7 @@ interface MainMenuProps {
 }
 
 export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
-  const router = useRouter();
+  const locale = useLocale();
 
   const [didInit, setDidInit] = useState(false);
 
@@ -55,13 +57,24 @@ export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
   // Close on click outside
   const ref = useOnClickOutside<HTMLUListElement>(close);
 
+  /* OLD ONE using next/router */
+
   // Close when route changes
-  useEffectOnce(() => {
-    router.events.on("routeChangeComplete", close);
-    return () => {
-      router.events.off("routeChangeComplete", close);
-    };
-  });
+  // useEffectOnce(() => {
+  //   router.events.on("routeChangeComplete", close);
+  //   return () => {
+  //     router.events.off("routeChangeComplete", close);
+  //   };
+  // });
+
+  /* NEW ONE usingh next/navigation */
+
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    close();
+  }, [pathname, searchParams]);
 
   useEffect(() => {
     // Prevent body scroll when menu is open
@@ -76,7 +89,13 @@ export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
       const didSetMenuAndSubmenu = menu?.items?.some((item) =>
         item.children?.some((subItem) =>
           subItem.children?.some((subSubItem) => {
-            if (isMenuItemActive(router, subSubItem.url)) {
+            if (
+              isMenuItemActive(
+                locale,
+                `${pathname}?${searchParams}`,
+                subSubItem.url,
+              )
+            ) {
               setActiveMenu(item.id);
               setActiveSubmenu(subItem.id);
               return true;
@@ -94,7 +113,9 @@ export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
       // User is not on a page matching a submenu item, so try to find a matching top-level menu item
       menu?.items?.some((item) =>
         item.children?.some((subItem) => {
-          if (isMenuItemActive(router, subItem.url)) {
+          if (
+            isMenuItemActive(locale, `${pathname}?${searchParams}`, subItem.url)
+          ) {
             setActiveMenu(item.id);
             setActiveSubmenu(null);
             return true;
@@ -104,7 +125,7 @@ export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
 
       setDidInit(true);
     }
-  }, [isOpen, menu, router]);
+  }, [isOpen, menu, locale]);
 
   const activeMenuTitle = menu?.items?.find((i) => i.id === activeMenu)?.title;
   const activeSubmenuTitle = menu?.items

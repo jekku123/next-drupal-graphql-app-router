@@ -1,19 +1,18 @@
-import { useTranslation } from "next-i18next";
 import Image from "next/image";
-import { useRouter } from "next/router";
 
 import { FormattedText } from "@/components/formatted-text";
 import { HeadingPage } from "@/components/heading--page";
 import { formatDateTimestamp } from "@/lib/utils";
 import { ProductType } from "@/types/graphql";
+import { getTranslations } from "next-intl/server";
 
 interface ProductProps {
   product: ProductType;
 }
 
-export function NodeProduct({ product, ...props }: ProductProps) {
-  const { t } = useTranslation();
-  const router = useRouter();
+export async function NodeProduct({ product, ...props }: ProductProps) {
+  const t = await getTranslations();
+
   return (
     <article {...props}>
       <HeadingPage>{product.title}</HeadingPage>
@@ -22,9 +21,7 @@ export function NodeProduct({ product, ...props }: ProductProps) {
         {product.author?.name && (
           <span>{t("posted-by", { author: product.author.name })} - </span>
         )}
-        <span>
-          {formatDateTimestamp(product.created.timestamp, router.locale)}
-        </span>
+        <span>{formatDateTimestamp(product.created.timestamp, "en")}</span>
       </div>
       {product.image && (
         <figure>
