@@ -1,16 +1,46 @@
 import { Node } from "@/components/app-router/node";
+import { extractMetaDataFromNodeEntity } from "@/lib/contexts/metadata";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
+import { FragmentMetaTagFragment } from "@/lib/gql/graphql";
 import { GET_ENTITY_AT_DRUPAL_PATH } from "@/lib/graphql/queries";
 import {
   extractEntityFromRouteQueryResult,
   extractRedirectFromRouteQueryResult,
 } from "@/lib/graphql/utils";
+import { Metadata, ResolvingMetadata } from "next";
 import { notFound, permanentRedirect, redirect } from "next/navigation";
 
 // TODO: LOCALE
 type PageParams = {
   params: { slug: string[]; locale: string };
 };
+
+export async function generateMetadata(
+  { params }: PageParams,
+  _parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const path = Array.isArray(params.slug)
+    ? `/${params.slug?.join("/")}`
+    : params.slug;
+
+  const variables = {
+    path: path,
+    langcode: "en",
+  };
+
+  const data = await drupalClientViewer.doGraphQlRequest(
+    GET_ENTITY_AT_DRUPAL_PATH,
+    variables,
+  );
+
+  let nodeEntity = extractEntityFromRouteQueryResult(data);
+  const metadata = extractMetaDataFromNodeEntity({
+    title: nodeEntity.title,
+    metatags: nodeEntity.metatag as FragmentMetaTagFragment[],
+  });
+
+  return metadata;
+}
 
 export default async function CustomPage({ params }: PageParams) {
   const path = Array.isArray(params.slug)
@@ -110,8 +140,6 @@ export default async function CustomPage({ params }: PageParams) {
   // } else {
   //   languageLinks = getStandardLanguageLinks();
   // }
-
-  console.log("CustomPage", nodeEntity);
 
   return <Node node={nodeEntity} />;
 }

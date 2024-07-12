@@ -53,9 +53,6 @@ export default async function FrontPage() {
     (stickyArticleTeasers.articlesView
       ?.results as FragmentArticleTeaserFragment[]) ?? [];
 
-  // console.log("Frontpage", frontpage);
-  // console.log("Articles", articles);
-
   return (
     <>
       {/* <Meta

@@ -1,4 +1,3 @@
-import { useTranslation } from "next-i18next";
 import Image from "next/image";
 
 import { FormattedText } from "@/components/formatted-text";
@@ -11,7 +10,7 @@ interface ProductProps {
 }
 
 export function NodeProduct({ product, ...props }: ProductProps) {
-  const { t } = useTranslation();
+  // TODO: Localize posted by
 
   return (
     <article {...props}>
@@ -19,7 +18,8 @@ export function NodeProduct({ product, ...props }: ProductProps) {
       {product.excerpt && <div className="my-4 text-xl">{product.excerpt}</div>}
       <div className="mb-4 text-scapaflow">
         {product.author?.name && (
-          <span>{t("posted-by", { author: product.author.name })} - </span>
+          // <span>{t("posted-by", { author: product.author.name })} - </span>
+          <span>Posted by: {product.author.name}</span>
         )}
         <span>{formatDateTimestamp(product.created.timestamp, "en")}</span>
       </div>

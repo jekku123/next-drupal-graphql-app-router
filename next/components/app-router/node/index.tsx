@@ -1,5 +1,7 @@
 import { NodeArticle } from "@/components/app-router/node/node--article";
 import { NodeFrontpage } from "@/components/app-router/node/node--frontpage";
+import { NodePage } from "@/components/app-router/node/node--page";
+import { NodeProduct } from "@/components/app-router/node/node--product";
 import { TypedRouteEntity } from "@/types/graphql";
 
 export function Node({ node }: { node: TypedRouteEntity }) {
@@ -9,15 +11,15 @@ export function Node({ node }: { node: TypedRouteEntity }) {
     case "NodeFrontpage": {
       return <NodeFrontpage page={node} />;
     }
-    // case "NodePage": {
-    //   return <NodePage page={node} />;
-    // }
+    case "NodePage": {
+      return <NodePage page={node} />;
+    }
     case "NodeArticle": {
       return <NodeArticle article={node} />;
     }
-    // case "NodeProduct": {
-    //   return <NodeProduct product={node} />;
-    // }
+    case "NodeProduct": {
+      return <NodeProduct product={node} />;
+    }
     default: {
       // node === typeof never;
       console.log(
