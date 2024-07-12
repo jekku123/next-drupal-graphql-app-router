@@ -1,15 +1,17 @@
 "use client";
 
-import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useState } from "react";
 
-import { MenuToggle } from "@/components/main-menu/main-menu";
+import {
+  MainMenu,
+  MenuToggle,
+} from "@/components/app-router/main-menu/main-menu";
 import SearchIcon from "@/styles/icons/search.svg";
 import WunderIcon from "@/styles/icons/wunder.svg";
 import type { MenuType } from "@/types/graphql";
 
-import { MainMenu } from "../main-menu/main-menu";
+import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "./language-switcher";
 import { UserMenu } from "./user-menu";
 
@@ -41,8 +43,8 @@ export function Header({ menu }: HeaderProps) {
 }
 
 function HomeLink() {
-  const { t } = useTranslation();
-  // TODO: LOCALE
+  const t = useTranslations();
+
   return (
     <Link href="/" locale="en" className="inline">
       <WunderIcon className="w-32" />
@@ -52,8 +54,8 @@ function HomeLink() {
 }
 
 function SearchLink() {
-  const { t } = useTranslation();
-  // TODO: LOCALE
+  const t = useTranslations();
+
   return (
     <Link href="/search" locale="en" className="hover:underline">
       <span className="sr-only sm:not-sr-only sm:mr-2 sm:inline">

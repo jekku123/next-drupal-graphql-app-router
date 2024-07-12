@@ -38,7 +38,11 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const revalidate = 60;
 
-export default async function FrontPage() {
+export default async function FrontPage({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
   const variables = {
     // This works because it matches the pathauto pattern for the Frontpage content type defined in Drupal:
     path: `frontpage-en`,

@@ -1,10 +1,10 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useTranslation } from "next-i18next";
 
 import { LoadingSpinner } from "@/components/loading-spinner";
 import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
+import { useTranslations } from "next-intl";
 import { ArticleTeaser } from "./article-teaser";
 
 export function ArticlesListing({
@@ -14,7 +14,7 @@ export function ArticlesListing({
   listingId: string;
   limit: number;
 }) {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   const { data, isLoading } = useQuery({
     queryKey: [`articles-en-${listingId}`],

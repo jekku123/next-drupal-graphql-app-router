@@ -1,17 +1,17 @@
 import classNames from "classnames";
-import { useTranslation } from "next-i18next";
 import Image from "next/image";
 import Link from "next/link";
 
 import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
 import { formatDateTimestamp } from "@/lib/utils";
+import { getTranslations } from "next-intl/server";
 
 interface ArticleListItemProps {
   article: FragmentArticleTeaserFragment;
 }
 
-export function ArticleListItem({ article }: ArticleListItemProps) {
-  const { t } = useTranslation();
+export async function ArticleListItem({ article }: ArticleListItemProps) {
+  const t = await getTranslations();
   const author = article.author?.name;
   const date = formatDateTimestamp(article.created.timestamp, "en");
   return (

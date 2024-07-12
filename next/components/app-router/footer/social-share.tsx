@@ -1,13 +1,13 @@
 "use client";
 
-import { useTranslation } from "next-i18next";
 import { useEffect, useState } from "react";
 
+import { useTranslations } from "next-intl";
 import { Icons } from "../icons";
 
 export function SocialShare() {
   const [pageUrl, setPageUrl] = useState<string>("");
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   useEffect(() => {
     const currentUrl = encodeURIComponent(window.location.href);

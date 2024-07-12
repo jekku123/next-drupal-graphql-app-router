@@ -1,17 +1,15 @@
-"use client";
-
-import { useTranslation } from "next-i18next";
 import Image from "next/image";
 import Link from "next/link";
 
 import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
 import { formatDateTimestamp } from "@/lib/utils";
+import { getTranslations } from "next-intl/server";
 interface ArticleTeaserProps {
   article: FragmentArticleTeaserFragment;
 }
 
-export function ArticleTeaser({ article }: ArticleTeaserProps) {
-  const { t } = useTranslation();
+export async function ArticleTeaser({ article }: ArticleTeaserProps) {
+  const t = await getTranslations();
   const author = article.author?.name;
 
   // TODO: locale..
@@ -35,6 +33,7 @@ export function ArticleTeaser({ article }: ArticleTeaserProps) {
           height={240}
           alt={article.image.alt}
           className="object-cover max-w-full"
+          priority
         />
       )}
     </Link>

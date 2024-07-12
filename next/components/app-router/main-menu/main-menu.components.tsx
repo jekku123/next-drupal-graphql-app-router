@@ -2,7 +2,7 @@
 
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import clsx from "clsx";
-import { useTranslation } from "next-i18next";
+
 import NextLink from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Dispatch, forwardRef, ReactNode, SetStateAction } from "react";
@@ -12,13 +12,10 @@ import CloseIcon from "@/styles/icons/close.svg";
 import MenuIcon from "@/styles/icons/menu.svg";
 import type { MenuItemType } from "@/types/graphql";
 
+import { useTranslations } from "next-intl";
 import css from "./main-menu.module.css";
-import {
-  disableHoverEvents,
-  isMenuItemActiveAppRouter,
-} from "./main-menu.utils";
+import { disableHoverEvents, isMenuItemActive } from "./main-menu.utils";
 
-// TODO. LOCALIzE
 export function MenuContainer({
   isOpen,
   children,
@@ -69,7 +66,7 @@ export function MenuToggle({
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<typeof isOpen>>;
 }) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const ToggleIcon = isOpen ? CloseIcon : MenuIcon;
   return (
     <button
@@ -116,7 +113,7 @@ export function MenuListTitle({
 }
 
 export function MenuBack({ onClick }: { onClick: () => void }) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   return (
     <button
       className="inline-flex items-center justify-center pr-2 m-6 hover:underline lg:hidden"
@@ -163,11 +160,7 @@ export function MenuLink({
 }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const isActive = isMenuItemActiveAppRouter(
-    "en",
-    `${pathname}?${searchParams}`,
-    href,
-  );
+  const isActive = isMenuItemActive("en", `${pathname}?${searchParams}`, href);
 
   return (
     <NavigationMenu.Link
@@ -191,7 +184,7 @@ export function MenuTrigger({
   isTopLevel?: boolean;
   parent?: string;
 }) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   return (
     <NavigationMenu.Trigger
       {...disableHoverEvents}

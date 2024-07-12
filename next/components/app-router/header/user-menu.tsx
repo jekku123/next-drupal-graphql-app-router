@@ -2,20 +2,22 @@
 
 import clsx from "clsx";
 import { signOut, useSession } from "next-auth/react";
-import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useState } from "react";
 
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
 import AccountIcon from "@/styles/icons/account-circle.svg";
+import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Icons } from "../icons";
 
-// TODO: LOCALE
 export function UserMenu() {
+  const locale = useLocale();
+  const t = useTranslations();
+
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { t } = useTranslation();
+
   const { data, status } = useSession();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -23,9 +25,8 @@ export function UserMenu() {
   const close = () => setIsOpen(false);
 
   const loginUrl = `/auth/login?callbackUrl=${encodeURIComponent(
-    // TODO: LOCALE..
     searchParams.get("callbackUrl") ||
-      `/en${pathname}?${searchParams.toString()}`,
+      `/${locale}/${pathname}?${searchParams.toString()}`,
   )}`;
 
   const ref = useOnClickOutside<HTMLDivElement>(close);

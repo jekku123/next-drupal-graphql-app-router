@@ -1,28 +1,30 @@
 "use client";
 
 import clsx from "clsx";
-import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { locales } from "@/i18n";
 import { useLanguageLinks } from "@/lib/contexts/language-links-context";
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
 import LanguageIcon from "@/styles/icons/language.svg";
+import { useLocale, useTranslations } from "next-intl";
 
 // TODO: LOCALE HANDLING FOR APP ROUTER
 export function LanguageSwitcher() {
   const languageLinks = useLanguageLinks();
+  const locale = useLocale();
 
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen((o) => !o);
   const close = () => setIsOpen(false);
 
-  // Close on locale change add locale for app router to whereever see "en"
-  useEffect(close, ["en"]);
+  // Close on locale change
+  useEffect(close, [locale]);
 
   // Close on click outside
   const ref = useOnClickOutside<HTMLDivElement>(close);
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <div ref={ref}>
@@ -34,7 +36,7 @@ export function LanguageSwitcher() {
         aria-expanded={isOpen}
       >
         <span className="sr-only sm:not-sr-only sm:mr-2 sm:inline">
-          {languageLinks["en"].name}
+          {languageLinks[locale].name}
         </span>
         <LanguageIcon className="inline-block w-6 h-6" aria-hidden="true" />
       </button>
@@ -44,9 +46,8 @@ export function LanguageSwitcher() {
           !isOpen && "hidden",
         )}
       >
-        {/* get locales from somewhere for app router */}
-        {["en", "fi", "sv"]
-          .filter((l) => l !== "en")
+        {locales
+          .filter((l) => l !== locale)
           .map((l) => {
             const { name, path } = languageLinks[l];
             return (

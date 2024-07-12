@@ -4,13 +4,14 @@ import { FormattedText } from "@/components/formatted-text";
 import { HeadingPage } from "@/components/heading--page";
 import { formatDateTimestamp } from "@/lib/utils";
 import { ProductType } from "@/types/graphql";
+import { getTranslations } from "next-intl/server";
 
 interface ProductProps {
   product: ProductType;
 }
 
-export function NodeProduct({ product, ...props }: ProductProps) {
-  // TODO: Localize posted by
+export async function NodeProduct({ product, ...props }: ProductProps) {
+  const t = await getTranslations();
 
   return (
     <article {...props}>
@@ -18,8 +19,7 @@ export function NodeProduct({ product, ...props }: ProductProps) {
       {product.excerpt && <div className="my-4 text-xl">{product.excerpt}</div>}
       <div className="mb-4 text-scapaflow">
         {product.author?.name && (
-          // <span>{t("posted-by", { author: product.author.name })} - </span>
-          <span>Posted by: {product.author.name}</span>
+          <span>{t("posted-by", { author: product.author.name })} - </span>
         )}
         <span>{formatDateTimestamp(product.created.timestamp, "en")}</span>
       </div>

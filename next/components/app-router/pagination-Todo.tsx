@@ -1,6 +1,8 @@
+"use client";
+
+import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useTranslation } from "next-i18next";
 import { useState } from "react";
 
 import Arrow from "@/styles/icons/arrow-down.svg";
@@ -95,7 +97,7 @@ export function Pagination({
   };
 
   return (
-    <div className="flex w-full items-center justify-between">
+    <div className="flex items-center justify-between w-full">
       <MaybeLink href={prevPageHref}>
         <Button
           variant="tertiary"
@@ -103,7 +105,7 @@ export function Pagination({
           onClick={handlePrevClick}
           tabIndex={props["aria-hidden"] ? -1 : undefined}
         >
-          <Arrow className="mr-4 h-6 w-6 rotate-90" aria-hidden />
+          <Arrow className="w-6 h-6 mr-4 rotate-90" aria-hidden />
           {t("search-previous")}
         </Button>
       </MaybeLink>
@@ -116,7 +118,7 @@ export function Pagination({
           tabIndex={props["aria-hidden"] ? -1 : undefined}
         >
           {t("search-next")}
-          <Arrow className="ml-4 h-6 w-6 -rotate-90" aria-hidden />
+          <Arrow className="w-6 h-6 ml-4 -rotate-90" aria-hidden />
         </Button>
       </MaybeLink>
     </div>

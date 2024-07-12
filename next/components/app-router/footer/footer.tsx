@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import type { MenuItemType, MenuType } from "@/types/graphql";
+import { useLocale } from "next-intl";
 import { Icons } from "../icons";
 import { SocialShare } from "./social-share";
 
@@ -9,9 +10,10 @@ interface FooterProps {
 }
 
 export function Footer({ menu }: FooterProps) {
+  const locale = useLocale();
   // Only show the menu items that match the current locale:,S FOR APP ROUTER
   const filteredItems = menu?.items?.filter(
-    (link) => link.langcode?.id == "en",
+    (link) => link.langcode?.id == locale,
   );
 
   return (

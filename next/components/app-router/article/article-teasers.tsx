@@ -1,12 +1,10 @@
-"use client";
-
 import clsx from "clsx";
-import { useTranslation } from "next-i18next";
 import Link from "next/link";
 
 import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
 
 import { buttonVariants } from "@/ui/button";
+import { getTranslations } from "next-intl/server";
 import { Icons } from "../icons";
 import { ArticleTeaser } from "./article-teaser";
 
@@ -15,8 +13,12 @@ interface LatestArticlesProps {
   heading: string;
 }
 
-export function ArticleTeasers({ articles, heading }: LatestArticlesProps) {
-  const { t } = useTranslation();
+export async function ArticleTeasers({
+  articles,
+  heading,
+}: LatestArticlesProps) {
+  const t = await getTranslations();
+
   return (
     <>
       <h2 className="font-bold text-heading-sm md:text-heading-md">

@@ -4,13 +4,14 @@ import { FormattedText } from "@/components/formatted-text";
 import { HeadingPage } from "@/components/heading--page";
 import { formatDateTimestamp } from "@/lib/utils";
 import { ArticleType } from "@/types/graphql";
+import { getTranslations } from "next-intl/server";
 
 interface ArticleProps {
   article: ArticleType;
 }
 
-export function NodeArticle({ article, ...props }: ArticleProps) {
-  // TODO: Localize posted by
+export async function NodeArticle({ article, ...props }: ArticleProps) {
+  const t = await getTranslations();
 
   return (
     <article {...props}>
@@ -18,8 +19,7 @@ export function NodeArticle({ article, ...props }: ArticleProps) {
       {article.excerpt && <div className="my-4 text-xl">{article.excerpt}</div>}
       <div className="mb-4 text-scapaflow">
         {article.author?.name && (
-          // <span>{t("posted-by", { author: article.author.name })} - </span>
-          <span>Posted by: {article.author.name}</span>
+          <span>{t("posted-by", { author: article.author.name })} - </span>
         )}
         <span>{formatDateTimestamp(article.created.timestamp, "en")}</span>
       </div>

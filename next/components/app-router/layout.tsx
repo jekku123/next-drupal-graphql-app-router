@@ -3,10 +3,13 @@ import { getMenus } from "@/lib/drupal/get-menus";
 
 export default async function Layout({
   children,
+  locale,
 }: {
   children: React.ReactNode;
+  locale: string;
 }) {
-  const menus = await getMenus({ locale: "en" });
+  const menus = await getMenus({ locale });
+
   return (
     <>
       <Header menu={menus.main} />

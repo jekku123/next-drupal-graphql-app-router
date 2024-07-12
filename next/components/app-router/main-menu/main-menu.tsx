@@ -1,12 +1,13 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import { useEventListener } from "@/lib/hooks/use-event-listener";
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
 import type { MenuItemType, MenuType } from "@/types/graphql";
 
+import { useLocale } from "next-intl";
 import {
   MenuBack,
   MenuContainer,
@@ -20,7 +21,7 @@ import {
   MenuToggle,
   MenuTrigger,
 } from "./main-menu.components";
-import { isMenuItemActiveAppRouter } from "./main-menu.utils";
+import { isMenuItemActive } from "./main-menu.utils";
 
 interface MainMenuProps {
   menu?: MenuType;
@@ -29,7 +30,7 @@ interface MainMenuProps {
 }
 
 export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
-  const router = useRouter();
+  const locale = useLocale();
 
   const [didInit, setDidInit] = useState(false);
 
@@ -56,6 +57,8 @@ export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
   // Close on click outside
   const ref = useOnClickOutside<HTMLUListElement>(close);
 
+  /* OLD ONE using next/router */
+
   // Close when route changes
   // useEffectOnce(() => {
   //   router.events.on("routeChangeComplete", close);
@@ -64,7 +67,8 @@ export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
   //   };
   // });
 
-  // NEW ONE
+  /* NEW ONE usingh next/navigation */
+
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -86,8 +90,8 @@ export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
         item.children?.some((subItem) =>
           subItem.children?.some((subSubItem) => {
             if (
-              isMenuItemActiveAppRouter(
-                "en",
+              isMenuItemActive(
+                locale,
                 `${pathname}?${searchParams}`,
                 subSubItem.url,
               )
@@ -110,11 +114,7 @@ export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
       menu?.items?.some((item) =>
         item.children?.some((subItem) => {
           if (
-            isMenuItemActiveAppRouter(
-              "en",
-              `${pathname}?${searchParams}`,
-              subItem.url,
-            )
+            isMenuItemActive(locale, `${pathname}?${searchParams}`, subItem.url)
           ) {
             setActiveMenu(item.id);
             setActiveSubmenu(null);
@@ -125,7 +125,7 @@ export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
 
       setDidInit(true);
     }
-  }, [isOpen, menu, router]);
+  }, [isOpen, menu, locale]);
 
   const activeMenuTitle = menu?.items?.find((i) => i.id === activeMenu)?.title;
   const activeSubmenuTitle = menu?.items
