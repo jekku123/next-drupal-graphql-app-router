@@ -1,14 +1,12 @@
-import type { GetStaticPropsContext } from "next";
+"use client";
+
 import { signIn, signOut } from "next-auth/react";
-import { useTranslation } from "next-i18next";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { ErrorRequired } from "@/components/forms/error-required";
-import { Meta } from "@/components/meta";
-import { getCommonPageProps } from "@/lib/get-common-page-props";
+import { ErrorRequired } from "@/components/app-router/forms/error-required";
 import { useEffectOnce } from "@/lib/hooks/use-effect-once";
 
 import { env } from "@/env";
@@ -16,25 +14,26 @@ import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
 import { StatusMessage } from "@/ui/status-message";
+import { useLocale, useTranslations } from "next-intl";
 
 type Inputs = {
   username: string;
   password: string;
 };
 
-export default function LogIn() {
-  const {
-    locale,
-    query: {
-      callbackUrl = "",
-      error = "",
-      enteredEmail = "",
-      newPasswordRequested = false,
-      passwordJustUpdated = false,
-      logout = false,
-    },
-  } = useRouter();
-  const { t } = useTranslation();
+export default function LoginForm() {
+  const locale = useLocale();
+  const searchParams = useSearchParams();
+
+  const callbackUrl = searchParams.get("callbackUrl") || "";
+  const error = searchParams.get("error") || "";
+  const enteredEmail = searchParams.get("enteredEmail") || "";
+  const newPasswordRequested =
+    searchParams.get("newPasswordRequested") || false;
+  const passwordJustUpdated = searchParams.get("passwordJustUpdated") || false;
+  const logout = searchParams.get("logout") || false;
+
+  const t = useTranslations();
 
   const {
     register,
@@ -62,7 +61,6 @@ export default function LogIn() {
 
   return (
     <>
-      <Meta title={t("log-in")} metatags={[]} />
       <div className="max-w-md pt-8 pb-16 font-work">
         {passwordJustUpdated && (
           <StatusMessage level="success" className="mb-8">
@@ -131,12 +129,4 @@ export default function LogIn() {
       </div>
     </>
   );
-}
-
-export async function getStaticProps(context: GetStaticPropsContext) {
-  return {
-    props: {
-      ...(await getCommonPageProps(context)),
-    },
-  };
 }

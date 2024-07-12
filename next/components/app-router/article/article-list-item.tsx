@@ -1,17 +1,19 @@
+"use client";
+
 import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
 
 import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
 import { formatDateTimestamp } from "@/lib/utils";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
 interface ArticleListItemProps {
   article: FragmentArticleTeaserFragment;
 }
 
-export async function ArticleListItem({ article }: ArticleListItemProps) {
-  const t = await getTranslations();
+export function ArticleListItem({ article }: ArticleListItemProps) {
+  const t = useTranslations();
   const author = article.author?.name;
   const date = formatDateTimestamp(article.created.timestamp, "en");
   return (

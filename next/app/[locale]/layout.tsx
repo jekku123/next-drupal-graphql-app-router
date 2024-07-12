@@ -1,13 +1,19 @@
 import { Footer } from "@/components/app-router/footer/footer";
 import NextAuthProvider from "@/components/app-router/next-auth-provider";
 import { ReactQueryClientProvider } from "@/components/app-router/query-client-provider";
+import { locales } from "@/i18n";
 import { getMenus } from "@/lib/drupal/get-menus";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { inter, overpass } from "@/styles/fonts";
 import { getServerSession } from "next-auth";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
+import { getMessages, unstable_setRequestLocale } from "next-intl/server";
+
 import "styles/globals.css";
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 
 export default async function RootLayout({
   children,
@@ -16,6 +22,8 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
+  unstable_setRequestLocale(locale);
+
   const session = await getServerSession(authOptions);
   const menus = await getMenus({ locale });
   const messages = await getMessages();

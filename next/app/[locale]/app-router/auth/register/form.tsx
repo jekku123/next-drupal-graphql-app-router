@@ -1,56 +1,41 @@
-import type { GetStaticPropsContext } from "next";
-import { useRouter } from "next/router";
-import { useTranslation } from "next-i18next";
+"use client";
+
 import { useForm } from "react-hook-form";
 
-import { ErrorRequired } from "@/components/forms/error-required";
-import { Meta } from "@/components/meta";
-import { getCommonPageProps } from "@/lib/get-common-page-props";
-
+import { ErrorRequired } from "@/components/app-router/forms/error-required";
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
 import { StatusMessage } from "@/ui/status-message";
+import { useTranslations } from "next-intl";
+import { registerAction } from "./actions";
 
 type Inputs = {
   name: string;
   email: string;
 };
 
-export default function Register() {
-  const { t } = useTranslation();
+export default function RegisterForm() {
+  const t = useTranslations();
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors, isSubmitSuccessful, isSubmitting },
     setError,
     clearErrors,
   } = useForm<Inputs>();
 
-  const router = useRouter();
   const onSubmit = async (data: Inputs) => {
     clearErrors("root.serverError");
-    const response = await fetch(`/api/register`, {
-      method: "POST",
-      body: JSON.stringify({
-        mail: data.email,
-        name: data.name,
-      }),
-      // Send the current language as header:
-      headers: {
-        "accept-language": router.locale || "fi",
-      },
-    });
-    if (!response.ok) {
-      const body = await response.json();
-      console.error(
-        "Error registering user",
-        response.status,
-        JSON.stringify(body),
-      );
+
+    const res = await registerAction(data);
+
+    if (res.error) {
+      console.error("Error registering user", JSON.stringify(res.error));
       setError("root.serverError", {
-        type: String(response.status),
-        message: body.error,
+        type: "server",
+        message: res.error,
       });
     }
   };
@@ -64,8 +49,7 @@ export default function Register() {
   }
   return (
     <>
-      <Meta title={t("register")} metatags={[]} />
-      <div className="max-w-md pb-16 pt-8 font-work">
+      <div className="max-w-md pt-8 pb-16 font-work">
         {errors.root && errors.root.serverError && (
           <StatusMessage level="error">
             <p className="mb-4">
@@ -77,7 +61,7 @@ export default function Register() {
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex w-full max-w-2xl flex-col gap-4"
+          className="flex flex-col w-full max-w-2xl gap-4"
         >
           <div className="mb-6">
             <Label htmlFor="email">{t("email")}</Label>
@@ -89,7 +73,7 @@ export default function Register() {
                 required: true,
               })}
               aria-invalid={errors.email ? "true" : "false"}
-              className="inset-0 h-12 w-full rounded border border-neu-200 p-2 text-body-sm text-neu-400 ring-offset-4 focus:ring-4"
+              className="inset-0 w-full h-12 p-2 border rounded border-neu-200 text-body-sm text-neu-400 ring-offset-4 focus:ring-4"
             />
             {errors.email && errors.email.type === "required" && (
               <ErrorRequired fieldTranslatedLabelKey={"email"} />
@@ -105,23 +89,17 @@ export default function Register() {
               {...register("name", {
                 required: true,
               })}
-              className="inset-0 h-12 w-full rounded border border-neu-200 p-2 text-body-sm text-neu-400 ring-offset-4 focus:ring-4"
+              className="inset-0 w-full h-12 p-2 border rounded border-neu-200 text-body-sm text-neu-400 ring-offset-4 focus:ring-4"
             />
             {errors.name && errors.name.type === "required" && (
               <ErrorRequired fieldTranslatedLabelKey={"name"} />
             )}
           </div>
-          <Button type="submit">{t("register")}</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {t("register")}
+          </Button>
         </form>
       </div>
     </>
   );
-}
-
-export async function getStaticProps(context: GetStaticPropsContext) {
-  return {
-    props: {
-      ...(await getCommonPageProps(context)),
-    },
-  };
 }

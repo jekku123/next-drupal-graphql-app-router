@@ -1,11 +1,13 @@
-import { useTranslation } from "next-i18next";
-import React from "react";
+"use client";
+
 import clsx from "clsx";
 import { cva } from "cva";
+import React from "react";
 
 import Success from "@/styles/icons/checkmark.svg";
 import Error from "@/styles/icons/error.svg";
 import Warning from "@/styles/icons/warning.svg";
+import { useTranslations } from "next-intl";
 
 export const variants = cva(
   "text-md text-steelgray w-full relative py-6 px-16",
@@ -36,7 +38,7 @@ export const StatusMessage = React.forwardRef<
   HTMLDivElement,
   StatusMessageProps
 >(({ level = "info", title, className, children, ...props }, ref) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   const [Icon, color] = {
     info: [Warning, "text-info"],
@@ -53,7 +55,7 @@ export const StatusMessage = React.forwardRef<
       {...props}
     >
       <Icon className={clsx("absolute left-6 top-6 h-6 w-6", color)} />
-      <h3 className="mb-2 text-md font-bold">
+      <h3 className="mb-2 font-bold text-md">
         {title ?? t(`statusmessage-${level}`)}
       </h3>
       {children}

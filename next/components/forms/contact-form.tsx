@@ -1,5 +1,5 @@
-import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
 import { AuthGate } from "@/components/auth-gate";
@@ -51,7 +51,7 @@ export function ContactForm() {
 
   if (isSubmitSuccessful) {
     return (
-      <StatusMessage level="success" className="mx-auto w-full max-w-3xl">
+      <StatusMessage level="success" className="w-full max-w-3xl mx-auto">
         <p className="mb-4">{t("form-thank-you-message")}</p>
         <Button type="button" onClick={() => reset()}>
           {t("form-send-another-message")}
@@ -63,9 +63,9 @@ export function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit, onErrors)}
-      className="mx-auto mb-4 flex max-w-3xl flex-col gap-5 rounded border border-finnishwinter bg-white p-4 shadow-md transition-all hover:shadow-md"
+      className="flex flex-col max-w-3xl gap-5 p-4 mx-auto mb-4 transition-all bg-white border rounded shadow-md border-finnishwinter hover:shadow-md"
     >
-      <h2 className="text-heading-sm font-bold md:text-heading-md">
+      <h2 className="font-bold text-heading-sm md:text-heading-md">
         {t("form-title")}
       </h2>
       <AuthGate text={t("login-to-fill-form")}>

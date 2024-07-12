@@ -1,6 +1,11 @@
+import Layout from "@/components/app-router/layout";
 import { Node } from "@/components/app-router/node";
-import { extractMetaDataFromNodeEntity } from "@/lib/contexts/metadata";
+import {
+  createLanguageLinks,
+  getStandardLanguageLinks,
+} from "@/lib/contexts/language-links";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
+import { getNode } from "@/lib/drupal/get-node";
 import { FragmentMetaTagFragment } from "@/lib/gql/graphql";
 import {
   GET_ENTITY_AT_DRUPAL_PATH,
@@ -10,7 +15,9 @@ import {
   extractEntityFromRouteQueryResult,
   extractRedirectFromRouteQueryResult,
 } from "@/lib/graphql/utils";
+import { extractMetaDataFromNodeEntity } from "@/lib/metadata";
 import { Metadata, ResolvingMetadata } from "next";
+import { unstable_setRequestLocale } from "next-intl/server";
 import { notFound, permanentRedirect, redirect } from "next/navigation";
 
 // TODO: LOCALE
@@ -19,16 +26,14 @@ type PageParams = {
 };
 
 export async function generateMetadata(
-  { params }: PageParams,
+  { params: { locale, slug } }: PageParams,
   _parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const path = Array.isArray(params.slug)
-    ? `/${params.slug?.join("/")}`
-    : params.slug;
+  const path = Array.isArray(slug) ? `/${slug?.join("/")}` : slug;
 
   const variables = {
     path: path,
-    langcode: "en",
+    langcode: locale,
   };
 
   const data = await drupalClientViewer.doGraphQlRequest(
@@ -37,7 +42,7 @@ export async function generateMetadata(
   );
 
   let nodeEntity = extractEntityFromRouteQueryResult(data);
-  const metadata = extractMetaDataFromNodeEntity({
+  const metadata = await extractMetaDataFromNodeEntity({
     title: nodeEntity.title,
     metatags: nodeEntity.metatag as FragmentMetaTagFragment[],
   });
@@ -45,52 +50,45 @@ export async function generateMetadata(
   return metadata;
 }
 
+// TODO: MAybe not working as intended, maybe can use the locale from params
 export async function generateStaticParams({ params: { locale } }: PageParams) {
-  const locales = ["en", "fi", "sv"] || [];
-
   const staticPaths: ReturnType<
     typeof drupalClientViewer.buildStaticPathsParamsFromPaths
   > = [];
 
-  for (const locale of locales) {
-    // Get the defined paths via graphql for the current locale:
-    const data = await drupalClientViewer.doGraphQlRequest(GET_STATIC_PATHS, {
-      // We will query for the latest 10 items of each content type:
-      number: 10,
-      langcode: locale,
-    });
+  // Get the defined paths via graphql for the current locale:
+  const data = await drupalClientViewer.doGraphQlRequest(GET_STATIC_PATHS, {
+    // We will query for the latest 10 items of each content type:
+    number: 10,
+    langcode: locale,
+  });
 
-    // Get all paths from the response:
-    const pathArray = [
-      ...(data?.nodePages?.nodes || []),
-      ...(data?.nodeArticles?.nodes || []),
-    ].map(({ path }) => path);
+  // Get all paths from the response:
+  const pathArray = [
+    ...(data?.nodePages?.nodes || []),
+    ...(data?.nodeArticles?.nodes || []),
+  ].map(({ path }) => path);
 
-    // Build static paths for the current locale.
-    const localePaths = drupalClientViewer.buildStaticPathsParamsFromPaths(
-      pathArray,
-      {
-        locale,
-        // Because graphql returns the path with the language prefix, we strip it using the pathPrefix option:
-        pathPrefix: `/${locale}`,
-      },
-    );
+  // Build static paths for the current locale.
+  const localePaths = drupalClientViewer.buildStaticPathsParamsFromPaths(
+    pathArray,
+    {
+      locale,
+      // Because graphql returns the path with the language prefix, we strip it using the pathPrefix option:
+      pathPrefix: `/${locale}`,
+    },
+  );
 
-    // Add the paths to the static paths array:
-    staticPaths.push(...localePaths);
-  }
+  // Add the paths to the static paths array:
+  staticPaths.push(...localePaths);
+
   return staticPaths;
 }
 
-export default async function CustomPage({ params }: PageParams) {
-  const path = Array.isArray(params.slug)
-    ? `/${params.slug?.join("/")}`
-    : params.slug;
-
-  const variables = {
-    path: path,
-    langcode: "en",
-  };
+export default async function CustomPage({
+  params: { locale, slug },
+}: PageParams) {
+  unstable_setRequestLocale(locale);
 
   // Are we in Next.js preview mode?
   // TODO: FIX WITH APP ROUTER AND USE PROPER CLIENT WHEN FETCHING
@@ -99,10 +97,8 @@ export default async function CustomPage({ params }: PageParams) {
 
   // Get the page data with Graphql.
   // We want to use a different client if we are in preview mode:
-  const data = await drupalClientViewer.doGraphQlRequest(
-    GET_ENTITY_AT_DRUPAL_PATH,
-    variables,
-  );
+
+  const data = await getNode({ locale, slug });
 
   // If the data contains a RedirectResponse, we redirect to the path:
   const redirectData = extractRedirectFromRouteQueryResult(data);
@@ -121,7 +117,7 @@ export default async function CustomPage({ params }: PageParams) {
 
   // If node is a frontpage, redirect to / for the current locale:
   if (nodeEntity.__typename === "NodeFrontpage") {
-    permanentRedirect(`/en`);
+    permanentRedirect(locale);
   }
 
   // // When in preview, we could be requesting a specific revision.
@@ -171,15 +167,23 @@ export default async function CustomPage({ params }: PageParams) {
   //   };
   // }
 
-  // // Add information about possible other language versions of this node.
-  // let languageLinks;
-  // // Not all node types necessarily have translations enabled,
-  // // if so, only show the standard language links.
-  // if ("translations" in nodeEntity) {
-  //   languageLinks = createLanguageLinks(nodeEntity.translations);
-  // } else {
-  //   languageLinks = getStandardLanguageLinks();
-  // }
+  // Add information about possible other language versions of this node.
 
-  return <Node node={nodeEntity} />;
+  // Get the entity from the response:
+
+  // Add information about possible other language versions of this node.
+  let languageLinks;
+  // Not all node types necessarily have translations enabled,
+  // if so, only show the standard language links.
+  if ("translations" in nodeEntity) {
+    languageLinks = createLanguageLinks(nodeEntity.translations);
+  } else {
+    languageLinks = getStandardLanguageLinks();
+  }
+
+  return (
+    <Layout languageLinks={languageLinks}>
+      <Node node={nodeEntity} />
+    </Layout>
+  );
 }

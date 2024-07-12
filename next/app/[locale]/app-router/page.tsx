@@ -1,34 +1,36 @@
 import { ArticleTeasers } from "@/components/app-router/article/article-teasers";
+import { ContactForm } from "@/components/app-router/forms/contact-form";
+import Layout from "@/components/app-router/layout";
 import { Node } from "@/components/app-router/node";
-import { extractMetaDataFromNodeEntity } from "@/lib/contexts/metadata";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
+import { getNode } from "@/lib/drupal/get-node";
 import {
   FragmentArticleTeaserFragment,
   FragmentMetaTagFragment,
 } from "@/lib/gql/graphql";
-import {
-  GET_ENTITY_AT_DRUPAL_PATH,
-  LISTING_ARTICLES,
-} from "@/lib/graphql/queries";
+import { LISTING_ARTICLES } from "@/lib/graphql/queries";
 import { extractEntityFromRouteQueryResult } from "@/lib/graphql/utils";
+import { extractMetaDataFromNodeEntity } from "@/lib/metadata";
+import { Divider } from "@/ui/divider";
 import { Metadata } from "next";
+import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
-// TODO: LOCALES
+type FrontpageParams = {
+  params: { locale: string };
+};
 
-export async function generateMetadata(): Promise<Metadata> {
-  const variables = {
-    path: "/frontpage-en",
-    langcode: "en",
-  };
-
-  const data = await drupalClientViewer.doGraphQlRequest(
-    GET_ENTITY_AT_DRUPAL_PATH,
-    variables,
-  );
+export async function generateMetadata({
+  params: { locale },
+}: FrontpageParams): Promise<Metadata> {
+  const data = await getNode({
+    locale,
+    slug: `frontpage-${locale}`,
+  });
 
   let nodeEntity = extractEntityFromRouteQueryResult(data);
-  const metadata = extractMetaDataFromNodeEntity({
+
+  const metadata = await extractMetaDataFromNodeEntity({
     title: nodeEntity.title,
     metatags: nodeEntity.metatag as FragmentMetaTagFragment[],
   });
@@ -36,23 +38,30 @@ export async function generateMetadata(): Promise<Metadata> {
   return metadata;
 }
 
-export const revalidate = 60;
+export const revalidate = 10;
 
 export default async function FrontPage({
   params: { locale },
-}: {
-  params: { locale: string };
-}) {
-  const variables = {
-    // This works because it matches the pathauto pattern for the Frontpage content type defined in Drupal:
-    path: `frontpage-en`,
-    langcode: "en",
-  };
+}: FrontpageParams) {
+  unstable_setRequestLocale(locale);
 
-  const data = await drupalClientViewer.doGraphQlRequest(
-    GET_ENTITY_AT_DRUPAL_PATH,
-    variables,
-  );
+  // const variables = {
+  //   // This works because it matches the pathauto pattern for the Frontpage content type defined in Drupal:
+  //   path: `frontpage-${locale}`,
+  //   langcode: locale,
+  // };
+
+  // const data = await drupalClientViewer.doGraphQlRequest(
+  //   GET_ENTITY_AT_DRUPAL_PATH,
+  //   variables,
+  // );
+
+  const t = await getTranslations();
+
+  const data = await getNode({
+    locale,
+    slug: `frontpage-${locale}`,
+  });
 
   const frontpage = extractEntityFromRouteQueryResult(data);
 
@@ -72,7 +81,7 @@ export default async function FrontPage({
   const stickyArticleTeasers = await drupalClientViewer.doGraphQlRequest(
     LISTING_ARTICLES,
     {
-      langcode: "en",
+      langcode: locale,
       sticky: true,
       page: 0,
       pageSize: 3,
@@ -85,13 +94,14 @@ export default async function FrontPage({
       ?.results as FragmentArticleTeaserFragment[]) ?? [];
 
   return (
-    <>
-      {/* <Meta
-        title={frontpage?.title}
-        metatags={frontpage?.metatag as FragmentMetaTagFragment[]}
-      /> */}
+    <Layout>
       <Node node={frontpage} />
-      <ArticleTeasers heading="Article Teasers" articles={articles} />
-    </>
+      <Divider className="max-w-4xl" />
+      <ContactForm />
+      <Divider className="max-w-4xl" />
+      <ArticleTeasers heading={t("promoted-articles")} articles={articles} />
+      {/* <ContactList />
+      <LogoStrip /> */}
+    </Layout>
   );
 }

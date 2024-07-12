@@ -1,6 +1,8 @@
 import { FragmentMetaTagFragment } from "@/lib/gql/graphql";
 
 import { env } from "@/env";
+import { defaultLocale } from "@/i18n";
+import { getLocale, getTranslations } from "next-intl/server";
 
 interface MetaProps {
   title?: string;
@@ -11,25 +13,29 @@ interface MetaProps {
 type AttributeKey = keyof NonNullable<FragmentMetaTagFragment>["attributes"];
 
 // todo: this should handle more meta tags, e.g. location, keywords, etc (and maybe generally arbitrary meta tags?)
-export function extractMetaDataFromNodeEntity({ title, metatags }: MetaProps) {
+export async function extractMetaDataFromNodeEntity({
+  title,
+  metatags,
+}: MetaProps) {
   const getTag = (str: string, key: AttributeKey = "name") => {
     const result = metatags?.find((tag) => tag.attributes?.[key] === str);
     return result?.attributes;
   };
 
   // TODO: LOCALES "meta-site-description", "meta-site-name"
+  const t = await getTranslations();
+  const locale = await getLocale();
+
+  // TODO: THIS IS NOT WORKING in app router, fix the asPath thingy
   const router: any = {};
-  router.locale = "en";
-  router.defaultLocale = "en";
 
   // We want to determine if we need to add the language path
   // to create the canonical link for this page:
-  const languagePathFragment =
-    router.locale === router.defaultLocale ? "" : `/${router.locale}`;
+  const languagePathFragment = locale === defaultLocale ? "" : `/${locale}`;
 
   const data = {
     title: getTag("title")?.content ?? title,
-    description: getTag("description")?.content ?? "meta-site-description",
+    description: getTag("description")?.content ?? t("meta-site-description"),
     canonical: `${env.NEXT_PUBLIC_FRONTEND_URL}${languagePathFragment}${
       router.asPath !== "/" ? router.asPath : ""
     }`,
@@ -39,8 +45,8 @@ export function extractMetaDataFromNodeEntity({ title, metatags }: MetaProps) {
   };
 
   const computedTitle = data.title
-    ? data.title.concat(` | ${"meta-site-name"}`)
-    : "meta-site-name";
+    ? data.title.concat(` | ${t("meta-site-name")}`)
+    : t("meta-site-name");
 
   const metadata = {
     title: computedTitle,
