@@ -6,12 +6,14 @@ import { ParagraphLiftupArticle } from "@/components/app-router/paragraph/paragr
 import { ParagraphLinks } from "@/components/app-router/paragraph/paragraph--links";
 import { ParagraphListingArticles } from "@/components/app-router/paragraph/paragraph--listing-articles";
 import { ParagraphText } from "@/components/app-router/paragraph/paragraph--text";
+
 import type { FragmentParagraphUnionFragment } from "@/lib/gql/graphql";
+import dynamic from "next/dynamic";
 
 // Use dynamic imports to defer loading a component until after initial page load: https://nextjs.org/docs/advanced-features/dynamic-import
-// const ParagraphVideo = dynamic(() =>
-//   import("./paragraph--video").then((mod) => mod.ParagraphVideo),
-// );
+const ParagraphVideo = dynamic(() =>
+  import("./paragraph--video").then((mod) => mod.ParagraphVideo),
+);
 
 // const ParagraphAccordion = dynamic(() =>
 //   import("./paragraph--accordion").then((mod) => mod.ParagraphAccordion),
@@ -41,9 +43,9 @@ export function Paragraph({
     // case "ParagraphAccordion": {
     //   return <ParagraphAccordion paragraph={paragraph} />;
     // }
-    // case "ParagraphVideo": {
-    //   return <ParagraphVideo paragraph={paragraph} />;
-    // }
+    case "ParagraphVideo": {
+      return <ParagraphVideo paragraph={paragraph} />;
+    }
     case "ParagraphHero": {
       return <ParagraphHero paragraph={paragraph} />;
     }

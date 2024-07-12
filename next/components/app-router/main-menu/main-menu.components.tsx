@@ -4,7 +4,7 @@ import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import clsx from "clsx";
 import { useTranslation } from "next-i18next";
 import NextLink from "next/link";
-import { useRouter } from "next/router";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Dispatch, forwardRef, ReactNode, SetStateAction } from "react";
 
 import Chevron from "@/styles/icons/chevron-down.svg";
@@ -13,8 +13,12 @@ import MenuIcon from "@/styles/icons/menu.svg";
 import type { MenuItemType } from "@/types/graphql";
 
 import css from "./main-menu.module.css";
-import { disableHoverEvents, isMenuItemActive } from "./main-menu.utils";
+import {
+  disableHoverEvents,
+  isMenuItemActiveAppRouter,
+} from "./main-menu.utils";
 
+// TODO. LOCALIzE
 export function MenuContainer({
   isOpen,
   children,
@@ -157,8 +161,14 @@ export function MenuLink({
   isTopLevel?: boolean;
   children: ReactNode;
 }) {
-  const router = useRouter();
-  const isActive = isMenuItemActive(router, href);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const isActive = isMenuItemActiveAppRouter(
+    "en",
+    `${pathname}?${searchParams}`,
+    href,
+  );
+
   return (
     <NavigationMenu.Link
       asChild

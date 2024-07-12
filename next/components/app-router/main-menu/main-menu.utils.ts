@@ -18,6 +18,6 @@ export function isMenuItemActiveAppRouter(
   fullPath: string,
   href: string,
 ) {
-  const actualPath = `/${locale}${fullPath}`;
+  const actualPath = `/${locale}/${fullPath}`;
   return actualPath === href;
 }
