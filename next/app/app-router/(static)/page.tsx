@@ -1,13 +1,40 @@
 import { ArticleTeasers } from "@/components/app-router/article/article-teasers";
 import { Node } from "@/components/app-router/node";
+import { extractMetaDataFromNodeEntity } from "@/lib/contexts/metadata";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
-import { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
+import {
+  FragmentArticleTeaserFragment,
+  FragmentMetaTagFragment,
+} from "@/lib/gql/graphql";
 import {
   GET_ENTITY_AT_DRUPAL_PATH,
   LISTING_ARTICLES,
 } from "@/lib/graphql/queries";
 import { extractEntityFromRouteQueryResult } from "@/lib/graphql/utils";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
+
+// TODO: LOCALES
+
+export async function generateMetadata(): Promise<Metadata> {
+  const variables = {
+    path: "/frontpage-en",
+    langcode: "en",
+  };
+
+  const data = await drupalClientViewer.doGraphQlRequest(
+    GET_ENTITY_AT_DRUPAL_PATH,
+    variables,
+  );
+
+  let nodeEntity = extractEntityFromRouteQueryResult(data);
+  const metadata = extractMetaDataFromNodeEntity({
+    title: nodeEntity.title,
+    metatags: nodeEntity.metatag as FragmentMetaTagFragment[],
+  });
+
+  return metadata;
+}
 
 export const revalidate = 60;
 
