@@ -7,8 +7,11 @@ import {
   LISTING_ARTICLES,
 } from "@/lib/graphql/queries";
 import { extractEntityFromRouteQueryResult } from "@/lib/graphql/utils";
+import { notFound } from "next/navigation";
 
-export default async function AppPage() {
+export const revalidate = 60;
+
+export default async function FrontPage() {
   const variables = {
     // This works because it matches the pathauto pattern for the Frontpage content type defined in Drupal:
     path: `frontpage-en`,
@@ -23,10 +26,7 @@ export default async function AppPage() {
   const frontpage = extractEntityFromRouteQueryResult(data);
 
   if (!frontpage || !(frontpage.__typename === "NodeFrontpage")) {
-    return {
-      notFound: true,
-      revalidate: 10,
-    };
+    return notFound();
   }
 
   // Unless we are in preview, return 404 if the node is set to unpublished:

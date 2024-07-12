@@ -1,11 +1,6 @@
 import { Header } from "@/components/app-router/header/header";
-import "styles/globals.css";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header menu={null} />

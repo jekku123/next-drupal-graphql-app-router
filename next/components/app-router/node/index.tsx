@@ -1,3 +1,4 @@
+import { NodeArticle } from "@/components/app-router/node/node--article";
 import { NodeFrontpage } from "@/components/app-router/node/node--frontpage";
 import { TypedRouteEntity } from "@/types/graphql";
 
@@ -11,9 +12,9 @@ export function Node({ node }: { node: TypedRouteEntity }) {
     // case "NodePage": {
     //   return <NodePage page={node} />;
     // }
-    // case "NodeArticle": {
-    //   return <NodeArticle article={node} />;
-    // }
+    case "NodeArticle": {
+      return <NodeArticle article={node} />;
+    }
     // case "NodeProduct": {
     //   return <NodeProduct product={node} />;
     // }

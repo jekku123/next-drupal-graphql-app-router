@@ -4,6 +4,7 @@ import { ReactQueryClientProvider } from "@/components/app-router/query-client-p
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { inter, overpass } from "@/styles/fonts";
 import { getServerSession } from "next-auth";
+import "styles/globals.css";
 
 export const metadata = {
   title: "Next.js",
