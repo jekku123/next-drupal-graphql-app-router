@@ -16,6 +16,7 @@ import { extractMetaDataFromNodeEntity } from "@/lib/metadata";
 import { Divider } from "@/ui/divider";
 import { Metadata } from "next";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
+import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 
 type FrontpageParams = {
@@ -71,13 +72,12 @@ export default async function FrontPage({
     return notFound();
   }
 
+  const { isEnabled } = draftMode();
+
   // Unless we are in preview, return 404 if the node is set to unpublished:
-  //   if (!context.preview && frontpage.status !== true) {
-  //     return {
-  //       notFound: true,
-  //       revalidate: 10,
-  //     };
-  //   }
+  if (!isEnabled && frontpage.status !== true) {
+    notFound();
+  }
 
   // Get the last 3 sticky articles in the current language:
   const stickyArticleTeasers = await drupalClientViewer.doGraphQlRequest(

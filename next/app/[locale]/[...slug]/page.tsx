@@ -18,6 +18,7 @@ import {
 import { extractMetaDataFromNodeEntity } from "@/lib/metadata";
 import { Metadata, ResolvingMetadata } from "next";
 import { unstable_setRequestLocale } from "next-intl/server";
+import { draftMode } from "next/headers";
 import { notFound, permanentRedirect, redirect } from "next/navigation";
 
 // TODO: LOCALE
@@ -93,7 +94,8 @@ export default async function CustomPage({
 
   // Are we in Next.js preview mode?
   // TODO: FIX WITH APP ROUTER AND USE PROPER CLIENT WHEN FETCHING
-  // const isPreview = context.preview || false;
+
+  const isPreview = draftMode().isEnabled || false;
   // const drupalClient = isPreview ? drupalClientPreviewer : drupalClientViewer;
 
   // Get the page data with Graphql.
