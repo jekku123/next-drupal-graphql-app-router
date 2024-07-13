@@ -22,12 +22,6 @@ export const getArticles = async ({
   let nodes: FragmentArticleTeaserFragment[] = [];
   let totalPages = 1;
 
-  console.log({
-    langcode: locale,
-    page: 0,
-    pageSize: limit,
-    offset: offset,
-  });
   try {
     const articlesViewResult = await drupalClientViewer.doGraphQlRequest(
       LISTING_ARTICLES,

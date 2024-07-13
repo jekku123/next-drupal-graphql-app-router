@@ -1,55 +1,12 @@
 "use client";
 
-import { GetStaticPropsContext } from "next";
 import { createContext, useContext } from "react";
-
-import { FragmentNodeTranslationFragment } from "@/lib/gql/graphql";
 
 import siteConfig from "@/site.config";
 
 export type LanguageLinks = typeof siteConfig.locales;
 
 const LanguageLinksContext = createContext(siteConfig.locales);
-
-/**
- * From the site config and available node translations, create links to be used in the language switcher.
- */
-export function createLanguageLinks(
-  nodeTranslations: FragmentNodeTranslationFragment[],
-): LanguageLinks {
-  const languageLinks = getStandardLanguageLinks();
-  Object.values(nodeTranslations).forEach(({ langcode, path }) => {
-    languageLinks[langcode.id].path = path;
-  });
-  return languageLinks;
-}
-
-/**
- * Get the standard language links from the site config.
- */
-export const getStandardLanguageLinks = () =>
-  JSON.parse(JSON.stringify(siteConfig.locales));
-
-/**
- * Generates a language links object for a page that is created in next only.
- * @param path
- *   The path of the page.
- * @param context
- *   The context.
- */
-export function createLanguageLinksForNextOnlyPage(
-  path: string,
-  context: GetStaticPropsContext,
-): LanguageLinks {
-  const languageLinks = getStandardLanguageLinks();
-  context.locales.forEach((locale) => {
-    languageLinks[locale].path =
-      languageLinks[locale].path === "/"
-        ? path
-        : `${languageLinks[locale].path}${path}`;
-  });
-  return languageLinks;
-}
 
 /**
  * Provide the language links context.

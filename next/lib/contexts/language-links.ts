@@ -41,5 +41,6 @@ export function createLanguageLinksForNextOnlyPage(
         ? path
         : `${languageLinks[locale].path}${path}`;
   });
+
   return languageLinks;
 }
