@@ -17,10 +17,13 @@ export default createMiddleware({
   // A list of all locales that are supported
   locales,
   // Used when no locale matches
+  localePrefix: "as-needed",
+
   defaultLocale,
 });
 
 export const config = {
   // Match only internationalized pathnames
-  matcher: ["/", "/(fi|en|sv)/:path*"],
+  // matcher: ["/", "/(fi|en|sv)/:path*"],
+  matcher: ["/((?!api|_next|.*\\..*).*)"],
 };

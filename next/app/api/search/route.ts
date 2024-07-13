@@ -1,13 +1,12 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
 
 import { env } from "@/env";
+
 /**
  * Example backend proxy for Elasticsearch Search-UI frontend client.
  */
-const Search = async (req: NextApiRequest, res: NextApiResponse) => {
-  // The locale is passed in this header:
+
+export async function GET(req: Request) {
   const languagePrefix = req.headers["accept-language"];
 
   // Create the url to call in drupal:
@@ -21,18 +20,19 @@ const Search = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     if (!result.ok) {
-      res.status(result.status).json({ error: result.statusText });
       const message = `Error performing search: ${result.status}: ${result.statusText}`;
-      throw new Error(message);
+      console.error("Fetch error:", JSON.stringify(message, null, 2));
+
+      return new Response(JSON.stringify({ error: result.statusText }), {
+        status: result.status,
+      });
     }
 
-    res.statusCode = result.status;
-    res.send(await result.json());
+    return new Response(await result.json(), { status: result.status });
   } catch (error) {
     console.error("Fetch error:", JSON.stringify(error.message, null, 2));
-    // Respond with an appropriate error status code or message
-    res.status(500).json({ error: error.message });
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+    });
   }
-};
-
-export default Search;
+}

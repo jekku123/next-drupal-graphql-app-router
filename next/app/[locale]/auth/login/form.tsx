@@ -42,6 +42,7 @@ export default function LoginForm() {
   } = useForm<Inputs>();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const onSubmit = async ({ username, password }: Inputs) => {
     setIsSubmitting(true);
     await signIn("credentials", {

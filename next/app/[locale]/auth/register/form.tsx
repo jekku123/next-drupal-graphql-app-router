@@ -3,12 +3,13 @@
 import { useForm } from "react-hook-form";
 
 import { ErrorRequired } from "@/components/forms/error-required";
+import { registerAction } from "@/lib/drupal/actions/register";
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
 import { StatusMessage } from "@/ui/status-message";
 import { useTranslations } from "next-intl";
-import { registerAction } from "./actions";
+import { useState, useTransition } from "react";
 
 type Inputs = {
   name: string;
@@ -21,26 +22,35 @@ export default function RegisterForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful, isSubmitting },
+    formState: { errors },
     setError,
     clearErrors,
   } = useForm<Inputs>();
 
-  const onSubmit = async (data: Inputs) => {
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isSubmitting, startTransition] = useTransition();
+
+  const onSubmit = (data: Inputs) => {
     clearErrors("root.serverError");
 
-    const res = await registerAction(data);
-
-    if (res.error) {
-      console.error("Error registering user", JSON.stringify(res.error));
-      setError("root.serverError", {
-        type: "server",
-        message: res.error,
+    startTransition(() => {
+      registerAction(data).then((res) => {
+        if (res.error) {
+          console.error("Error registering user", JSON.stringify(res.error));
+          setError("root.serverError", {
+            type: "server",
+            message: res.error,
+          });
+          setIsSuccess(false);
+        }
+        if (res.success) {
+          setIsSuccess(true);
+        }
       });
-    }
+    });
   };
 
-  if (isSubmitSuccessful) {
+  if (isSuccess) {
     return (
       <StatusMessage level="success">
         <p className="mb-4">{t("register-success")}</p>
