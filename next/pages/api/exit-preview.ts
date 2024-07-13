@@ -1,7 +1,11 @@
+import { drupalClientPreviewer } from "@/lib/drupal/drupal-client";
+
+import type { NextApiRequest } from "next";
 import { NextApiResponse } from "next";
 
-export default function exit(_, response: NextApiResponse) {
-  response.clearPreviewData();
-  response.writeHead(307, { Location: "/" });
-  response.end();
+export default async function exit(
+  request: NextApiRequest,
+  response: NextApiResponse,
+) {
+  await drupalClientPreviewer.previewDisable(request, response);
 }

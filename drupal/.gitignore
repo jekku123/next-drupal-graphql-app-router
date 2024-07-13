@@ -38,3 +38,5 @@
 # Ignore testing directories.
 /web/sites/simpletest
 /web/tmp
+
+/config/
