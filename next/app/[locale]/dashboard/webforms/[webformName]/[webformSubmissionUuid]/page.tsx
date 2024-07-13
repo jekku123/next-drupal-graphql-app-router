@@ -1,4 +1,3 @@
-import { getServerSession } from "next-auth/next";
 import Link from "next/link";
 
 import { HeadingPage } from "@/components/heading--page";
@@ -8,7 +7,8 @@ import {
   validateAndCleanupWebformSubmission,
   WebformSubmissionRaw,
 } from "@/lib/zod/webform-submission";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
+
+import { auth } from "@/auth";
 import { Metadata } from "next";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -42,7 +42,7 @@ export default async function DashboardPage({
 
   const resolvedUrl = searchParams.resolvedUrl as string;
 
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   if (!session) {
     return redirectExpiredSessionToLoginPage(locale, resolvedUrl);

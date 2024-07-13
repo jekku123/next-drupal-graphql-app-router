@@ -1,9 +1,8 @@
 "use server";
 
-import { getServerSession } from "next-auth/next";
-
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
+
+import { auth } from "@/auth";
 import { getLocale } from "next-intl/server";
 
 export async function contactAction(values: {
@@ -20,7 +19,7 @@ export async function contactAction(values: {
 
   // Because we want to allow only registered users to submit
   // to the contact webform, let's get the session:
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   // if there is no session, return 401:
   if (!session) {

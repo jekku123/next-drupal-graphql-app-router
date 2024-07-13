@@ -1,6 +1,6 @@
-import { getServerSession } from "next-auth/next";
 import Link from "next/link";
 
+import { auth } from "@/auth";
 import { HeadingPage } from "@/components/heading--page";
 import { redirectExpiredSessionToLoginPage } from "@/lib/auth/redirect-expired-login";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
@@ -11,7 +11,6 @@ import {
   WebformSubmissionsListEmpty,
   WebformSubmissionsListItem,
 } from "@/lib/zod/webform-submission-list";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 
 export default async function DashboardPage({
@@ -24,7 +23,7 @@ export default async function DashboardPage({
   unstable_setRequestLocale(locale);
 
   const t = await getTranslations();
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   const resolvedUrl = searchParams.resolvedUrl as string;
 

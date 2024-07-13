@@ -1,11 +1,16 @@
 import { jwtDecode } from "jwt-decode";
 import type { NextAuthOptions } from "next-auth";
-import NextAuth from "next-auth";
+import NextAuth, { getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
 
 import { env } from "@/env";
+import {
+  GetServerSidePropsContext,
+  NextApiRequest,
+  NextApiResponse,
+} from "next";
 
 export const authOptions: NextAuthOptions = {
   pages: {
@@ -134,4 +139,13 @@ async function refreshAccessToken(token) {
   }
 }
 
-export default NextAuth(authOptions);
+export function auth(
+  ...args:
+    | [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]]
+    | [NextApiRequest, NextApiResponse]
+    | []
+) {
+  return getServerSession(...args, authOptions);
+}
+
+export const handler = NextAuth(authOptions);
