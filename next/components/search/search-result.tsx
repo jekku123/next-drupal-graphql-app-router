@@ -4,7 +4,7 @@ import { Badge } from "@/ui/badge";
 
 export function SearchResult({ result }: ResultViewProps) {
   return (
-    <li key={result.id.raw} className="my-4 block rounded bg-white p-8">
+    <li key={result.id.raw} className="block p-8 my-4 bg-white rounded">
       <a href={result.path.raw}>
         <h2 className="mb-4 text-xl font-bold text-primary-800">
           {result.title.raw}
