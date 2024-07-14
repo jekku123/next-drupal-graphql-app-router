@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import DraftLayout from "@/components/draft-layout";
+import DraftAlert from "@/components/draft-alert";
 import { Footer } from "@/components/footer/footer";
 import NextAuthProvider from "@/components/next-auth-provider";
 import { ReactQueryClientProvider } from "@/components/query-client-provider";
@@ -31,20 +31,19 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body>
-        <DraftLayout>
-          <NextAuthProvider session={session}>
-            <ReactQueryClientProvider>
-              <NextIntlClientProvider messages={messages}>
-                <Fonts>
-                  <div className="flex flex-col min-h-screen">
-                    {children}
-                    <Footer menu={menus.footer} />
-                  </div>
-                </Fonts>
-              </NextIntlClientProvider>
-            </ReactQueryClientProvider>
-          </NextAuthProvider>
-        </DraftLayout>
+        <NextAuthProvider session={session}>
+          <ReactQueryClientProvider>
+            <NextIntlClientProvider messages={messages}>
+              <Fonts>
+                <DraftAlert />
+                <div className="flex flex-col min-h-screen">
+                  {children}
+                  <Footer menu={menus.footer} />
+                </div>
+              </Fonts>
+            </NextIntlClientProvider>
+          </ReactQueryClientProvider>
+        </NextAuthProvider>
       </body>
     </html>
   );

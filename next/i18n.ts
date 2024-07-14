@@ -4,9 +4,7 @@ import siteConfig from "./site.config";
 
 // Can be imported from a shared config
 
-export const locales = Object.values(siteConfig.locales).map(
-  (locale) => locale.langcode,
-);
+export const locales = Object.keys(siteConfig.locales);
 
 export const defaultLocale = siteConfig.defaultLocale;
 

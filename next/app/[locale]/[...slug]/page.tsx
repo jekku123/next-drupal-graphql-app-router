@@ -4,8 +4,10 @@ import {
   createLanguageLinks,
   getStandardLanguageLinks,
 } from "@/lib/contexts/language-links";
-import { drupalClientViewer } from "@/lib/drupal/drupal-client";
-import { getNode } from "@/lib/drupal/get-node";
+import {
+  drupalClientPreviewer,
+  drupalClientViewer,
+} from "@/lib/drupal/drupal-client";
 import { FragmentMetaTagFragment } from "@/lib/gql/graphql";
 import {
   GET_ENTITY_AT_DRUPAL_PATH,
@@ -91,17 +93,26 @@ export default async function CustomPage({
   params: { locale, slug },
 }: PageParams) {
   unstable_setRequestLocale(locale);
+  const path = Array.isArray(slug) ? `/${slug?.join("/")}` : slug;
 
   // Are we in Next.js preview mode?
   // TODO: FIX WITH APP ROUTER AND USE PROPER CLIENT WHEN FETCHING
 
-  const isPreview = draftMode().isEnabled || false;
-  // const drupalClient = isPreview ? drupalClientPreviewer : drupalClientViewer;
+  const isDraftMode = draftMode().isEnabled || false;
 
   // Get the page data with Graphql.
   // We want to use a different client if we are in preview mode:
+  const drupalClient = isDraftMode ? drupalClientPreviewer : drupalClientViewer;
 
-  const data = await getNode({ locale, slug });
+  const variables = {
+    path: path,
+    langcode: locale,
+  };
+
+  const data = await drupalClient.doGraphQlRequest(
+    GET_ENTITY_AT_DRUPAL_PATH,
+    variables,
+  );
 
   // If the data contains a RedirectResponse, we redirect to the path:
   const redirectData = extractRedirectFromRouteQueryResult(data);
@@ -131,7 +142,7 @@ export default async function CustomPage({
   //   previewData: PreviewData & { resourceVersion?: string };
   // };
   // if (
-  //   isPreview &&
+  //   isDraftMode &&
   //   previewData &&
   //   typeof previewData === "object" &&
   //   previewData.resourceVersion &&
@@ -148,27 +159,21 @@ export default async function CustomPage({
   //   // Get the node at the specific data with Graphql:
   //   const revisionRoutedata = await drupalClient.doGraphQlRequest(
   //     GET_ENTITY_AT_DRUPAL_PATH,
-  //     { path: revisionPath, langcode: context.locale },
+  //     { path: revisionPath, langcode: locale },
   //   );
 
   //   // Instead of the entity at the current revision, we want now to
   //   // display the entity at the requested revision:
   //   nodeEntity = extractEntityFromRouteQueryResult(revisionRoutedata);
   //   if (!nodeEntity) {
-  //     return {
-  //       notFound: true,
-  //       revalidate: 60,
-  //     };
+  //     notFound();
   //   }
   // }
 
-  // // Unless we are in preview, return 404 if the node is set to unpublished:
-  // if (!isPreview && nodeEntity.status !== true) {
-  //   return {
-  //     notFound: true,
-  //     revalidate: 60,
-  //   };
-  // }
+  // Unless we are in preview, return 404 if the node is set to unpublished:
+  if (!isDraftMode && nodeEntity.status !== true) {
+    notFound();
+  }
 
   // Add information about possible other language versions of this node.
 
