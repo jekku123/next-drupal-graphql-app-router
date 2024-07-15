@@ -1,24 +1,63 @@
-import { GET_ENTITY_AT_DRUPAL_PATH } from "../graphql/queries";
-import { drupalClientViewer } from "./drupal-client";
+import { extractEntityFromRouteQueryResult } from "@/lib/graphql/utils";
+import { TypedRouteEntity } from "@/types/graphql";
+import { DraftData } from "next-drupal/draft";
+import { fetchNodePaths, fetchNodeQueryResult } from "./data-access/node";
 
-export async function getNode({
-  locale,
-  slug,
-}: {
+type GetNodeParams = {
   locale: string;
-  slug: string[] | string;
-}) {
-  const path = Array.isArray(slug) ? `/${slug?.join("/")}` : slug;
+  path: string;
+  isDraftMode?: boolean;
+};
 
-  const variables = {
-    path: path,
-    langcode: locale,
-  };
+export function generatePathFromSlug(slug: string[]) {
+  return Array.isArray(slug) ? `/${slug?.join("/")}` : slug;
+}
 
-  const data = await drupalClientViewer.doGraphQlRequest(
-    GET_ENTITY_AT_DRUPAL_PATH,
-    variables,
-  );
+export async function getNodeRevisionQueryResult(
+  nodeEntityId: TypedRouteEntity["id"],
+  resourceVersion: DraftData["resourceVersion"],
+  locale: string,
+) {
+  const revisionId = resourceVersion.split(":").slice(1);
+  const revisionPath = `/node/${nodeEntityId}/revisions/${revisionId}/view`;
+
+  const revisionData = await fetchNodeQueryResult({
+    path: revisionPath,
+    locale,
+    isDraftMode: true,
+  });
+
+  return revisionData;
+}
+
+export async function getNodeQueryResult({
+  locale,
+  path,
+  isDraftMode = false,
+}: GetNodeParams) {
+  const data = await fetchNodeQueryResult({
+    path,
+    locale,
+    isDraftMode,
+  });
 
   return data;
+}
+
+export async function getNodeEntity({
+  locale,
+  path,
+  isDraftMode = false,
+}: GetNodeParams) {
+  const data = await fetchNodeQueryResult({
+    path,
+    locale,
+    isDraftMode,
+  });
+
+  return extractEntityFromRouteQueryResult(data);
+}
+
+export async function getNodePaths({ locale }: { locale: string }) {
+  return await fetchNodePaths({ locale });
 }

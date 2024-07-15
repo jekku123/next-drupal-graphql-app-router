@@ -1,13 +1,14 @@
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
 
 import { env } from "@/env";
+import { getLocale } from "next-intl/server";
 
 /**
  * Example backend proxy for Elasticsearch Search-UI frontend client.
  */
 
 export async function GET(req: Request) {
-  const languagePrefix = req.headers["accept-language"];
+  const languagePrefix = await getLocale();
 
   // Create the url to call in drupal:
   const ProxyUrl = `${env.NEXT_PUBLIC_DRUPAL_BASE_URL}/${languagePrefix}/wunder_search/proxy`;

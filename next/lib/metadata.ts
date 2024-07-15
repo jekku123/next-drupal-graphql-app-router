@@ -22,7 +22,6 @@ export async function extractMetaDataFromNodeEntity({
     return result?.attributes;
   };
 
-  // TODO: LOCALES "meta-site-description", "meta-site-name"
   const t = await getTranslations();
   const locale = await getLocale();
 

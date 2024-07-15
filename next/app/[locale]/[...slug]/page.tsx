@@ -5,25 +5,24 @@ import {
   getStandardLanguageLinks,
 } from "@/lib/contexts/language-links";
 import {
-  drupalClientPreviewer,
-  drupalClientViewer,
-} from "@/lib/drupal/drupal-client";
+  generatePathFromSlug,
+  getNodeEntity,
+  getNodePaths,
+  getNodeQueryResult,
+  getNodeRevisionQueryResult,
+} from "@/lib/drupal/get-node";
 import { FragmentMetaTagFragment } from "@/lib/gql/graphql";
-import {
-  GET_ENTITY_AT_DRUPAL_PATH,
-  GET_STATIC_PATHS,
-} from "@/lib/graphql/queries";
 import {
   extractEntityFromRouteQueryResult,
   extractRedirectFromRouteQueryResult,
 } from "@/lib/graphql/utils";
 import { extractMetaDataFromNodeEntity } from "@/lib/metadata";
 import { Metadata, ResolvingMetadata } from "next";
+import { getDraftData } from "next-drupal/draft";
 import { unstable_setRequestLocale } from "next-intl/server";
 import { draftMode } from "next/headers";
 import { notFound, permanentRedirect, redirect } from "next/navigation";
 
-// TODO: LOCALE
 type PageParams = {
   params: { slug: string[]; locale: string };
 };
@@ -32,20 +31,11 @@ export async function generateMetadata(
   { params: { locale, slug } }: PageParams,
   _parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const path = Array.isArray(slug) ? `/${slug?.join("/")}` : slug;
+  const path = generatePathFromSlug(slug);
+  // Fetch the node entity for the current page.
+  const nodeEntity = await getNodeEntity({ locale, path });
 
-  const variables = {
-    path: path,
-    langcode: locale,
-  };
-
-  const data = await drupalClientViewer.doGraphQlRequest(
-    GET_ENTITY_AT_DRUPAL_PATH,
-    variables,
-  );
-
-  let nodeEntity = extractEntityFromRouteQueryResult(data);
-
+  // Extract metadata from the node entity:
   const metadata = await extractMetaDataFromNodeEntity({
     title: nodeEntity.title,
     metatags: nodeEntity.metatag as FragmentMetaTagFragment[],
@@ -54,71 +44,50 @@ export async function generateMetadata(
   return metadata;
 }
 
-// TODO: MAybe not working like so with app router, check!
-export async function generateStaticParams({ params: { locale } }: PageParams) {
-  const staticPaths: ReturnType<
-    typeof drupalClientViewer.buildStaticPathsParamsFromPaths
-  > = [];
+export async function generateStaticParams({ params: { locale } }) {
+  // Get all the paths for the different node types.
+  const paths = await getNodePaths({ locale });
 
-  // Get the defined paths via graphql for the current locale:
-  const data = await drupalClientViewer.doGraphQlRequest(GET_STATIC_PATHS, {
-    // We will query for the latest 10 items of each content type:
-    number: 10,
-    langcode: locale,
-  });
+  // Combine all the paths into a single array.
+  // When adding more node types, make sure to add them here!
+  const pathsArray = [
+    ...(paths?.nodePages?.nodes || []),
+    ...(paths?.nodeArticles?.nodes || []),
+    ...(paths?.nodeProducts?.nodes || []),
+  ];
 
-  // Get all paths from the response:
-  const pathArray = [
-    ...(data?.nodePages?.nodes || []),
-    ...(data?.nodeArticles?.nodes || []),
-  ].map(({ path }) => path);
+  // To create the params object for each path, we need to remove the locale prefix from the path: /en/path -> path
+  // and split the path into an array of slugs.
+  // Example: /en/articles/article-1 -> { slug: ["articles", "article-1"] }
 
-  // Build static paths for the current locale.
-  const localePaths = drupalClientViewer.buildStaticPathsParamsFromPaths(
-    pathArray,
-    {
-      locale,
-      // Because graphql returns the path with the language prefix, we strip it using the pathPrefix option:
-      pathPrefix: `/${locale}`,
-    },
-  );
-
-  // Add the paths to the static paths array:
-  staticPaths.push(...localePaths);
-
-  return staticPaths;
+  return pathsArray.map(({ path }) => ({
+    slug: path.replace(`/${locale}/`, "").split("/").filter(Boolean),
+  }));
 }
 
 export default async function CustomPage({
   params: { locale, slug },
 }: PageParams) {
   unstable_setRequestLocale(locale);
-  const path = Array.isArray(slug) ? `/${slug?.join("/")}` : slug;
+  const path = generatePathFromSlug(slug);
 
-  // Are we in Next.js preview mode?
-  // TODO: FIX WITH APP ROUTER AND USE PROPER CLIENT WHEN FETCHING
+  // Are we in Next.js draft mode?
+  const isDraftMode = draftMode().isEnabled;
 
-  const isDraftMode = draftMode().isEnabled || false;
-
-  // Get the page data with Graphql.
-  // We want to use a different client if we are in preview mode:
-  const drupalClient = isDraftMode ? drupalClientPreviewer : drupalClientViewer;
-
-  const variables = {
-    path: path,
-    langcode: locale,
-  };
-
-  const data = await drupalClient.doGraphQlRequest(
-    GET_ENTITY_AT_DRUPAL_PATH,
-    variables,
-  );
+  // Get the node entity from Drupal.
+  let data = await getNodeQueryResult({ locale, path, isDraftMode });
 
   // If the data contains a RedirectResponse, we redirect to the path:
-  const redirectData = extractRedirectFromRouteQueryResult(data);
+  const redirectResult = extractRedirectFromRouteQueryResult(data);
 
-  if (redirectData) {
-    redirect(redirectData.url);
+  if (redirectResult) {
+    // Set to temporary redirect for 302 and 307 status codes,
+    // and permanent for all others.
+    if (redirectResult.status === 307 || redirectResult.status === 302) {
+      redirect(redirectResult.url);
+    } else {
+      permanentRedirect(redirectResult.url);
+    }
   }
 
   // Get the entity from the response:
@@ -131,56 +100,51 @@ export default async function CustomPage({
 
   // If node is a frontpage, redirect to / for the current locale:
   if (nodeEntity.__typename === "NodeFrontpage") {
-    permanentRedirect(locale);
+    redirect(locale);
   }
 
-  // // When in preview, we could be requesting a specific revision.
-  // // In this case, the previewData will contain the resourceVersion property,
-  // // we can use that in combination with the node id to fetch the correct revision
-  // // This means that we will need to do a second request to Drupal.
-  // const { previewData } = context as {
-  //   previewData: PreviewData & { resourceVersion?: string };
-  // };
-  // if (
-  //   isDraftMode &&
-  //   previewData &&
-  //   typeof previewData === "object" &&
-  //   previewData.resourceVersion &&
-  //   // If the resourceVersion is "rel:latest-version", we don't need to fetch the revision:
-  //   previewData.resourceVersion !== "rel:latest-version"
-  // ) {
-  //   // Get the node id from the entity we already have:
-  //   const nodeId = nodeEntity.id;
-  //   // the revision will be in the format "id:[id]":
-  //   const revisionId = previewData.resourceVersion.split(":").slice(1);
-  //   // To fetch the entity at a specific revision, we need to call a specific path:
-  //   const revisionPath = `/node/${nodeId}/revisions/${revisionId}/view`;
+  // When in draft mode, we could be requesting a specific revision.
+  // In this case, the draftData will contain the resourceVersion property,
+  // we can use that in combination with the node id to fetch the correct revision
+  // This means that we will need to do a second request to Drupal.
+  const draftData = getDraftData();
 
-  //   // Get the node at the specific data with Graphql:
-  //   const revisionRoutedata = await drupalClient.doGraphQlRequest(
-  //     GET_ENTITY_AT_DRUPAL_PATH,
-  //     { path: revisionPath, langcode: locale },
-  //   );
+  if (
+    isDraftMode &&
+    draftData &&
+    typeof draftData === "object" &&
+    draftData.resourceVersion &&
+    // If the resourceVersion is "rel:latest-version", we don't need to fetch the revision:
+    draftData.resourceVersion !== "rel:latest-version"
+  ) {
+    // Get the node id from the entity we already have:
+    const revisionRouteQueryResult = await getNodeRevisionQueryResult(
+      nodeEntity.id,
+      draftData.resourceVersion,
+      locale,
+    );
 
-  //   // Instead of the entity at the current revision, we want now to
-  //   // display the entity at the requested revision:
-  //   nodeEntity = extractEntityFromRouteQueryResult(revisionRoutedata);
-  //   if (!nodeEntity) {
-  //     notFound();
-  //   }
-  // }
+    const revisedNodeEntity = extractEntityFromRouteQueryResult(
+      revisionRouteQueryResult,
+    );
 
-  // Unless we are in preview, return 404 if the node is set to unpublished:
+    // If we can't find the revision, return 404:
+    if (!revisedNodeEntity) {
+      notFound();
+    }
+
+    // Use the revised node entity for the rest of the page:
+    nodeEntity = revisedNodeEntity;
+  }
+
+  // Unless we are in draft mode, return 404 if the node is set to unpublished:
   if (!isDraftMode && nodeEntity.status !== true) {
     notFound();
   }
 
   // Add information about possible other language versions of this node.
-
-  // Get the entity from the response:
-
-  // Add information about possible other language versions of this node.
   let languageLinks;
+
   // Not all node types necessarily have translations enabled,
   // if so, only show the standard language links.
   if ("translations" in nodeEntity) {

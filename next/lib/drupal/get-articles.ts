@@ -1,9 +1,7 @@
-import { drupalClientViewer } from "@/lib/drupal/drupal-client";
 import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
 
-import { LISTING_ARTICLES } from "../graphql/queries";
-
 import siteConfig from "@/site.config";
+import { fetchArticlesView } from "./data-access/articles";
 
 type GetArticlesArgs = {
   limit?: number;
@@ -23,24 +21,20 @@ export const getArticles = async ({
   let totalPages = 1;
 
   try {
-    const articlesViewResult = await drupalClientViewer.doGraphQlRequest(
-      LISTING_ARTICLES,
-      {
-        langcode: locale,
-        page: 0,
-        pageSize: limit,
-        offset: offset,
-      },
-    );
+    const articlesViewResult = await fetchArticlesView({
+      langcode: locale,
+      page: 0,
+      pageSize: limit,
+      offset: offset,
+    });
 
-    if (articlesViewResult.articlesView?.results) {
-      nodes = articlesViewResult.articlesView
-        .results as FragmentArticleTeaserFragment[];
+    if (articlesViewResult) {
+      nodes = articlesViewResult.results as FragmentArticleTeaserFragment[];
       // To get to the total number of pages, we need to add the offset
       // to the "total" property, that is to be considered as the total "remaining"
       // articles to be displayed.
       totalPages = Math.ceil(
-        (articlesViewResult.articlesView.pageInfo.total + offset) / limit,
+        (articlesViewResult.pageInfo.total + offset) / limit,
       );
     }
   } catch (error) {

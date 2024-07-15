@@ -1,20 +1,28 @@
 "use server";
 
-import { drupalClientViewer } from "@/lib/drupal/drupal-client";
-
 import { auth } from "@/auth";
+import { ContactForm, ContactFormSchema } from "@/lib/zod/contact-form";
 import { getLocale } from "next-intl/server";
+import { createSubmission } from "../data-access/submissions";
 
-export async function contactAction(values: {
-  name: string;
-  email: string;
-  message: string;
-  subject: string;
-}) {
-  const { name, email, message, subject } = values;
+export async function contactAction(values: ContactForm) {
+  // Validate the form fields:
+  const validatedFields = ContactFormSchema.safeParse(values);
 
-  if (!name || !email || !message || !subject) {
-    return { error: "All fields are required" };
+  // If the fields are not valid, return the errors:
+  if (!validatedFields.success) {
+    const errors = validatedFields.error.flatten().fieldErrors;
+
+    return {
+      success: false,
+      error: { type: "ValidationError", message: "Validation error" },
+      formErrors: {
+        name: errors.name?.[0] ?? "",
+        email: errors.email?.[0] ?? "",
+        subject: errors.subject?.[0] ?? "",
+        message: errors.message?.[0] ?? "",
+      },
+    };
   }
 
   // Because we want to allow only registered users to submit
@@ -23,42 +31,38 @@ export async function contactAction(values: {
 
   // if there is no session, return 401:
   if (!session) {
-    return { error: "Unauthorized" };
+    return {
+      success: false,
+      error: {
+        type: "AuthorizationError",
+        message: "Unauthorized",
+      },
+    };
   }
 
   // Get the locale with next-intl:
   const locale = await getLocale();
 
   try {
-    const url = drupalClientViewer.buildUrl(`/${locale}/webform_rest/submit`);
-
-    // Submit to Drupal.
-    const result = await drupalClientViewer.fetch(url.toString(), {
-      method: "POST",
-      body: JSON.stringify({
-        webform_id: "contact",
-        name: name,
-        email: email,
-        message: message,
-        subject: subject,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        // Pass the token to authenticate the request:
-        Authorization: `Bearer ${session.accessToken}`, // eslint-disable-line @typescript-eslint/no-base-to-string
+    await createSubmission({
+      webformId: "contact",
+      locale,
+      accessToken: session.accessToken as string,
+      values: {
+        ...validatedFields.data,
       },
     });
-
-    if (!result.ok) {
-      return { error: "Error" };
-    }
 
     return { success: true };
   } catch (error) {
     console.error(error.message);
 
     return {
-      error: "Something went wrong",
+      success: false,
+      error: {
+        type: "SubmissionError",
+        message: error.message,
+      },
     };
   }
 }

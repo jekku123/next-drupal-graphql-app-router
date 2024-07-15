@@ -5,12 +5,10 @@ import Layout from "@/components/layout";
 import { LogoStrip } from "@/components/logo-strip";
 import { Node } from "@/components/node";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
-import { getNode } from "@/lib/drupal/get-node";
-import {
-  FragmentArticleTeaserFragment,
-  FragmentMetaTagFragment,
-} from "@/lib/gql/graphql";
-import { LISTING_ARTICLES } from "@/lib/graphql/queries";
+import { getArticleTeasers } from "@/lib/drupal/get-article-teasers";
+import { getNodeEntity } from "@/lib/drupal/get-node";
+import { FragmentMetaTagFragment } from "@/lib/gql/graphql";
+import { GET_ENTITY_AT_DRUPAL_PATH } from "@/lib/graphql/queries";
 import { extractEntityFromRouteQueryResult } from "@/lib/graphql/utils";
 import { extractMetaDataFromNodeEntity } from "@/lib/metadata";
 import { Divider } from "@/ui/divider";
@@ -26,10 +24,16 @@ type FrontpageParams = {
 export async function generateMetadata({
   params: { locale },
 }: FrontpageParams): Promise<Metadata> {
-  const data = await getNode({
-    locale,
-    slug: `frontpage-${locale}`,
-  });
+  const variables = {
+    // This works because it matches the pathauto pattern for the Frontpage content type defined in Drupal:
+    path: `frontpage-${locale}`,
+    langcode: locale,
+  };
+
+  const data = await drupalClientViewer.doGraphQlRequest(
+    GET_ENTITY_AT_DRUPAL_PATH,
+    variables,
+  );
 
   let nodeEntity = extractEntityFromRouteQueryResult(data);
 
@@ -48,52 +52,29 @@ export default async function FrontPage({
 }: FrontpageParams) {
   unstable_setRequestLocale(locale);
 
-  // const variables = {
-  //   // This works because it matches the pathauto pattern for the Frontpage content type defined in Drupal:
-  //   path: `frontpage-${locale}`,
-  //   langcode: locale,
-  // };
-
-  // const data = await drupalClientViewer.doGraphQlRequest(
-  //   GET_ENTITY_AT_DRUPAL_PATH,
-  //   variables,
-  // );
-
   const t = await getTranslations();
 
-  const data = await getNode({
+  const frontpage = await getNodeEntity({
+    path: `frontpage-${locale}`,
     locale,
-    slug: `frontpage-${locale}`,
   });
-
-  const frontpage = extractEntityFromRouteQueryResult(data);
 
   if (!frontpage || !(frontpage.__typename === "NodeFrontpage")) {
     return notFound();
   }
 
-  const { isEnabled } = draftMode();
+  const isDraftMode = draftMode().isEnabled;
 
   // Unless we are in preview, return 404 if the node is set to unpublished:
-  if (!isEnabled && frontpage.status !== true) {
+  if (!isDraftMode && frontpage.status !== true) {
     notFound();
   }
 
-  // Get the last 3 sticky articles in the current language:
-  const stickyArticleTeasers = await drupalClientViewer.doGraphQlRequest(
-    LISTING_ARTICLES,
-    {
-      langcode: locale,
-      sticky: true,
-      page: 0,
-      pageSize: 3,
-    },
-  );
-
-  // We cast the results as the ListingArticle type to get type safety:
-  const articles =
-    (stickyArticleTeasers.articlesView
-      ?.results as FragmentArticleTeaserFragment[]) ?? [];
+  const articles = await getArticleTeasers({
+    limit: 3,
+    locale,
+    sticky: true,
+  });
 
   return (
     <Layout>

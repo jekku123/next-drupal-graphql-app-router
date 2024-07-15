@@ -11,7 +11,7 @@ export default async function DraftAlert() {
   return (
     <>
       <Suspense fallback={null}>
-        <DraftAlertClient isDraftEnabled={!isEnabled} />
+        <DraftAlertClient isDraftEnabled={isEnabled} />
       </Suspense>
       <SkipToContentLink href="#main-content">
         {t("skip-to-main-content")}

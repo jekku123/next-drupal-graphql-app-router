@@ -1,9 +1,18 @@
+import "server-only";
+
 import { type TypedDocumentNode } from "@graphql-typed-document-node/core";
 import { request, type RequestDocument, type Variables } from "graphql-request";
-import { DrupalClient } from "next-drupal";
+import { NextDrupalBase } from "next-drupal";
 import pRetry, { type Options } from "p-retry";
 
 import { env } from "@/env";
+
+export interface IGraphQlDrupalClient extends NextDrupalBase {
+  doGraphQlRequest<T>(
+    query: TypedDocumentNode<T> | RequestDocument,
+    variables?: Variables,
+  ): Promise<ReturnType<typeof request<T, Variables>>>;
+}
 
 const RETRY_OPTIONS: Options = {
   retries: env.NODE_ENV === "development" ? 1 : 5,
@@ -15,7 +24,10 @@ const RETRY_OPTIONS: Options = {
 } as const;
 
 const createGraphQlDrupalClient = (clientId: string, clientSecret: string) => {
-  class GraphQlDrupalClient extends DrupalClient {
+  class GraphQlDrupalClient
+    extends NextDrupalBase
+    implements IGraphQlDrupalClient
+  {
     async doGraphQlRequest<T>(
       query: TypedDocumentNode<T> | RequestDocument,
       variables?: Variables,

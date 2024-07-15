@@ -1,4 +1,4 @@
-import { getArticlesListing } from "@/lib/drupal/get-articles-listing";
+import { getArticleTeasers } from "@/lib/drupal/get-article-teasers";
 import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
 import { getLocale, getTranslations } from "next-intl/server";
 import { ArticleTeaser } from "./article-teaser";
@@ -13,7 +13,7 @@ export async function ArticlesListing({
   const locale = await getLocale();
   const t = await getTranslations();
 
-  const data = await getArticlesListing({ limit, locale });
+  const data = await getArticleTeasers({ limit, locale });
 
   return (
     <>
