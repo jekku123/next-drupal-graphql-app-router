@@ -1,4 +1,4 @@
-"use server";
+import "server-only";
 
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
 
