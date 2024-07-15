@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import { HeadingPage } from "@/components/heading--page";
-import { redirectExpiredSessionToLoginPage } from "@/lib/auth/redirect-expired-login";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
 import {
   validateAndCleanupWebformSubmission,
@@ -40,13 +39,7 @@ export default async function DashboardPage({
 
   const t = await getTranslations();
 
-  const resolvedUrl = searchParams.resolvedUrl as string;
-
   const session = await auth();
-
-  if (!session) {
-    return redirectExpiredSessionToLoginPage(locale, resolvedUrl);
-  }
 
   const url = drupalClientViewer.buildUrl(
     `/${locale}/webform_rest/${webformName}/complete_submission/${webformSubmissionUuid}`,

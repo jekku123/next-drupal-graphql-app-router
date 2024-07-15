@@ -2,7 +2,6 @@ import Link from "next/link";
 
 import { auth } from "@/auth";
 import { HeadingPage } from "@/components/heading--page";
-import { redirectExpiredSessionToLoginPage } from "@/lib/auth/redirect-expired-login";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
 import { formatDate } from "@/lib/utils";
 import {
@@ -11,25 +10,26 @@ import {
   WebformSubmissionsListEmpty,
   WebformSubmissionsListItem,
 } from "@/lib/zod/webform-submission-list";
+import { Metadata } from "next";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations();
+
+  return {
+    title: t("user-dashboard"),
+  };
+}
 
 export default async function DashboardPage({
   params: { locale },
-  searchParams,
 }: {
   params: { locale: string };
-  searchParams: { [key: string]: string | string[] | undefined };
 }) {
   unstable_setRequestLocale(locale);
 
   const t = await getTranslations();
   const session = await auth();
-
-  const resolvedUrl = searchParams.resolvedUrl as string;
-
-  if (!session) {
-    return redirectExpiredSessionToLoginPage(locale, resolvedUrl);
-  }
 
   const url = drupalClientViewer.buildUrl(
     `/${locale}/rest/my-webform-submissions?_format=json`,
