@@ -1,7 +1,8 @@
+"use client";
+
 import * as AccordionUI from "@radix-ui/react-accordion";
 
 import { Icons } from "@/components/icons";
-import ChevronIcon from "@/styles/icons/chevron-down.svg";
 
 interface AccordionProps {
   heading?: string | React.ReactNode;
@@ -11,6 +12,7 @@ interface AccordionProps {
     content: React.ReactNode;
   }>;
 }
+
 export function Accordion({ heading, items }: AccordionProps) {
   return (
     <div className="relative h-full p-4 transition-all bg-white border rounded border-finnishwinter hover:shadow-md">
@@ -29,7 +31,7 @@ export function Accordion({ heading, items }: AccordionProps) {
                   className="w-6 h-6 shrink-0 text-primary-600"
                 />
                 <span className="mx-5 text-left grow">{item.heading}</span>
-                <ChevronIcon
+                <Icons.chevronDown
                   aria-hidden
                   className="w-6 h-6 shrink-0 text-primary-600 group-aria-expanded:rotate-180"
                 />

@@ -15,9 +15,9 @@ const ParagraphVideo = dynamic(() =>
   import("./paragraph--video").then((mod) => mod.ParagraphVideo),
 );
 
-// const ParagraphAccordion = dynamic(() =>
-//   import("./paragraph--accordion").then((mod) => mod.ParagraphAccordion),
-// );
+const ParagraphAccordion = dynamic(() =>
+  import("./paragraph--accordion").then((mod) => mod.ParagraphAccordion),
+);
 
 export function Paragraph({
   paragraph,
@@ -40,9 +40,9 @@ export function Paragraph({
     case "ParagraphImage": {
       return <ParagraphImage paragraph={paragraph} />;
     }
-    // case "ParagraphAccordion": {
-    //   return <ParagraphAccordion paragraph={paragraph} />;
-    // }
+    case "ParagraphAccordion": {
+      return <ParagraphAccordion paragraph={paragraph} />;
+    }
     case "ParagraphVideo": {
       return <ParagraphVideo paragraph={paragraph} />;
     }

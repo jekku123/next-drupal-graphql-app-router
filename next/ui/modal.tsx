@@ -1,7 +1,9 @@
-import { useTranslation } from "next-i18next";
-import React from "react";
+"use client";
+
 import * as ModalPrimitive from "@radix-ui/react-dialog";
 import clsx from "clsx";
+import { useTranslation } from "next-i18next";
+import React from "react";
 
 import CloseIcon from "@/styles/icons/close.svg";
 
@@ -50,9 +52,9 @@ const ModalContent = React.forwardRef<
         {...props}
       >
         {children}
-        <ModalPrimitive.Close className="absolute right-0 top-0 flex items-center bg-mischka px-3 py-2 text-sm font-bold text-steelgray disabled:pointer-events-none">
+        <ModalPrimitive.Close className="absolute top-0 right-0 flex items-center px-3 py-2 text-sm font-bold bg-mischka text-steelgray disabled:pointer-events-none">
           {t("modal-close")}
-          <CloseIcon className="ml-2 inline-block h-8 w-8" aria-hidden />
+          <CloseIcon className="inline-block w-8 h-8 ml-2" aria-hidden />
         </ModalPrimitive.Close>
       </ModalPrimitive.Content>
     </ModalPortal>
@@ -97,11 +99,11 @@ ModalDescription.displayName = "ModalDescription";
 
 export {
   Modal,
-  ModalTrigger,
-  ModalPortal,
-  ModalOverlay,
   ModalContent,
-  ModalHeader,
-  ModalTitle,
   ModalDescription,
+  ModalHeader,
+  ModalOverlay,
+  ModalPortal,
+  ModalTitle,
+  ModalTrigger,
 };
