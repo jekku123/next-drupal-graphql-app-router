@@ -1,6 +1,7 @@
 import siteConfig from "@/site.config";
 import { FragmentArticleTeaserFragment } from "../gql/graphql";
-import { fetchArticlesView } from "./data-access/articles";
+import { LISTING_ARTICLES } from "../graphql/queries";
+import { drupalClientViewer } from "./drupal-client";
 
 export async function getArticleTeasers({
   limit = 10,
@@ -12,14 +13,20 @@ export async function getArticleTeasers({
   sticky?: boolean;
 }) {
   try {
-    const articlesView = await fetchArticlesView({
-      langcode: locale,
-      page: 0,
-      pageSize: limit,
-      sticky,
-    });
+    const articlesQueryResult = await drupalClientViewer.doGraphQlRequest(
+      LISTING_ARTICLES,
+      {
+        langcode: locale,
+        page: 0,
+        pageSize: limit,
+        sticky,
+      },
+    );
 
-    return (articlesView.results as FragmentArticleTeaserFragment[]) ?? [];
+    return (
+      (articlesQueryResult.articlesView
+        .results as FragmentArticleTeaserFragment[]) ?? []
+    );
   } catch (error) {
     console.error(error);
     return [];

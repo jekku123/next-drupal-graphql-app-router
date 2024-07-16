@@ -6,7 +6,9 @@ import { defaultLocale, locales } from "./i18n";
 
 // List of protected pages, which require authentication
 // Add more pages as needed
-const protectedPages = ["/dashboard"];
+const PROTECTED_ROUTES = ["/dashboard"];
+const AUTH_ROUTES = ["/auth/login", "/auth/register"];
+const DEFAULT_LOGIN_REDIRECT = "/";
 
 const intlMiddleware = createMiddleware({
   // A list of all locales that are supported
@@ -31,7 +33,7 @@ const authMiddleware = withAuth(
 );
 
 export default function middleware(req: NextRequest) {
-  const isProtected = protectedPages.some((page) =>
+  const isProtected = PROTECTED_ROUTES.some((page) =>
     req.nextUrl.pathname.startsWith(page),
   );
 

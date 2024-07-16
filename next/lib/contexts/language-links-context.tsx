@@ -3,6 +3,9 @@
 import { createContext, useContext } from "react";
 
 import siteConfig from "@/site.config";
+import { useLocale } from "next-intl";
+import { usePathname } from "next/navigation";
+import { createLanguageLinksForNextOnlyPage } from "./language-links";
 
 export type LanguageLinks = typeof siteConfig.locales;
 
@@ -18,8 +21,16 @@ export function LanguageLinksProvider({
   languageLinks?: typeof siteConfig.locales;
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const locale = useLocale();
+
+  // If the language links are not provided, create them for the current page.
+  const locales =
+    languageLinks ??
+    createLanguageLinksForNextOnlyPage(pathname.replace(`/${locale}`, ""));
+
   return (
-    <LanguageLinksContext.Provider value={languageLinks || siteConfig.locales}>
+    <LanguageLinksContext.Provider value={languageLinks || locales}>
       {children}
     </LanguageLinksContext.Provider>
   );

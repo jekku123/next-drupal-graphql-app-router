@@ -1,7 +1,6 @@
 "use server";
 
 import { createUserUseCase } from "@/lib/drupal/use-cases/user";
-
 import { getLocale } from "next-intl/server";
 
 export async function registerAction(values: { name: string; email: string }) {

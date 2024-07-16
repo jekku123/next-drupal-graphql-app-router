@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { auth } from "@/auth";
 import { HeadingPage } from "@/components/heading--page";
+import { redirectExpiredSessionToLoginPage } from "@/lib/auth/redirect-expired-login";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
 import { formatDate } from "@/lib/utils";
 import {
@@ -30,6 +31,10 @@ export default async function DashboardPage({
 
   const t = await getTranslations();
   const session = await auth();
+
+  if (!session) {
+    return redirectExpiredSessionToLoginPage(locale, "/dashboard");
+  }
 
   const url = drupalClientViewer.buildUrl(
     `/${locale}/rest/my-webform-submissions?_format=json`,

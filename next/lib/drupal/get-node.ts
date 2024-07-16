@@ -1,7 +1,7 @@
 import { extractEntityFromRouteQueryResult } from "@/lib/graphql/utils";
 import { TypedRouteEntity } from "@/types/graphql";
 import { DraftData } from "next-drupal/draft";
-import { fetchNodePaths, fetchNodeQueryResult } from "./data-access/node";
+import { fetchNodePaths, fetchNodeQueryResult } from "./use-cases/node";
 
 type GetNodeParams = {
   locale: string;

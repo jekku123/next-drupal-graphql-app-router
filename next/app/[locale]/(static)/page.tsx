@@ -1,7 +1,6 @@
 import { ArticleTeasers } from "@/components/article/article-teasers";
 import { ContactList } from "@/components/contact-list";
 import { ContactForm } from "@/components/forms/contact-form";
-import Layout from "@/components/layout";
 import { LogoStrip } from "@/components/logo-strip";
 import { Node } from "@/components/node";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
@@ -77,7 +76,7 @@ export default async function FrontPage({
   });
 
   return (
-    <Layout>
+    <>
       <Node node={frontpage} />
       <Divider className="max-w-4xl" />
       <ContactForm />
@@ -85,6 +84,6 @@ export default async function FrontPage({
       <ArticleTeasers heading={t("promoted-articles")} articles={articles} />
       <ContactList />
       <LogoStrip />
-    </Layout>
+    </>
   );
 }
