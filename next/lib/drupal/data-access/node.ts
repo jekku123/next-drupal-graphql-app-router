@@ -1,5 +1,3 @@
-import "server-only";
-
 import {
   GET_ENTITY_AT_DRUPAL_PATH,
   GET_STATIC_PATHS,

@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 
-import { contactAction } from "@/lib/drupal/actions/contact";
+import { contactAction } from "@/app/_actions/contact";
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";

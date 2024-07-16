@@ -1,18 +1,13 @@
-"use server";
-
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
 
-import siteConfig from "@/site.config";
-import { getLocale } from "next-intl/server";
-
-export async function registerAction(values: { name: string; email: string }) {
-  const locale = await getLocale();
-
+export async function createUser(
+  values: {
+    name: string;
+    email: string;
+  },
+  locale: string,
+) {
   const { name, email } = values;
-
-  if (!name || !email) {
-    return { error: "Name and mail are required" };
-  }
 
   try {
     const url = drupalClientViewer.buildUrl("/user/register?_format=json");
@@ -25,7 +20,7 @@ export async function registerAction(values: { name: string; email: string }) {
         mail: [{ value: email }],
         preferred_langcode: [
           {
-            value: locale || siteConfig.defaultLocale,
+            value: locale,
           },
         ],
       }),
@@ -38,12 +33,12 @@ export async function registerAction(values: { name: string; email: string }) {
     });
 
     if (!result.ok) {
-      return { error: result.statusText };
+      throw new Error(result.statusText);
     }
 
-    return { success: true };
+    return true;
   } catch (error) {
     console.error("Fetch error:", JSON.stringify(error.message, null, 2));
-    return { error: "Error while registering" };
+    throw error;
   }
 }

@@ -1,7 +1,7 @@
 import Layout from "@/components/layout";
 import { unstable_setRequestLocale } from "next-intl/server";
 
-export default async function AuthLayout({
+export default async function StaticLayout({
   children,
   params: { locale },
 }: {

@@ -3,7 +3,8 @@
 import { useForm } from "react-hook-form";
 
 import { ErrorRequired } from "@/components/forms/error-required";
-import { registerAction } from "@/lib/drupal/actions/register";
+
+import { registerAction } from "@/app/_actions/register";
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";

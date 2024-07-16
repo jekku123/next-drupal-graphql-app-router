@@ -13,7 +13,7 @@ export async function ArticlesListing({
   const locale = await getLocale();
   const t = await getTranslations();
 
-  const data = await getArticleTeasers({ limit, locale });
+  const data = await getArticleTeasers({ limit, locale, sticky: true });
 
   return (
     <>

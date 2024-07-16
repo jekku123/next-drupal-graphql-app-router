@@ -1,9 +1,9 @@
 "use server";
 
 import { auth } from "@/auth";
+import { createSubmissionUseCase } from "@/lib/drupal/use-cases/submissions";
 import { ContactForm, ContactFormSchema } from "@/lib/zod/contact-form";
 import { getLocale } from "next-intl/server";
-import { createSubmission } from "../data-access/submissions";
 
 export async function contactAction(values: ContactForm) {
   // Validate the form fields:
@@ -44,7 +44,7 @@ export async function contactAction(values: ContactForm) {
   const locale = await getLocale();
 
   try {
-    await createSubmission({
+    await createSubmissionUseCase({
       webformId: "contact",
       locale,
       accessToken: session.accessToken as string,

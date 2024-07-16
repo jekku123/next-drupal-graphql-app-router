@@ -1,4 +1,3 @@
-import Layout from "@/components/layout";
 import { createLanguageLinksForNextOnlyPage } from "@/lib/contexts/language-links";
 import { getLatestArticlesItems } from "@/lib/drupal/get-articles";
 import { Metadata } from "next";
@@ -73,11 +72,6 @@ export default async function AllArticlesPage({
   };
 
   return (
-    <Layout languageLinks={languageLinks}>
-      <AllArticlesListing
-        articles={articles}
-        paginationProps={paginationProps}
-      />
-    </Layout>
+    <AllArticlesListing articles={articles} paginationProps={paginationProps} />
   );
 }

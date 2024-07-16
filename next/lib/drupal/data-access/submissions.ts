@@ -1,6 +1,9 @@
-import "server-only";
-
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
+import {
+  isWebformSubmissionsListEmpty,
+  WebformSubmissionsListEmpty,
+  WebformSubmissionsListItem,
+} from "@/lib/zod/webform-submission-list";
 
 export async function createSubmission({
   webformId,
@@ -35,4 +38,35 @@ export async function createSubmission({
   }
 
   return result;
+}
+
+export async function getSubmissions({
+  locale,
+  accessToken,
+}: {
+  locale: string;
+  accessToken: string;
+}) {
+  const url = drupalClientViewer.buildUrl(
+    `/${locale}/rest/my-webform-submissions?_format=json`,
+  );
+
+  const result = await drupalClientViewer.fetch(url.toString(), {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      // Pass the token to authenticate the request:
+      Authorization: `Bearer ${accessToken}`, // eslint-disable-line @typescript-eslint/no-base-to-string
+    },
+  });
+
+  const submissionsViewResult = (await result.json()) as
+    | WebformSubmissionsListEmpty
+    | WebformSubmissionsListItem[];
+
+  const submissions = isWebformSubmissionsListEmpty(submissionsViewResult)
+    ? []
+    : submissionsViewResult;
+
+  return submissions;
 }

@@ -1,5 +1,3 @@
-import "server-only";
-
 import { LISTING_ARTICLES } from "@/lib/graphql/queries";
 import { Variables } from "graphql-request";
 import { drupalClientViewer } from "../drupal-client";
