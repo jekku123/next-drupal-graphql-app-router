@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 import { MainMenu, MenuToggle } from "@/components/main-menu/main-menu";
 import SearchIcon from "@/styles/icons/search.svg";
@@ -25,7 +25,9 @@ export function Header({ menu }: HeaderProps) {
         <HomeLink />
         <div className="flex flex-row items-center justify-end gap-6 sm:gap-8">
           <SearchLink />
-          <UserMenu />
+          <Suspense fallback={null}>
+            <UserMenu />
+          </Suspense>
           <LanguageSwitcher />
           <MenuToggle isOpen={isMainMenuOpen} setIsOpen={setIsMainMenuOpen} />
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import { useEventListener } from "@/lib/hooks/use-event-listener";
@@ -70,11 +70,10 @@ export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
   /* NEW ONE usingh next/navigation */
 
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     close();
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   useEffect(() => {
     // Prevent body scroll when menu is open
@@ -89,13 +88,7 @@ export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
       const didSetMenuAndSubmenu = menu?.items?.some((item) =>
         item.children?.some((subItem) =>
           subItem.children?.some((subSubItem) => {
-            if (
-              isMenuItemActive(
-                locale,
-                `${pathname}?${searchParams}`,
-                subSubItem.url,
-              )
-            ) {
+            if (isMenuItemActive(pathname, subSubItem.url)) {
               setActiveMenu(item.id);
               setActiveSubmenu(subItem.id);
               return true;
@@ -113,9 +106,7 @@ export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
       // User is not on a page matching a submenu item, so try to find a matching top-level menu item
       menu?.items?.some((item) =>
         item.children?.some((subItem) => {
-          if (
-            isMenuItemActive(locale, `${pathname}?${searchParams}`, subItem.url)
-          ) {
+          if (isMenuItemActive(pathname, subItem.url)) {
             setActiveMenu(item.id);
             setActiveSubmenu(null);
             return true;

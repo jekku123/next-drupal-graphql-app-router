@@ -15,6 +15,8 @@ export async function getMenus({ locale }: GetStaticPropsContext) {
     ),
   );
 
+  console.log("main", main.menu);
+
   return {
     main: main.menu,
     footer: footer.menu,

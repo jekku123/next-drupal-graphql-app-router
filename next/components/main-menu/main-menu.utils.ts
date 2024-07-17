@@ -7,8 +7,5 @@ export const disableHoverEvents = {
 } as const;
 
 export function isMenuItemActive(path: string, href: string) {
-  console.log("path", path);
-  console.log("href", href);
-
   return path === href;
 }
