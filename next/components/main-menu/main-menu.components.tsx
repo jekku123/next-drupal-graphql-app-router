@@ -4,7 +4,7 @@ import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import clsx from "clsx";
 
 import NextLink from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Dispatch, forwardRef, ReactNode, SetStateAction } from "react";
 
 import Chevron from "@/styles/icons/chevron-down.svg";
@@ -159,8 +159,7 @@ export function MenuLink({
   children: ReactNode;
 }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const isActive = isMenuItemActive("en", `${pathname}?${searchParams}`, href);
+  const isActive = isMenuItemActive(pathname, href);
 
   return (
     <NavigationMenu.Link

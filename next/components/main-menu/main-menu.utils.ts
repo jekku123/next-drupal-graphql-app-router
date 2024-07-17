@@ -6,17 +6,9 @@ export const disableHoverEvents = {
   onPointerLeave: (event: PointerEvent) => event.preventDefault(),
 } as const;
 
-// export function isMenuItemActive(router: NextRouter, href: string) {
-//   const { locale, asPath } = router;
-//   const actualPath = `/${locale}${asPath}`;
-//   return actualPath === href;
-// }
+export function isMenuItemActive(path: string, href: string) {
+  console.log("path", path);
+  console.log("href", href);
 
-export function isMenuItemActive(
-  locale: string,
-  fullPath: string,
-  href: string,
-) {
-  const actualPath = `/${locale}/${fullPath}`;
-  return actualPath === href;
+  return path === href;
 }
