@@ -5,7 +5,7 @@ import { LogoStrip } from "@/components/logo-strip";
 import { Node } from "@/components/node";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
 import { getArticleTeasers } from "@/lib/drupal/get-article-teasers";
-import { getNodeEntity } from "@/lib/drupal/get-node";
+
 import { FragmentMetaTagFragment } from "@/lib/gql/graphql";
 import { GET_ENTITY_AT_DRUPAL_PATH } from "@/lib/graphql/queries";
 import { extractEntityFromRouteQueryResult } from "@/lib/graphql/utils";
@@ -53,10 +53,18 @@ export default async function FrontPage({
 
   const t = await getTranslations();
 
-  const frontpage = await getNodeEntity({
+  const variables = {
+    // This works because it matches the pathauto pattern for the Frontpage content type defined in Drupal:
     path: `frontpage-${locale}`,
-    locale,
-  });
+    langcode: locale,
+  };
+
+  const data = await drupalClientViewer.doGraphQlRequest(
+    GET_ENTITY_AT_DRUPAL_PATH,
+    variables,
+  );
+
+  const frontpage = extractEntityFromRouteQueryResult(data);
 
   if (!frontpage || !(frontpage.__typename === "NodeFrontpage")) {
     return notFound();

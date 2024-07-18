@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@/auth";
-import { createSubmissionUseCase } from "@/lib/drupal/use-cases/submissions";
+import { drupalClientViewer } from "@/lib/drupal/drupal-client";
 import { ContactForm, ContactFormSchema } from "@/lib/zod/contact-form";
 import { getLocale } from "next-intl/server";
 
@@ -44,16 +44,32 @@ export async function contactAction(values: ContactForm) {
   const locale = await getLocale();
 
   try {
-    await createSubmissionUseCase({
-      webformId: "contact",
-      locale,
-      accessToken: session.accessToken as string,
-      values: {
-        ...validatedFields.data,
+    const url = drupalClientViewer.buildUrl(`/${locale}/webform_rest/submit`);
+
+    // Submit to Drupal.
+    const result = await drupalClientViewer.fetch(url.toString(), {
+      method: "POST",
+      body: JSON.stringify({
+        webform_id: "contact",
+        ...values,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        // Pass the token to authenticate the request:
+        Authorization: `Bearer ${session.accessToken}`, // eslint-disable-line @typescript-eslint/no-base-to-string
       },
     });
 
-    return { success: true };
+    if (!result.ok) {
+      console.error("Submission error:", JSON.stringify(result, null, 2));
+      return {
+        success: false,
+        error: {
+          type: "SubmissionError",
+          message: "Submission error",
+        },
+      };
+    }
   } catch (error) {
     console.error(error.message);
 

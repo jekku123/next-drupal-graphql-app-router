@@ -1,7 +1,6 @@
 import { NodeArticle } from "@/components/node/node--article";
 import { NodeFrontpage } from "@/components/node/node--frontpage";
 import { NodePage } from "@/components/node/node--page";
-import { NodeProduct } from "@/components/node/node--product";
 import { TypedRouteEntity } from "@/types/graphql";
 import { never } from "zod";
 
@@ -18,11 +17,11 @@ export function Node({ node }: { node: TypedRouteEntity }) {
     case "NodeArticle": {
       return <NodeArticle article={node} />;
     }
-    case "NodeProduct": {
-      return <NodeProduct product={node} />;
-    }
     default: {
+      // This will show ts error if a node type is implemented in the Drupal GraphQL schema,
+      // but is missing from the switch statement
       node === typeof never;
+
       console.log(
         `components/node.tsx: Node type not yet implemented: ${(node as TypedRouteEntity).__typename}`,
       );

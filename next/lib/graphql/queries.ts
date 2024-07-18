@@ -51,16 +51,6 @@ export const GET_STATIC_PATHS = graphql(`
         path
       }
     }
-    nodeProducts(
-      first: $number
-      langcode: $langcode
-      sortKey: UPDATED_AT
-      reverse: true
-    ) {
-      nodes {
-        path
-      }
-    }
   }
 `);
 
@@ -88,11 +78,6 @@ export const GET_SITEMAP_NODES = graphql(`
           }
         }
         ... on NodeArticle {
-          translations {
-            ...FragmentNodeTranslation
-          }
-        }
-        ... on NodeProduct {
           translations {
             ...FragmentNodeTranslation
           }

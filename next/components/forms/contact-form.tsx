@@ -35,6 +35,7 @@ export function ContactForm() {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const onSubmit = async (data: Inputs) => {
+    clearErrors();
     startTransition(async () => {
       const response = await contactAction(data);
       if (!response.success) {

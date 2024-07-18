@@ -1,6 +1,6 @@
 "use server";
 
-import { createUserUseCase } from "@/lib/drupal/use-cases/user";
+import { drupalClientViewer } from "@/lib/drupal/drupal-client";
 import { getLocale } from "next-intl/server";
 
 export async function registerAction(values: { name: string; email: string }) {
@@ -13,7 +13,33 @@ export async function registerAction(values: { name: string; email: string }) {
   }
 
   try {
-    await createUserUseCase({ name, email }, locale);
+    const url = drupalClientViewer.buildUrl("/user/register?_format=json");
+
+    // Do a call to drupal to register the user:
+    const result = await drupalClientViewer.fetch(url.toString(), {
+      method: "POST",
+      body: JSON.stringify({
+        name: [{ value: name }],
+        mail: [{ value: email }],
+        preferred_langcode: [
+          {
+            value: locale,
+          },
+        ],
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // Make sure we are doing this call as
+      // anonymous user:
+      withAuth: false,
+    });
+
+    if (!result.ok) {
+      return {
+        error: result.statusText,
+      };
+    }
 
     return { success: true };
   } catch (error) {

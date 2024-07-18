@@ -22,7 +22,6 @@ export const FRAGMENT_NODE_UNION = graphql(`
     ...FragmentNodeArticle
     ...FragmentNodeFrontpage
     ...FragmentNodePage
-    ...FragmentNodeProduct
   }
 `);
 
@@ -33,29 +32,6 @@ export const FRAGMENT_NODE_ARTICLE = graphql(`
     tags {
       ...FragmentTag
     }
-    body {
-      ...FragmentTextSummary
-    }
-    image {
-      ...FragmentImage
-    }
-    author {
-      __typename
-      ... on User {
-        ...FragmentUser
-      }
-    }
-    translations {
-      ...FragmentNodeTranslation
-    }
-  }
-`);
-
-export const FRAGMENT_NODE_PRODUCT = graphql(`
-  fragment FragmentNodeProduct on NodeProduct {
-    excerpt
-    pricePerUnit
-    sticky
     body {
       ...FragmentTextSummary
     }
@@ -93,7 +69,6 @@ export const FRAGMENT_NODE_FRONTPAGE = graphql(`
           ...FragmentParagraphAccordion
           ...FragmentParagraphListingArticle
           ...FragmentParagraphLiftupArticle
-          ...FragmentParagraphCallToAction
         }
       }
     }

@@ -1,4 +1,3 @@
-import { ParagraphCallToAction } from "@/components/paragraph/paragraph--call-to-action";
 import { ParagraphFileAttachments } from "@/components/paragraph/paragraph--file-attachments";
 import { ParagraphHero } from "@/components/paragraph/paragraph--hero";
 import { ParagraphImage } from "@/components/paragraph/paragraph--image";
@@ -54,9 +53,6 @@ export function Paragraph({
     }
     case "ParagraphLiftupsArticle": {
       return <ParagraphLiftupArticle paragraph={paragraph} />;
-    }
-    case "ParagraphCallToAction": {
-      return <ParagraphCallToAction paragraph={paragraph} />;
     }
     default: {
       console.log(

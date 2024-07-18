@@ -29,6 +29,5 @@ export async function getArticleTeasers({
     );
   } catch (error) {
     console.error(error);
-    return [];
   }
 }

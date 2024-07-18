@@ -5,13 +5,14 @@ import {
   getStandardLanguageLinks,
 } from "@/lib/contexts/language-links";
 import {
-  generatePathFromSlug,
-  getNodeEntity,
-  getNodePaths,
-  getNodeQueryResult,
-  getNodeRevisionQueryResult,
-} from "@/lib/drupal/get-node";
+  drupalClientPreviewer,
+  drupalClientViewer,
+} from "@/lib/drupal/drupal-client";
 import { FragmentMetaTagFragment } from "@/lib/gql/graphql";
+import {
+  GET_ENTITY_AT_DRUPAL_PATH,
+  GET_STATIC_PATHS,
+} from "@/lib/graphql/queries";
 import {
   extractEntityFromRouteQueryResult,
   extractRedirectFromRouteQueryResult,
@@ -31,9 +32,15 @@ export async function generateMetadata(
   { params: { locale, slug } }: PageParams,
   _parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const path = generatePathFromSlug(slug);
+  const path = Array.isArray(slug) ? `/${slug?.join("/")}` : slug;
+  const variables = { path, langcode: locale };
+
   // Fetch the node entity for the current page.
-  const nodeEntity = await getNodeEntity({ locale, path });
+  const data = await drupalClientViewer.doGraphQlRequest(
+    GET_ENTITY_AT_DRUPAL_PATH,
+    variables,
+  );
+  const nodeEntity = extractEntityFromRouteQueryResult(data);
 
   // Extract metadata from the node entity:
   const metadata = await extractMetaDataFromNodeEntity({
@@ -46,14 +53,17 @@ export async function generateMetadata(
 
 export async function generateStaticParams({ params: { locale } }) {
   // Get all the paths for the different node types.
-  const paths = await getNodePaths({ locale });
+  const paths = await drupalClientViewer.doGraphQlRequest(GET_STATIC_PATHS, {
+    // We will query for the latest 10 items of each content type:
+    number: 10,
+    langcode: locale,
+  });
 
   // Combine all the paths into a single array.
   // When adding more node types, make sure to add them here!
   const pathsArray = [
     ...(paths?.nodePages?.nodes || []),
     ...(paths?.nodeArticles?.nodes || []),
-    ...(paths?.nodeProducts?.nodes || []),
   ];
 
   // To create the params object for each path, we need to remove the locale prefix from the path: /en/path -> path
@@ -69,14 +79,19 @@ export default async function CustomPage({
   params: { locale, slug },
 }: PageParams) {
   unstable_setRequestLocale(locale);
-  const path = generatePathFromSlug(slug);
+  const path = Array.isArray(slug) ? `/${slug?.join("/")}` : slug;
+  const variables = { path, langcode: locale };
 
   // Are we in Next.js draft mode?
   const isDraftMode = draftMode().isEnabled;
 
   // Get the node entity from Drupal.
-  let data = await getNodeQueryResult({ locale, path, isDraftMode });
+  const drupalClient = isDraftMode ? drupalClientPreviewer : drupalClientViewer;
 
+  const data = await drupalClient.doGraphQlRequest(
+    GET_ENTITY_AT_DRUPAL_PATH,
+    variables,
+  );
   // If the data contains a RedirectResponse, we redirect to the path:
   const redirectResult = extractRedirectFromRouteQueryResult(data);
 
@@ -117,11 +132,16 @@ export default async function CustomPage({
     // If the resourceVersion is "rel:latest-version", we don't need to fetch the revision:
     draftData.resourceVersion !== "rel:latest-version"
   ) {
+    const revisionId = draftData.resourceVersion.split(":").slice(1);
+    const revisionPath = `/node/${nodeEntity.id}/revisions/${revisionId}/view`;
     // Get the node id from the entity we already have:
-    const revisionRouteQueryResult = await getNodeRevisionQueryResult(
-      nodeEntity.id,
-      draftData.resourceVersion,
-      locale,
+    const revisionRouteQueryResult = await drupalClient.doGraphQlRequest(
+      GET_ENTITY_AT_DRUPAL_PATH,
+
+      {
+        path: revisionPath,
+        langcode: locale,
+      },
     );
 
     const revisedNodeEntity = extractEntityFromRouteQueryResult(
