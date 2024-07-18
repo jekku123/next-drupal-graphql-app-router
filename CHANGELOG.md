@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
 ## [2.5.0] 10.6.2024
- 
+
 - Add DDEV support
 - Drupal 10.2.6 and Drush 1.5.2
 - Update the graphql_compose module to 2.1.0
