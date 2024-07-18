@@ -7,12 +7,11 @@ import { useState } from "react";
 
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
 import AccountIcon from "@/styles/icons/account-circle.svg";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Icons } from "../icons";
 
 export function UserMenu() {
-  const locale = useLocale();
   const t = useTranslations();
 
   const pathname = usePathname();
@@ -26,7 +25,7 @@ export function UserMenu() {
 
   const loginUrl = `/auth/login?callbackUrl=${encodeURIComponent(
     searchParams.get("callbackUrl") ||
-      `/${locale}/${pathname}?${searchParams.toString()}`,
+      `${pathname}${searchParams.size ? `?${searchParams}` : ""}`,
   )}`;
 
   const ref = useOnClickOutside<HTMLDivElement>(close);

@@ -1,4 +1,3 @@
-import { createLanguageLinksForNextOnlyPage } from "@/lib/contexts/language-links";
 import { getLatestArticlesItems } from "@/lib/drupal/get-articles";
 import { Metadata } from "next";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
@@ -56,11 +55,6 @@ export default async function AllArticlesPage({
       ? pageRoot
       : prevEnabled && [pageRoot, prevPage].join("/");
   const nextPageHref = nextEnabled && [pageRoot, nextPage].join("/");
-
-  // Create language links for this page.
-  // Note: the links will always point to the first page, because we cannot guarantee that
-  // the other pages will exist in all languages.
-  const languageLinks = createLanguageLinksForNextOnlyPage(pageRoot);
 
   const paginationProps = {
     currentPage,
