@@ -24,6 +24,7 @@ export async function generateMetadata({
 
 export const revalidate = 60;
 
+// TODO: Maybe use searchParams instead of page params
 export default async function AllArticlesPage({
   params: { page, locale },
 }: AllArticlesPageParams) {
