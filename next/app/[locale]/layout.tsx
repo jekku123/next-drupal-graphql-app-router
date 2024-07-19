@@ -2,9 +2,10 @@ import { auth } from "@/auth";
 import DraftAlert from "@/components/draft-alert";
 import { Footer } from "@/components/footer/footer";
 import NextAuthProvider from "@/components/next-auth-provider";
-import { ReactQueryClientProvider } from "@/components/query-client-provider";
+import ReactQueryClientProvider from "@/components/query-client-provider";
 import { locales } from "@/i18n";
-import { getMenus } from "@/lib/drupal/get-menus";
+import { getMenu } from "@/lib/drupal/get-menus";
+import { MenuAvailable } from "@/lib/gql/graphql";
 import { inter, overpass } from "@/styles/fonts";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, unstable_setRequestLocale } from "next-intl/server";
@@ -25,7 +26,7 @@ export default async function RootLayout({
   unstable_setRequestLocale(locale);
 
   const session = await auth();
-  const menus = await getMenus({ locale });
+  const menu = await getMenu(MenuAvailable.Footer, locale);
   const messages = await getMessages();
 
   return (
@@ -38,7 +39,7 @@ export default async function RootLayout({
                 <DraftAlert />
                 <div className="flex flex-col min-h-screen">
                   {children}
-                  <Footer menu={menus.footer} />
+                  <Footer menu={menu} />
                 </div>
               </Fonts>
             </NextIntlClientProvider>

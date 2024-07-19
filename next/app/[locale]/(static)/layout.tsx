@@ -1,4 +1,4 @@
-import Layout from "@/components/layout";
+import PageLayout from "@/components/page-layout";
 import { unstable_setRequestLocale } from "next-intl/server";
 
 export default async function StaticLayout({
@@ -10,5 +10,5 @@ export default async function StaticLayout({
 }) {
   unstable_setRequestLocale(locale);
 
-  return <Layout>{children}</Layout>;
+  return <PageLayout>{children}</PageLayout>;
 }

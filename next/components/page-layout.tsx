@@ -1,10 +1,11 @@
 import { Header } from "@/components/header/header";
 import { LanguageLinks } from "@/lib/contexts/language-links";
 import { LanguageLinksProvider } from "@/lib/contexts/language-links-context";
-import { getMenus } from "@/lib/drupal/get-menus";
+import { getMenu } from "@/lib/drupal/get-menus";
+import { MenuAvailable } from "@/lib/gql/graphql";
 import { getLocale } from "next-intl/server";
 
-export default async function Layout({
+export default async function PageLayout({
   children,
   languageLinks,
 }: {
@@ -12,11 +13,11 @@ export default async function Layout({
   languageLinks?: LanguageLinks;
 }) {
   const locale = await getLocale();
-  const menus = await getMenus({ locale });
+  const menu = await getMenu(MenuAvailable.Main, locale);
 
   return (
     <LanguageLinksProvider languageLinks={languageLinks}>
-      <Header menu={menus.main} />
+      <Header menu={menu} />
       <main className="grow bg-mischka" id="main-content">
         <div className="max-w-6xl px-6 py-8 mx-auto">{children}</div>
       </main>

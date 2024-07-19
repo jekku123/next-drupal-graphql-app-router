@@ -1,5 +1,5 @@
-import Layout from "@/components/layout";
 import { Node } from "@/components/node";
+import PageLayout from "@/components/page-layout";
 import {
   createLanguageLinks,
   getStandardLanguageLinks,
@@ -174,8 +174,8 @@ export default async function CustomPage({
   }
 
   return (
-    <Layout languageLinks={languageLinks}>
+    <PageLayout languageLinks={languageLinks}>
       <Node node={nodeEntity} />
-    </Layout>
+    </PageLayout>
   );
 }

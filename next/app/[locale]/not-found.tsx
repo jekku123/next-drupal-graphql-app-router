@@ -1,5 +1,5 @@
 import { HeadingPage } from "@/components/heading--page";
-import Layout from "@/components/layout";
+import PageLayout from "@/components/page-layout";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
@@ -12,7 +12,7 @@ export default async function NotFound() {
 
   return (
     <>
-      <Layout>
+      <PageLayout>
         <HeadingPage>{t("Page not found")}</HeadingPage>
         <p className="mt-8 text-lg">
           {t("The page you are looking for does not exist")}{" "}
@@ -20,7 +20,7 @@ export default async function NotFound() {
             {t("Go back to the homepage?")}
           </Link>
         </p>
-      </Layout>
+      </PageLayout>
     </>
   );
 }
