@@ -31,7 +31,7 @@ export default async function Listing({
       </ul>
       <div className="flex justify-center w-full mt-5">
         <PaginationController
-          pageRoot={"/articles-listing"}
+          pageRoot={"/all-articles"}
           currentPage={currentPage}
           totalPages={totalPages}
           query={query}
