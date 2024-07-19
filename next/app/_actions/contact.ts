@@ -70,6 +70,10 @@ export async function contactAction(values: ContactForm) {
         },
       };
     }
+
+    return {
+      success: true,
+    };
   } catch (error) {
     console.error(error.message);
 
