@@ -17,15 +17,8 @@ type ArticlesListingPageParams = {
 };
 
 export default async function AllArticlesPage({
-  locale,
-  searchParams,
-}: {
-  locale: string;
-  searchParams?: {
-    query?: string;
-    page?: string;
-  };
-}) {
+  params: { locale, searchParams },
+}: ArticlesListingPageParams) {
   unstable_setRequestLocale(locale);
   const t = await getTranslations();
 

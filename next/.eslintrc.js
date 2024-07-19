@@ -69,19 +69,6 @@ module.exports = {
         // Instead, `import { env } from "@/env"` to access environment variables.
         "n/no-process-env": ["error"],
 
-        "no-restricted-imports": [
-          "error",
-          {
-            paths: [
-              // Restrict i18n imports to ensure SSR compatibility.
-              {
-                name: "react-i18next",
-                message: 'Import from "next-i18next" instead.',
-              },
-            ],
-          },
-        ],
-
         // Allow unused variables only if they start with `_` or `err`.
         "no-unused-vars": "off",
         "@typescript-eslint/no-unused-vars": [
@@ -104,7 +91,7 @@ module.exports = {
               // Packages. Put `next`/`react`-related packages first.
               ["^next", "^@next", "^react", "^@?\\w"],
               // Internal paths - change these to match your project structure defined in tsconfig.json.
-              ["^@/(components|lib|pages|styles|types)(/.*|$)"],
+              ["^@/(components|lib|pages|app|styles|types)(/.*|$)"],
               // UI library imports.
               ["^@ui(/.*|$)"],
               // Parent imports. Put `..` last.
