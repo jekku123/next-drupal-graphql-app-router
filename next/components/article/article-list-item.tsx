@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
 import { formatDateTimestamp } from "@/lib/utils";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 interface ArticleListItemProps {
   article: FragmentArticleTeaserFragment;
@@ -14,8 +14,10 @@ interface ArticleListItemProps {
 
 export function ArticleListItem({ article }: ArticleListItemProps) {
   const t = useTranslations();
+  const locale = useLocale();
   const author = article.author?.name;
-  const date = formatDateTimestamp(article.created.timestamp, "en");
+  const date = formatDateTimestamp(article.created.timestamp, locale);
+
   return (
     <Link
       href={article.path}

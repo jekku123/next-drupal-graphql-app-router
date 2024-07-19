@@ -3,17 +3,17 @@ import Link from "next/link";
 
 import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
 import { formatDateTimestamp } from "@/lib/utils";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 interface ArticleTeaserProps {
   article: FragmentArticleTeaserFragment;
 }
 
 export async function ArticleTeaser({ article }: ArticleTeaserProps) {
   const t = await getTranslations();
+  const locale = await getLocale();
+  const date = formatDateTimestamp(article.created.timestamp, locale);
   const author = article.author?.name;
 
-  // TODO: locale..
-  const date = formatDateTimestamp(article.created.timestamp, "en");
   return (
     <Link
       href={article.path}

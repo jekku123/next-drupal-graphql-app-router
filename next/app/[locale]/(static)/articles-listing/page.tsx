@@ -1,11 +1,22 @@
 import { HeadingPage } from "@/components/heading--page";
+import { Metadata } from "next";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 import Listing from "./_components/listing";
 import { ListingSkeleton } from "./_components/listing-skeleton";
 import Search from "./_components/search";
 
-export default async function Page({
+type ArticlesListingPageParams = {
+  params: {
+    locale: string;
+    searchParams?: {
+      query?: string;
+      page?: string;
+    };
+  };
+};
+
+export default async function ArticlesListingPage({
   locale,
   searchParams,
 }: {
@@ -22,7 +33,8 @@ export default async function Page({
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
 
-  //   const totalPages = await fetchInvoicesPages(query);
+  // Maybe fetch here the total pages and pass it into the Pagination component here
+  // instead of fetching em in the Listing component so that Pagination can be shown always
 
   return (
     <>
@@ -35,4 +47,14 @@ export default async function Page({
       </Suspense>
     </>
   );
+}
+
+export async function generateMetadata({
+  params: { locale },
+}: ArticlesListingPageParams): Promise<Metadata> {
+  const t = await getTranslations();
+
+  return {
+    title: t("all-articles"),
+  };
 }

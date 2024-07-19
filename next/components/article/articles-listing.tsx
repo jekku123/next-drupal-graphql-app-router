@@ -3,13 +3,7 @@ import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
 import { getLocale, getTranslations } from "next-intl/server";
 import { ArticleTeaser } from "./article-teaser";
 
-export async function ArticlesListing({
-  listingId,
-  limit,
-}: {
-  listingId: string;
-  limit: number;
-}) {
+export async function ArticlesListing({ limit }: { limit: number }) {
   const locale = await getLocale();
   const t = await getTranslations();
 

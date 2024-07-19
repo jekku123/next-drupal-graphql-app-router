@@ -49,7 +49,7 @@ export async function PaginationController({
             className={
               prevEnabled
                 ? "cursor-pointer"
-                : "pointer-events-none cursor-not-allowed"
+                : "pointer-events-none cursor-not-allowed text-primary-200"
             }
           />
         </PaginationItem>
@@ -77,7 +77,8 @@ export async function PaginationController({
             title={t("search-next")}
             scroll={false}
             className={cn(
-              !nextEnabled && "pointer-events-none cursor-not-allowed",
+              !nextEnabled &&
+                "pointer-events-none cursor-not-allowed text-primary-200",
             )}
           />
         </PaginationItem>
