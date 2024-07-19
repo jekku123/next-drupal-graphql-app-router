@@ -13,7 +13,6 @@ export default async function Listing({
   const locale = await getLocale();
   const PAGE_SIZE = 3;
 
-  // const invoices = await fetchFilteredInvoices(query, currentPage);
   const { totalPages, articles } = await getLatestArticlesItems({
     limit: PAGE_SIZE,
     offset: currentPage ? PAGE_SIZE * (currentPage - 1) : 0,

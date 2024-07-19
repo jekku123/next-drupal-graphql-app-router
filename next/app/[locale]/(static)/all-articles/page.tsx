@@ -16,7 +16,7 @@ type ArticlesListingPageParams = {
   };
 };
 
-export default async function ArticlesListingPage({
+export default async function AllArticlesPage({
   locale,
   searchParams,
 }: {
