@@ -2,6 +2,7 @@ import { HeadingPage } from "@/components/heading--page";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 import Listing from "./_components/listing";
+import { ListingSkeleton } from "./_components/listing-skeleton";
 import Search from "./_components/search";
 
 export default async function Page({
@@ -29,7 +30,7 @@ export default async function Page({
         <HeadingPage>{t("all-articles")}</HeadingPage>
         <Search placeholder="Search.." />
       </div>
-      <Suspense key={query + currentPage} fallback={null}>
+      <Suspense key={query + currentPage} fallback={<ListingSkeleton />}>
         <Listing currentPage={currentPage} query={query} />
       </Suspense>
     </>

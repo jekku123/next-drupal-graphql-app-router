@@ -31,7 +31,7 @@ export async function PaginationController({
     prevPageHref,
     nextPageHref,
     pageNumberLinks,
-  } = getPaginationProps({
+  } = generatePaginationProps({
     pageRoot,
     totalPages,
     currentPage,
@@ -45,6 +45,7 @@ export async function PaginationController({
           <PaginationPrevious
             href={prevPageHref || ""}
             title={t("search-previous")}
+            scroll={false}
             className={
               prevEnabled
                 ? "cursor-pointer"
@@ -57,6 +58,7 @@ export async function PaginationController({
             <PaginationItem key={pageNumber}>
               <PaginationLink
                 href={href}
+                scroll={false}
                 isActive={pageNumber === currentPage}
                 className={
                   pageNumber !== currentPage
@@ -73,6 +75,7 @@ export async function PaginationController({
           <PaginationNext
             href={nextPageHref || ""}
             title={t("search-next")}
+            scroll={false}
             className={cn(
               !nextEnabled && "pointer-events-none cursor-not-allowed",
             )}
@@ -83,7 +86,7 @@ export async function PaginationController({
   );
 }
 
-export function getPaginationProps({
+export function generatePaginationProps({
   pageRoot,
   totalPages,
   currentPage,
