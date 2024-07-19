@@ -1,6 +1,6 @@
-import React from "react";
 import clsx from "clsx";
 import { cva } from "cva";
+import React from "react";
 
 export const buttonVariants = cva(
   "flex justify-center items-center border-2 rounded transition-colors duration-200 active:scale-[0.98] disabled:cursor-not-allowed",
@@ -27,6 +27,7 @@ export const buttonVariants = cva(
         ],
       },
       size: {
+        icon: "h-10 w-10",
         sm: "text-sm py-2 px-2.5",
         md: "text-md py-2.5 px-4",
         lg: "text-lg py-3 px-6",
@@ -38,7 +39,7 @@ export const buttonVariants = cva(
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "tertiary";
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "icon";
   children?: React.ReactNode;
   className?: string;
 }
