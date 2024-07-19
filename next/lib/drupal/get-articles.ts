@@ -8,12 +8,14 @@ type GetArticlesArgs = {
   limit?: number;
   offset?: number;
   locale?: string;
+  query?: string;
 };
 
 export const getArticles = async ({
   limit = 5,
   offset = 0,
   locale = siteConfig.defaultLocale,
+  query,
 }: GetArticlesArgs): Promise<{
   totalPages: number;
   nodes: FragmentArticleTeaserFragment[];
@@ -29,6 +31,7 @@ export const getArticles = async ({
         page: 0,
         pageSize: limit,
         offset: offset,
+        query: query,
       },
     );
 

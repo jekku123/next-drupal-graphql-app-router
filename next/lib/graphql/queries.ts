@@ -169,40 +169,12 @@ export const LISTING_ARTICLES = graphql(`
     $offset: Int = 0
     $pageSize: Int = 10
     $page: Int = 0
+    $query: String
   ) {
     articlesView(
       page: $page
       pageSize: $pageSize
-      filter: { langcode: $langcode, sticky: $sticky }
-      offset: $offset
-    ) {
-      results {
-        __typename
-        ...FragmentArticleTeaser
-      }
-      pageInfo {
-        offset
-        page
-        pageSize
-        total
-      }
-    }
-  }
-`);
-
-export const LISTING_ARTICLES_NEW = graphql(`
-  query ArticleListingNew(
-    $langcode: String = "en"
-    $sticky: Boolean
-    $offset: Int = 0
-    $pageSize: Int = 10
-    $page: Int = 0
-    $title: String
-  ) {
-    articlesViewNew(
-      page: $page
-      pageSize: $pageSize
-      filter: { langcode: $langcode, sticky: $sticky, title: $title }
+      filter: { langcode: $langcode, sticky: $sticky, title: $query }
       offset: $offset
     ) {
       results {

@@ -1,12 +1,12 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import { useEventListener } from "@/lib/hooks/use-event-listener";
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
 import type { MenuItemType, MenuType } from "@/types/graphql";
 
+import { usePathNameWithoutLocale } from "@/navigation";
 import { useLocale } from "next-intl";
 import {
   MenuBack,
@@ -21,7 +21,7 @@ import {
   MenuToggle,
   MenuTrigger,
 } from "./main-menu.components";
-import { isMenuItemActive } from "./main-menu.utils";
+import { generateLocalePath, isMenuItemActive } from "./main-menu.utils";
 
 interface MainMenuProps {
   menu?: MenuType;
@@ -31,6 +31,7 @@ interface MainMenuProps {
 
 export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
   const locale = useLocale();
+  const pathname = usePathNameWithoutLocale();
 
   const [didInit, setDidInit] = useState(false);
 
@@ -69,11 +70,9 @@ export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
 
   /* NEW ONE usingh next/navigation */
 
-  const pathname = usePathname();
-
   useEffect(() => {
     close();
-  }, [pathname]);
+  }, [pathname, locale]);
 
   useEffect(() => {
     // Prevent body scroll when menu is open
@@ -88,7 +87,12 @@ export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
       const didSetMenuAndSubmenu = menu?.items?.some((item) =>
         item.children?.some((subItem) =>
           subItem.children?.some((subSubItem) => {
-            if (isMenuItemActive(pathname, subSubItem.url)) {
+            if (
+              isMenuItemActive(
+                generateLocalePath(locale, pathname),
+                generateLocalePath(locale, subSubItem.url),
+              )
+            ) {
               setActiveMenu(item.id);
               setActiveSubmenu(subItem.id);
               return true;
@@ -106,7 +110,12 @@ export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
       // User is not on a page matching a submenu item, so try to find a matching top-level menu item
       menu?.items?.some((item) =>
         item.children?.some((subItem) => {
-          if (isMenuItemActive(pathname, subItem.url)) {
+          if (
+            isMenuItemActive(
+              generateLocalePath(locale, pathname),
+              generateLocalePath(locale, subItem.url),
+            )
+          ) {
             setActiveMenu(item.id);
             setActiveSubmenu(null);
             return true;

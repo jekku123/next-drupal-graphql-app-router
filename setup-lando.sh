@@ -12,7 +12,6 @@ commands=(
   "lando drush eshs"
   "lando drush cron"
   "lando npm i"
-  "lando npm run build"
 )
 
 last_successful_command=0
@@ -60,14 +59,14 @@ run_commands() {
     fi
   done
 
-  # All commands were successful. Remove the status file, show messages to the user, and start the frontend site.
+  # All commands were successful. Remove the status file, show messages to the user, and start the frontend site in dev mode.
   rm -f "$status_file"
   echo '🚀 All Done!'
   echo '↪️ Use this link to log into the backend as user 1:'
   lando drush uli
   echo '🏎️ Starting the frontend site in production mode...'
   echo '⚠️ Note: the site will be available at https://frontend.lndo.site/ in addition to the usual localhost:3000'
-  lando npm run start
+  lando npm run dev
 }
 
 # Check if the clean run option is set

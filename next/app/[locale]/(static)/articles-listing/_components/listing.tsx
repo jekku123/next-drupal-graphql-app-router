@@ -1,5 +1,5 @@
 import { ArticleListItem } from "@/components/article/article-list-item";
-import { getLatestArticlesItems2 } from "@/lib/drupal/get-articles2";
+import { getLatestArticlesItems } from "@/lib/drupal/get-articles";
 import { getLocale } from "next-intl/server";
 import { PaginationController } from "./pagination";
 
@@ -14,7 +14,7 @@ export default async function Listing({
   const PAGE_SIZE = 3;
 
   // const invoices = await fetchFilteredInvoices(query, currentPage);
-  const { totalPages, articles } = await getLatestArticlesItems2({
+  const { totalPages, articles } = await getLatestArticlesItems({
     limit: PAGE_SIZE,
     offset: currentPage ? PAGE_SIZE * (currentPage - 1) : 0,
     locale,
