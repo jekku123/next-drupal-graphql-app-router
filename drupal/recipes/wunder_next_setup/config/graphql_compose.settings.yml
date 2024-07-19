@@ -69,7 +69,7 @@ entity_config:
       enabled: true
   taxonomy_term:
     tags:
-      enabled: false
+      enabled: true
   user:
     user:
       enabled: true
