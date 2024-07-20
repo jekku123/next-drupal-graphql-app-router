@@ -65,12 +65,3 @@ export async function generateMetadataForNodeEntity({
 
   return metadata;
 }
-
-import type { Viewport } from "next";
-
-export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "cyan" },
-    { media: "(prefers-color-scheme: dark)", color: "black" },
-  ],
-};

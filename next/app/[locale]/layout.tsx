@@ -19,6 +19,10 @@ export function generateStaticParams() {
 export const viewport: Viewport = {
   width: "device-width, shrink-to-fit=no",
   initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "cyan" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
 };
 
 export default async function RootLayout({

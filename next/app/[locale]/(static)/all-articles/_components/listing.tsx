@@ -20,6 +20,8 @@ export default async function Listing({
     query,
   });
 
+  console.log("HELLO", query);
+
   return (
     <>
       <ul className="mt-4">

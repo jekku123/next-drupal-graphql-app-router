@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import LoginForm from "./form";
 
-// TODO: Check if calling the other thingy with empty metadat aactually returns something getMetaData()
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations();
   return {

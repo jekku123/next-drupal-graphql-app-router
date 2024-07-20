@@ -9,15 +9,26 @@ import Search from "./_components/search";
 type ArticlesListingPageParams = {
   params: {
     locale: string;
-    searchParams?: {
-      query?: string;
-      page?: string;
-    };
+  };
+  searchParams?: {
+    query?: string;
+    page?: string;
   };
 };
 
+export async function generateMetadata({
+  params: { locale },
+}: ArticlesListingPageParams): Promise<Metadata> {
+  const t = await getTranslations();
+
+  return {
+    title: t("all-articles"),
+  };
+}
+
 export default async function AllArticlesPage({
-  params: { locale, searchParams },
+  params: { locale },
+  searchParams,
 }: ArticlesListingPageParams) {
   unstable_setRequestLocale(locale);
   const t = await getTranslations();
@@ -29,6 +40,7 @@ export default async function AllArticlesPage({
   // Maybe fetch here the total pages and pass it into the Pagination component here
   // instead of fetching em in the Listing component so that Pagination can be shown always
 
+  console.log({ searchParams });
   return (
     <>
       <div className="flex items-center justify-between w-full">
@@ -40,14 +52,4 @@ export default async function AllArticlesPage({
       </Suspense>
     </>
   );
-}
-
-export async function generateMetadata({
-  params: { locale },
-}: ArticlesListingPageParams): Promise<Metadata> {
-  const t = await getTranslations();
-
-  return {
-    title: t("all-articles"),
-  };
 }
