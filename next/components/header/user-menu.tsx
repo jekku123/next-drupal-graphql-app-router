@@ -1,14 +1,13 @@
 "use client";
 
-import clsx from "clsx";
-import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
-import { useState } from "react";
-
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
+import { cn } from "@/lib/utils";
 import AccountIcon from "@/styles/icons/account-circle.svg";
+import { signOut, useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { Icons } from "../icons";
 
 export function UserMenu() {
@@ -46,7 +45,7 @@ export function UserMenu() {
           <AccountIcon className="inline-block w-6 h-6" />
         </button>
         <ul
-          className={clsx(
+          className={cn(
             "absolute z-50 mt-1 w-fit border border-finnishwinter bg-mischka",
             !isOpen && "hidden",
           )}
@@ -84,7 +83,7 @@ export function UserMenu() {
         <Icons.accountIcon className="inline-block w-6 h-6" />
       </button>
       <ul
-        className={clsx(
+        className={cn(
           "absolute z-50 mt-1 w-fit border border-finnishwinter bg-mischka",
           !isOpen && "hidden",
         )}

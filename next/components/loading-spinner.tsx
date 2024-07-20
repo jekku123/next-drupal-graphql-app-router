@@ -1,7 +1,7 @@
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
-export async function LoadingSpinner() {
-  const t = await getTranslations();
+export function LoadingSpinner() {
+  const t = useTranslations();
 
   return (
     <div className="grid place-items-center" role="status">

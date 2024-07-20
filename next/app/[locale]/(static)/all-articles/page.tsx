@@ -26,6 +26,8 @@ export async function generateMetadata({
   };
 }
 
+export const revalidate = 10;
+
 export default async function AllArticlesPage({
   params: { locale },
   searchParams,
@@ -40,7 +42,6 @@ export default async function AllArticlesPage({
   // Maybe fetch here the total pages and pass it into the Pagination component here
   // instead of fetching em in the Listing component so that Pagination can be shown always
 
-  console.log({ searchParams });
   return (
     <>
       <div className="flex items-center justify-between w-full">

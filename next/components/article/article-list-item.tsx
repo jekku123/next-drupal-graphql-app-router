@@ -1,11 +1,8 @@
-"use client";
-
-import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
 
 import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
-import { formatDateTimestamp } from "@/lib/utils";
+import { cn, formatDateTimestamp } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
 
 interface ArticleListItemProps {
@@ -21,7 +18,7 @@ export function ArticleListItem({ article }: ArticleListItemProps) {
   return (
     <Link
       href={article.path}
-      className={classNames(
+      className={cn(
         "relative mb-4 grid h-full rounded border p-4 transition-all hover:shadow-md",
         article.sticky
           ? "border-primary-100 bg-primary-50"

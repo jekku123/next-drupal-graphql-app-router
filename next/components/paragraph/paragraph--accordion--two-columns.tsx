@@ -1,6 +1,3 @@
-import clsx from "clsx";
-import Link from "next/link";
-
 import { FormattedText } from "@/components/formatted-text";
 import { HeadingParagraph } from "@/components/heading--paragraph";
 import { Paragraph } from "@/components/paragraph";
@@ -9,7 +6,9 @@ import {
   FragmentParagraphAccordionItemFragment,
   FragmentParagraphUnionFragment,
 } from "@/lib/gql/graphql";
+import Link from "next/link";
 
+import { cn } from "@/lib/utils";
 import { Accordion } from "@/ui/accordion";
 import { buttonVariants } from "@/ui/button";
 import { Icons } from "../icons";
@@ -31,7 +30,7 @@ export function ParagraphAccordionTwoColumns({
             <div className="flex items-center justify-center">
               <FormattedText
                 html={paragraph.accordionFormattedText.processed}
-                className={clsx(
+                className={cn(
                   "text-left text-md/xl text-scapaflow sm:text-lg",
                   paragraph.heading && "mt-4",
                 )}
@@ -42,7 +41,7 @@ export function ParagraphAccordionTwoColumns({
             <div className="flex items-center justify-center py-3">
               <Link
                 href={paragraph.primaryLink.url}
-                className={clsx(
+                className={cn(
                   buttonVariants({ variant: "primary" }),
                   "text-base mr-4 inline-flex max-w-sm px-5 py-3",
                 )}

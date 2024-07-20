@@ -1,11 +1,11 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import {
   BaseContainerProps,
   Rename,
 } from "@elastic/react-search-ui/lib/esm/types";
 import type { SearchContextState } from "@elastic/search-ui";
-import clsx from "clsx";
 import { useTranslations } from "next-intl";
 
 type PagingInfoContainerContext = Pick<
@@ -32,7 +32,7 @@ export function PagingInfoView({
   const t = useTranslations();
 
   return (
-    <div className={clsx(className, "text-sm")} {...rest}>
+    <div className={cn(className, "text-sm")} {...rest}>
       {t("search-showing")} <strong>{end}</strong> {t("search-out-of")}{" "}
       <strong>{totalResults}</strong>
       {searchTerm && (

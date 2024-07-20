@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 import { Icons } from "./icons";
 
 interface Logo {
@@ -40,8 +40,9 @@ const logos: Logo[] = [
   },
 ];
 
-export async function LogoStrip() {
-  const t = await getTranslations();
+export function LogoStrip() {
+  const t = useTranslations();
+
   return (
     <section>
       <span className="sr-only">{t("brand-logos")}</span>

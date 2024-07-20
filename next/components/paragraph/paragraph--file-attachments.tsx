@@ -1,9 +1,8 @@
-import clsx from "clsx";
-
 import { FormattedText } from "@/components/formatted-text";
 import { HeadingParagraph } from "@/components/heading--paragraph";
 import { Media } from "@/components/media";
 import type { FragmentParagraphFileAttachmentsFragment } from "@/lib/gql/graphql";
+import { cn } from "@/lib/utils";
 
 // TODO: Translations
 export function ParagraphFileAttachments({
@@ -21,7 +20,7 @@ export function ParagraphFileAttachments({
       {paragraph.fileAttachmentsParagraphFormattedText && (
         <FormattedText
           html={paragraph.fileAttachmentsParagraphFormattedText.processed}
-          className={clsx(
+          className={cn(
             "text-left text-md/xl text-scapaflow sm:text-lg",
             paragraph.fileAttachmentsParagraphHeading && "mt-4",
           )}

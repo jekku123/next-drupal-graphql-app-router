@@ -1,14 +1,13 @@
 "use client";
 
-import clsx from "clsx";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-
 import { locales } from "@/i18n";
 import { useLanguageLinks } from "@/lib/contexts/language-links-context";
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
+import { cn } from "@/lib/utils";
 import LanguageIcon from "@/styles/icons/language.svg";
 import { useLocale, useTranslations } from "next-intl";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 // TODO: LOCALE HANDLING FOR APP ROUTER
 export function LanguageSwitcher() {
@@ -41,7 +40,7 @@ export function LanguageSwitcher() {
         <LanguageIcon className="inline-block w-6 h-6" aria-hidden="true" />
       </button>
       <ul
-        className={clsx(
+        className={cn(
           "absolute z-50 mt-1 w-fit border border-finnishwinter bg-mischka",
           !isOpen && "hidden",
         )}

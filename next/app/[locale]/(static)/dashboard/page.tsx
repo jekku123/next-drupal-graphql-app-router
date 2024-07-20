@@ -30,6 +30,9 @@ export default async function DashboardPage({
   unstable_setRequestLocale(locale);
 
   const t = await getTranslations();
+
+  // This is not needed as middleware handles, so maybe make a function to
+  // fetch the submission and check the session in the function
   const session = await auth();
 
   if (!session) {

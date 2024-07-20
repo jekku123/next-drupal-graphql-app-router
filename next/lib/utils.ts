@@ -2,7 +2,6 @@ import { env } from "@/env";
 import clsx from "clsx";
 import { ClassValue } from "cva/types";
 import { twMerge } from "tailwind-merge";
-
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }

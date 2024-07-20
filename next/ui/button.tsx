@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "@/lib/utils";
 import { cva } from "cva";
 import React from "react";
 
@@ -51,7 +51,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     return (
       <button
-        className={clsx(buttonVariants({ variant, size }), className)}
+        className={cn(buttonVariants({ variant, size }), className)}
         ref={ref}
         {...props}
       >

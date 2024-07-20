@@ -1,5 +1,3 @@
-"use client";
-
 import { useTranslations } from "next-intl";
 
 export function ErrorRequired({
@@ -9,6 +7,7 @@ export function ErrorRequired({
 }) {
   const t = useTranslations();
   const translatedFieldLabel = t(fieldTranslatedLabelKey);
+
   return (
     <span role="alert" className="text-error">
       {t("field-is-required", { field: translatedFieldLabel })}

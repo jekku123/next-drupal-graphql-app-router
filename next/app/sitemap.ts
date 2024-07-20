@@ -16,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Get all languages from site config:
   const languages = Object.keys(siteConfig.locales);
   // Initialize the sitemap:
-  let sitemap = [];
+  let sitemap: MetadataRoute.Sitemap = [];
 
   // For each language, start fetching the nodes for the sitemap:
   for (const lang of languages) {

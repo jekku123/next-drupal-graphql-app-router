@@ -7,8 +7,10 @@ import { locales } from "@/i18n";
 import { getMenu } from "@/lib/drupal/get-menus";
 import { MenuAvailable } from "@/lib/gql/graphql";
 import { inter, overpass } from "@/styles/fonts";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
+
 import { getMessages, unstable_setRequestLocale } from "next-intl/server";
 
 import "styles/globals.css";
@@ -42,8 +44,8 @@ export default async function RootLayout({
     <html lang={locale}>
       <body>
         <NextAuthProvider session={session}>
-          <ReactQueryClientProvider>
-            <NextIntlClientProvider messages={messages}>
+          <NextIntlClientProvider messages={messages}>
+            <ReactQueryClientProvider>
               <Fonts>
                 <DraftAlert />
                 <div className="flex flex-col min-h-screen">
@@ -51,8 +53,9 @@ export default async function RootLayout({
                   <Footer menu={menu} />
                 </div>
               </Fonts>
-            </NextIntlClientProvider>
-          </ReactQueryClientProvider>
+              <ReactQueryDevtools />
+            </ReactQueryClientProvider>
+          </NextIntlClientProvider>
         </NextAuthProvider>
       </body>
     </html>

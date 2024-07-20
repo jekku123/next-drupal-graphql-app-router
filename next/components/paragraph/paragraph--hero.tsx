@@ -1,13 +1,12 @@
-import clsx from "clsx";
-import Link from "next/link";
-
 import { FormattedText } from "@/components/formatted-text";
 import { MediaImage } from "@/components/media/media--image";
 import type {
   FragmentMediaImageFragment,
   FragmentParagraphHeroFragment,
 } from "@/lib/gql/graphql";
+import Link from "next/link";
 
+import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/ui/button";
 import { Icons } from "../icons";
 
@@ -27,7 +26,7 @@ export function ParagraphHero({
           )}
           <FormattedText
             html={paragraph.formattedText.processed}
-            className={clsx(
+            className={cn(
               "mb-6 max-w-2xl text-left text-md/xl text-primary-600 sm:text-lg md:text-lg lg:mb-8 lg:text-xl",
               paragraph.formattedText && "mt-4",
             )}
@@ -36,7 +35,7 @@ export function ParagraphHero({
             {paragraph.primaryLink && (
               <Link
                 href={paragraph.primaryLink.url}
-                className={clsx(
+                className={cn(
                   buttonVariants({ variant: "primary" }),
                   "text-base mr-4 inline-flex px-5 py-3",
                 )}
@@ -52,7 +51,7 @@ export function ParagraphHero({
             {paragraph.secondaryLink && (
               <Link
                 href={paragraph.secondaryLink.url}
-                className={clsx(
+                className={cn(
                   buttonVariants({ variant: "secondary" }),
                   "text-base mt-3 inline-flex px-5 py-3 sm:mt-0",
                 )}

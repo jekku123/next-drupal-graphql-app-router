@@ -1,14 +1,10 @@
 import { HeadingPage } from "@/components/heading--page";
 import PageLayout from "@/components/page-layout";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 
-{
-  /* <Meta title={t("Page not found")} metatags={[]} /> */
-}
-
-export default async function NotFound() {
-  const t = await getTranslations();
+export default function NotFound() {
+  const t = useTranslations();
 
   return (
     <>

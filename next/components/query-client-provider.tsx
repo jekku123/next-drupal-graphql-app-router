@@ -1,8 +1,6 @@
 "use client";
 // Since QueryClientProvider relies on useContext under the hood, we have to put 'use client' on top
 
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
 import {
   isServer,
   QueryClient,
@@ -45,9 +43,6 @@ export default function ReactQueryClientProvider({ children }) {
   const queryClient = getQueryClient();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-      <ReactQueryDevtools />
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 }

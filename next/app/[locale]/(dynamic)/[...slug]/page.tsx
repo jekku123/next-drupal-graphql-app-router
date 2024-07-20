@@ -30,7 +30,7 @@ type PageParams = {
 
 export async function generateMetadata(
   { params: { locale, slug } }: PageParams,
-  _parent: ResolvingMetadata,
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const path = Array.isArray(slug) ? `/${slug?.join("/")}` : slug;
   const variables = { path, langcode: locale };
@@ -77,7 +77,6 @@ export async function generateStaticParams({ params: { locale } }) {
 }
 
 export const revalidate = 60;
-export const fetchCache = "";
 
 export default async function CustomPage({
   params: { locale, slug },

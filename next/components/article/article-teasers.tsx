@@ -1,10 +1,9 @@
-import clsx from "clsx";
+import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
 import Link from "next/link";
 
-import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
-
+import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/ui/button";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 import { Icons } from "../icons";
 import { ArticleTeaser } from "./article-teaser";
 
@@ -13,11 +12,8 @@ interface LatestArticlesProps {
   heading: string;
 }
 
-export async function ArticleTeasers({
-  articles,
-  heading,
-}: LatestArticlesProps) {
-  const t = await getTranslations();
+export function ArticleTeasers({ articles, heading }: LatestArticlesProps) {
+  const t = useTranslations();
 
   return (
     <>
@@ -36,7 +32,7 @@ export async function ArticleTeasers({
         {articles?.length && (
           <Link
             href="/all-articles"
-            className={clsx(
+            className={cn(
               buttonVariants({ variant: "primary" }),
               "text-base mr-4 mt-4 inline-flex px-5 py-3",
             )}

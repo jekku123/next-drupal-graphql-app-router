@@ -1,8 +1,6 @@
 "use client";
 
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-import clsx from "clsx";
-
 import NextLink from "next/link";
 import { Dispatch, forwardRef, ReactNode, SetStateAction } from "react";
 
@@ -11,6 +9,7 @@ import CloseIcon from "@/styles/icons/close.svg";
 import MenuIcon from "@/styles/icons/menu.svg";
 import type { MenuItemType } from "@/types/graphql";
 
+import { cn } from "@/lib/utils";
 import { usePathNameWithoutLocale } from "@/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import css from "./main-menu.module.css";
@@ -29,7 +28,7 @@ export function MenuContainer({
 }) {
   return (
     <div
-      className={clsx(
+      className={cn(
         css.mainMenu,
         "relative mx-auto max-w-6xl font-inter tracking-wide",
         !isOpen && "hidden",
@@ -52,7 +51,7 @@ export const MenuRoot = forwardRef<
     <NavigationMenu.Root
       ref={ref}
       {...props}
-      className={clsx(
+      className={cn(
         "absolute inset-0 z-40 overflow-y-auto overflow-x-hidden border-finnishwinter lg:bottom-auto lg:min-h-[75vh]",
         isOpen && "border-t bg-white lg:border",
         isOpen &&
@@ -87,7 +86,7 @@ export function MenuToggle({
 export function MenuList({ children, level }) {
   return (
     <NavigationMenu.List
-      className={clsx(
+      className={cn(
         "fixed inset-0 top-[72px] overflow-scroll border-b border-l border-r border-white bg-white lg:absolute lg:top-0 lg:w-[min(33.334vw,384px)] lg:overflow-visible",
         level === 0 &&
           "z-10 h-full lg:left-0 lg:z-auto lg:border-primary-600 lg:bg-primary-600",
@@ -140,7 +139,7 @@ export function MenuItem({
 }) {
   return (
     <NavigationMenu.Item
-      className={clsx(
+      className={cn(
         "flex items-stretch border-b border-finnishwinter bg-white font-bold tracking-widest text-primary-600 underline-offset-4 lg:border-b-0",
         isTopLevel && "lg:bg-primary-600 lg:text-mischka",
       )}
@@ -174,7 +173,7 @@ export function MenuLink({
     <NavigationMenu.Link
       asChild
       active={isActive}
-      className={clsx(
+      className={cn(
         !isTitle &&
           "aria-current:underline block h-full grow p-6 hover:underline data-[active]:underline",
         isTopLevel && "lg:ring-white",
@@ -196,7 +195,7 @@ export function MenuTrigger({
   return (
     <NavigationMenu.Trigger
       {...disableHoverEvents}
-      className={clsx(
+      className={cn(
         "flex w-20 shrink-0 items-center justify-center ring-inset ring-primary-700 hover:ring-2 lg:border-none",
         isTopLevel
           ? "lg:ring-white lg:aria-expanded:bg-white lg:aria-expanded:text-primary-600"
