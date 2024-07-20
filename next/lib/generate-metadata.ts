@@ -19,12 +19,12 @@ export async function generateMetadataForNodeEntity({
   metatags,
   context: { path, langcode },
 }: MetaProps): Promise<Metadata> {
+  const t = await getTranslations();
+
   const getTag = (str: string, key: AttributeKey = "name") => {
     const result = metatags?.find((tag) => tag.attributes?.[key] === str);
     return result?.attributes;
   };
-
-  const t = await getTranslations();
 
   // We want to determine if we need to add the language path
   // to create the canonical link for this page:
