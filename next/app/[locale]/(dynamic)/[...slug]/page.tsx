@@ -8,6 +8,7 @@ import {
   drupalClientPreviewer,
   drupalClientViewer,
 } from "@/lib/drupal/drupal-client";
+import { generateMetadataForNodeEntity } from "@/lib/generate-metadata";
 import { FragmentMetaTagFragment } from "@/lib/gql/graphql";
 import {
   GET_ENTITY_AT_DRUPAL_PATH,
@@ -17,7 +18,6 @@ import {
   extractEntityFromRouteQueryResult,
   extractRedirectFromRouteQueryResult,
 } from "@/lib/graphql/utils";
-import { extractMetaDataFromNodeEntity } from "@/lib/metadata";
 import { Metadata, ResolvingMetadata } from "next";
 import { getDraftData } from "next-drupal/draft";
 import { unstable_setRequestLocale } from "next-intl/server";
@@ -43,9 +43,10 @@ export async function generateMetadata(
   const nodeEntity = extractEntityFromRouteQueryResult(data);
 
   // Extract metadata from the node entity:
-  const metadata = await extractMetaDataFromNodeEntity({
+  const metadata = await generateMetadataForNodeEntity({
     title: nodeEntity.title,
     metatags: nodeEntity.metatag as FragmentMetaTagFragment[],
+    context: variables,
   });
 
   return metadata;
@@ -74,6 +75,9 @@ export async function generateStaticParams({ params: { locale } }) {
     slug: path.replace(`/${locale}/`, "").split("/").filter(Boolean),
   }));
 }
+
+export const revalidate = 60;
+export const fetchCache = "";
 
 export default async function CustomPage({
   params: { locale, slug },
@@ -122,39 +126,40 @@ export default async function CustomPage({
   // In this case, the draftData will contain the resourceVersion property,
   // we can use that in combination with the node id to fetch the correct revision
   // This means that we will need to do a second request to Drupal.
-  const draftData = getDraftData();
+  if (isDraftMode) {
+    const draftData = getDraftData();
 
-  if (
-    isDraftMode &&
-    draftData &&
-    typeof draftData === "object" &&
-    draftData.resourceVersion &&
-    // If the resourceVersion is "rel:latest-version", we don't need to fetch the revision:
-    draftData.resourceVersion !== "rel:latest-version"
-  ) {
-    const revisionId = draftData.resourceVersion.split(":").slice(1);
-    const revisionPath = `/node/${nodeEntity.id}/revisions/${revisionId}/view`;
-    // Get the node id from the entity we already have:
-    const revisionRouteQueryResult = await drupalClient.doGraphQlRequest(
-      GET_ENTITY_AT_DRUPAL_PATH,
+    if (
+      draftData &&
+      typeof draftData === "object" &&
+      draftData.resourceVersion &&
+      // If the resourceVersion is "rel:latest-version", we don't need to fetch the revision:
+      draftData.resourceVersion !== "rel:latest-version"
+    ) {
+      // Get the node id from the entity we already have:
+      const revisionId = draftData.resourceVersion.split(":").slice(1);
+      const revisionPath = `/node/${nodeEntity.id}/revisions/${revisionId}/view`;
+      const revisionRouteQueryResult = await drupalClient.doGraphQlRequest(
+        GET_ENTITY_AT_DRUPAL_PATH,
 
-      {
-        path: revisionPath,
-        langcode: locale,
-      },
-    );
+        {
+          path: revisionPath,
+          langcode: locale,
+        },
+      );
 
-    const revisedNodeEntity = extractEntityFromRouteQueryResult(
-      revisionRouteQueryResult,
-    );
+      const revisedNodeEntity = extractEntityFromRouteQueryResult(
+        revisionRouteQueryResult,
+      );
 
-    // If we can't find the revision, return 404:
-    if (!revisedNodeEntity) {
-      notFound();
+      // If we can't find the revision, return 404:
+      if (!revisedNodeEntity) {
+        notFound();
+      }
+
+      // Use the revised node entity for the rest of the page:
+      nodeEntity = revisedNodeEntity;
     }
-
-    // Use the revised node entity for the rest of the page:
-    nodeEntity = revisedNodeEntity;
   }
 
   // Unless we are in draft mode, return 404 if the node is set to unpublished:
@@ -163,15 +168,13 @@ export default async function CustomPage({
   }
 
   // Add information about possible other language versions of this node.
-  let languageLinks;
-
   // Not all node types necessarily have translations enabled,
   // if so, only show the standard language links.
-  if ("translations" in nodeEntity) {
-    languageLinks = createLanguageLinks(nodeEntity.translations);
-  } else {
-    languageLinks = getStandardLanguageLinks();
-  }
+
+  const languageLinks =
+    "translations" in nodeEntity
+      ? createLanguageLinks(nodeEntity.translations)
+      : getStandardLanguageLinks();
 
   return (
     <PageLayout languageLinks={languageLinks}>

@@ -7,6 +7,7 @@ import { locales } from "@/i18n";
 import { getMenu } from "@/lib/drupal/get-menus";
 import { MenuAvailable } from "@/lib/gql/graphql";
 import { inter, overpass } from "@/styles/fonts";
+import { Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, unstable_setRequestLocale } from "next-intl/server";
 
@@ -15,6 +16,10 @@ import "styles/globals.css";
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
+export const viewport: Viewport = {
+  width: "device-width, shrink-to-fit=no",
+  initialScale: 1,
+};
 
 export default async function RootLayout({
   children,

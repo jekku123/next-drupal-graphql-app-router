@@ -2,41 +2,39 @@ import { FragmentMetaTagFragment } from "@/lib/gql/graphql";
 
 import { env } from "@/env";
 import { defaultLocale } from "@/i18n";
-import { getLocale, getTranslations } from "next-intl/server";
+import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 interface MetaProps {
   title?: string;
-  path?: string;
+  context: { path: string; langcode: string };
   metatags?: FragmentMetaTagFragment[];
 }
 
 type AttributeKey = keyof NonNullable<FragmentMetaTagFragment>["attributes"];
 
 // todo: this should handle more meta tags, e.g. location, keywords, etc (and maybe generally arbitrary meta tags?)
-export async function extractMetaDataFromNodeEntity({
+export async function generateMetadataForNodeEntity({
   title,
   metatags,
-}: MetaProps) {
+  context: { path, langcode },
+}: MetaProps): Promise<Metadata> {
   const getTag = (str: string, key: AttributeKey = "name") => {
     const result = metatags?.find((tag) => tag.attributes?.[key] === str);
     return result?.attributes;
   };
 
   const t = await getTranslations();
-  const locale = await getLocale();
-
-  // TODO: THIS IS NOT WORKING in app router, fix the asPath thingy
-  const router: any = {};
 
   // We want to determine if we need to add the language path
   // to create the canonical link for this page:
-  const languagePathFragment = locale === defaultLocale ? "" : `/${locale}`;
+  const languagePathFragment = langcode === defaultLocale ? "" : `/${langcode}`;
 
   const data = {
     title: getTag("title")?.content ?? title,
     description: getTag("description")?.content ?? t("meta-site-description"),
     canonical: `${env.NEXT_PUBLIC_FRONTEND_URL}${languagePathFragment}${
-      router.asPath !== "/" ? router.asPath : ""
+      path !== "/" ? path : ""
     }`,
     // imageSrc:
     //   getTag("image_src", "rel")?.href ||
@@ -50,12 +48,12 @@ export async function extractMetaDataFromNodeEntity({
   const metadata = {
     title: computedTitle,
     description: data.description,
-    canonical: data.canonical,
     openGraph: {
       title: computedTitle,
       description: data.description,
       type: "website",
       url: data.canonical,
+      siteName: t("meta-site-name"),
       //   images: [
       //     {
       //       url: data.imageSrc ?? "",
@@ -63,13 +61,16 @@ export async function extractMetaDataFromNodeEntity({
       //     },
       //   ]
     },
-    additionalMetaTags: [
-      {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1, shrink-to-fit=no",
-      },
-    ],
-  };
+  } satisfies Metadata;
 
   return metadata;
 }
+
+import type { Viewport } from "next";
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "cyan" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+};

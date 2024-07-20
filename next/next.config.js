@@ -4,7 +4,6 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
   // Only generate standalone output in circle ci:
   output: process.env.CIRCLECI ? "standalone" : undefined,
   poweredByHeader: false,

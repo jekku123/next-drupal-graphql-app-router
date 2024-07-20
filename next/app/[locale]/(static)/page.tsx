@@ -6,10 +6,10 @@ import { Node } from "@/components/node";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client";
 import { getArticleTeasers } from "@/lib/drupal/get-article-teasers";
 
+import { generateMetadataForNodeEntity } from "@/lib/generate-metadata";
 import { FragmentMetaTagFragment } from "@/lib/gql/graphql";
 import { GET_ENTITY_AT_DRUPAL_PATH } from "@/lib/graphql/queries";
 import { extractEntityFromRouteQueryResult } from "@/lib/graphql/utils";
-import { extractMetaDataFromNodeEntity } from "@/lib/metadata";
 import { Divider } from "@/ui/divider";
 import { Metadata } from "next";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
@@ -25,7 +25,7 @@ export async function generateMetadata({
 }: FrontpageParams): Promise<Metadata> {
   const variables = {
     // This works because it matches the pathauto pattern for the Frontpage content type defined in Drupal:
-    path: `frontpage-${locale}`,
+    path: `/frontpage-${locale}`,
     langcode: locale,
   };
 
@@ -36,9 +36,10 @@ export async function generateMetadata({
 
   let nodeEntity = extractEntityFromRouteQueryResult(data);
 
-  const metadata = await extractMetaDataFromNodeEntity({
+  const metadata = await generateMetadataForNodeEntity({
     title: nodeEntity.title,
     metatags: nodeEntity.metatag as FragmentMetaTagFragment[],
+    context: variables,
   });
 
   return metadata;
