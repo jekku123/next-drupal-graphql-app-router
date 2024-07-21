@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { getTranslations } from "next-intl/server";
 
 import {
@@ -46,11 +45,7 @@ export async function PaginationController({
             href={prevPageHref || ""}
             title={t("search-previous")}
             scroll={false}
-            className={
-              prevEnabled
-                ? "cursor-pointer"
-                : "pointer-events-none cursor-not-allowed text-primary-200"
-            }
+            isEnabled={prevEnabled}
           />
         </PaginationItem>
         <div className="flex items-center gap-2">
@@ -60,11 +55,7 @@ export async function PaginationController({
                 href={href}
                 scroll={false}
                 isActive={pageNumber === currentPage}
-                className={
-                  pageNumber !== currentPage
-                    ? "cursor-pointer"
-                    : "pointer-events-none cursor-not-allowed"
-                }
+                isEnabled={pageNumber !== currentPage}
               >
                 {pageNumber}
               </PaginationLink>
@@ -76,10 +67,7 @@ export async function PaginationController({
             href={nextPageHref || ""}
             title={t("search-next")}
             scroll={false}
-            className={cn(
-              !nextEnabled &&
-                "pointer-events-none cursor-not-allowed text-primary-200",
-            )}
+            isEnabled={nextEnabled}
           />
         </PaginationItem>
       </PaginationContent>

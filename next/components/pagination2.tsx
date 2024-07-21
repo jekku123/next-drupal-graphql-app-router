@@ -37,12 +37,14 @@ PaginationItem.displayName = "PaginationItem";
 
 type PaginationLinkProps = {
   isActive?: boolean;
+  isEnabled?: boolean;
 } & Pick<ButtonProps, "size"> &
   React.ComponentProps<typeof Link>;
 
 const PaginationLink = ({
   className,
   isActive,
+  isEnabled = true,
   size = "icon",
   ...props
 }: PaginationLinkProps) => (
@@ -53,6 +55,7 @@ const PaginationLink = ({
         variant: isActive ? "primary" : "tertiary",
         size,
       }),
+      !isEnabled && "pointer-events-none cursor-not-allowed",
       className,
     )}
     {...props}
@@ -64,12 +67,14 @@ const PaginationPrevious = ({
   className,
   size = "md",
   title,
+  isEnabled = true,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to previous page"
-    className={cn("gap-1 pl-2.5", className)}
+    className={cn("gap-1 pl-2.5", !isEnabled && "text-primary-200", className)}
     size={size}
+    isEnabled
     {...props}
   >
     <Icons.arrowIcon className="w-6 h-6 mr-2 rotate-90" aria-hidden />
@@ -82,11 +87,12 @@ const PaginationNext = ({
   className,
   size = "md",
   title,
+  isEnabled = true,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to next page"
-    className={cn("gap-1 pr-2.5", className)}
+    className={cn("gap-1 pr-2.5", !isEnabled && "text-primary-200", className)}
     size={size}
     {...props}
   >

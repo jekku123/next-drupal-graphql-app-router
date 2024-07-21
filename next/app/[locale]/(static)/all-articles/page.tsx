@@ -44,7 +44,7 @@ export default async function AllArticlesPage({
 
   return (
     <>
-      <div className="flex items-center justify-between w-full">
+      <div className="flex flex-col items-start justify-between w-full gap-2 sm:flex-row sm:items-center sm:gap-0">
         <HeadingPage>{t("all-articles")}</HeadingPage>
         <Search placeholder="Search.." />
       </div>
