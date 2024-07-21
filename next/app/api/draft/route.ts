@@ -1,4 +1,4 @@
-import { drupalClientPreviewer } from "@/lib/drupal/drupal-client";
+import { drupalClientPreviewer } from "@/lib/drupal/drupal-client-previewer";
 import { enableDraftMode } from "next-drupal/draft";
 import type { NextRequest } from "next/server";
 

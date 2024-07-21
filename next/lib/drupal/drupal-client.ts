@@ -7,6 +7,13 @@ import pRetry, { type Options } from "p-retry";
 
 import { env } from "@/env";
 
+export interface IGraphQlDrupalClient extends NextDrupalBase {
+  doGraphQlRequest<T>(
+    query: TypedDocumentNode<T> | RequestDocument,
+    variables?: Variables,
+  ): Promise<ReturnType<typeof request<T, Variables>>>;
+}
+
 const RETRY_OPTIONS: Options = {
   retries: env.NODE_ENV === "development" ? 1 : 5,
   onFailedAttempt: ({ attemptNumber, retriesLeft }) => {
@@ -16,13 +23,20 @@ const RETRY_OPTIONS: Options = {
   },
 } as const;
 
-const createGraphQlDrupalClient = (clientId: string, clientSecret: string) => {
-  class GraphQlDrupalClient extends NextDrupalBase {
+export const createGraphQlDrupalClient = (
+  clientId: string,
+  clientSecret: string,
+) => {
+  class GraphQlDrupalClient
+    extends NextDrupalBase
+    implements IGraphQlDrupalClient
+  {
     async doGraphQlRequest<T>(
       query: TypedDocumentNode<T> | RequestDocument,
       variables?: Variables,
     ): Promise<ReturnType<typeof request<T, Variables>>> {
       const url = this.buildUrl("/graphql").toString();
+
       const headers = {
         authorization: `Bearer ${(await this.getAccessToken()).access_token}`,
       };
@@ -42,18 +56,3 @@ const createGraphQlDrupalClient = (clientId: string, clientSecret: string) => {
     },
   });
 };
-
-// This instance of the client will connect to the Drupal API using a consumer that
-// is associated with a role with "regular" permissions. It should be used by default.
-export const drupalClientViewer = createGraphQlDrupalClient(
-  env.DRUPAL_CLIENT_VIEWER_ID,
-  env.DRUPAL_CLIENT_VIEWER_SECRET,
-);
-
-// This instance of the client will connect to the Drupal API using a consumer
-// which is associated with a role with additional permissions. Use this instance
-// when you need to get data for unpublished nodes, like in previews.
-export const drupalClientPreviewer = createGraphQlDrupalClient(
-  env.DRUPAL_CLIENT_ID,
-  env.DRUPAL_CLIENT_SECRET,
-);

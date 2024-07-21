@@ -1,5 +1,5 @@
 import { Node } from "@/components/node";
-import { drupalClientViewer } from "@/lib/drupal/drupal-client";
+import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 import { getNodeQueryResult } from "@/lib/drupal/get-node";
 import { generateMetadataForNodeEntity } from "@/lib/generate-metadata";
 import { FragmentMetaTagFragment } from "@/lib/gql/graphql";
@@ -59,9 +59,9 @@ export async function generateStaticParams({ params: { locale } }) {
     ...(paths?.nodeArticles?.nodes || []),
   ];
 
-  // To create the params object for each path, we need to remove the locale prefix from the path: /en/path -> path
-  // and split the path into an array of slugs.
-  // Example: /en/articles/article-1 -> { slug: ["articles", "article-1"] }
+  // Drupal returns the paths with the locale prefix, e.g. "/en/about".
+  // We need to remove the locale prefix and split the path into an array of slugs.
+  // e.g. "/en/articles/article-1" -> { slug: ["articles", "article-1"] }
   return pathsArray.map(({ path }) => ({
     slug: path.replace(`/${locale}/`, "").split("/"),
   }));
@@ -79,7 +79,8 @@ export default async function CustomPage({
   // Are we in Next.js draft mode?
   const isDraftMode = draftMode().isEnabled;
 
-  // Get the node entity from Drupal. We tell the function if we are in draft mode so it can use the correct client:
+  // Get the node entity from Drupal. We tell the function if we are in draft mode so it can use the correct client
+  // in the getNodeQueryResult function.
   const data = await getNodeQueryResult(path, locale, isDraftMode);
 
   // If the data contains a RedirectResponse, we redirect to the path:

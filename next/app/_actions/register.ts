@@ -1,6 +1,6 @@
 "use server";
 
-import { drupalClientViewer } from "@/lib/drupal/drupal-client";
+import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 import { getLocale } from "next-intl/server";
 
 export async function registerAction(values: { name: string; email: string }) {

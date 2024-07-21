@@ -1,8 +1,8 @@
 import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
 
+import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 import siteConfig from "@/site.config";
 import { LISTING_ARTICLES } from "../graphql/queries";
-import { drupalClientViewer } from "./drupal-client";
 
 type GetArticlesArgs = {
   limit?: number;

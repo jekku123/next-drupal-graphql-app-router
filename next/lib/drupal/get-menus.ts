@@ -1,6 +1,6 @@
 import { GetStaticPropsContext } from "next";
 
-import { drupalClientViewer } from "@/lib/drupal/drupal-client";
+import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 
 import { MenuAvailable } from "../gql/graphql";
 import { GET_MENU } from "../graphql/queries";

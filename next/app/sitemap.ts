@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 
-import { drupalClientViewer } from "@/lib/drupal/drupal-client";
+import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 import { GET_SITEMAP_NODES } from "@/lib/graphql/queries";
 import {
   addSitemapLanguageVersionsOfFrontpage,

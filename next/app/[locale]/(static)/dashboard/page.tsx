@@ -3,7 +3,7 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { HeadingPage } from "@/components/heading--page";
 import { redirectExpiredSessionToLoginPage } from "@/lib/auth/redirect-expired-login";
-import { drupalClientViewer } from "@/lib/drupal/drupal-client";
+import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 import { formatDate } from "@/lib/utils";
 import {
   isWebformSubmissionsListEmpty,

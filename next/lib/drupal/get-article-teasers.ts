@@ -1,7 +1,7 @@
+import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 import siteConfig from "@/site.config";
 import { FragmentArticleTeaserFragment } from "../gql/graphql";
 import { LISTING_ARTICLES } from "../graphql/queries";
-import { drupalClientViewer } from "./drupal-client";
 
 export async function getArticleTeasers({
   limit = 10,

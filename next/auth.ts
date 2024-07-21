@@ -3,7 +3,7 @@ import type { NextAuthOptions } from "next-auth";
 import NextAuth, { getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-import { drupalClientViewer } from "@/lib/drupal/drupal-client";
+import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 
 import { env } from "@/env";
 import {

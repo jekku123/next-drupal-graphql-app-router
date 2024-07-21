@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { HeadingPage } from "@/components/heading--page";
-import { drupalClientViewer } from "@/lib/drupal/drupal-client";
+import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 import {
   validateAndCleanupWebformSubmission,
   WebformSubmissionRaw,

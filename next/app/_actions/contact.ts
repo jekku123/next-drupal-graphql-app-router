@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@/auth";
-import { drupalClientViewer } from "@/lib/drupal/drupal-client";
+import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 import { ContactForm, ContactFormSchema } from "@/lib/zod/contact-form";
 import { getLocale } from "next-intl/server";
 
