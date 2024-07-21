@@ -1,19 +1,9 @@
 import { Node } from "@/components/node";
-import PageLayout from "@/components/page-layout";
-import {
-  createLanguageLinks,
-  getStandardLanguageLinks,
-} from "@/lib/contexts/language-links";
-import {
-  drupalClientPreviewer,
-  drupalClientViewer,
-} from "@/lib/drupal/drupal-client";
+import { drupalClientViewer } from "@/lib/drupal/drupal-client";
+import { getNodeQueryResult } from "@/lib/drupal/get-node";
 import { generateMetadataForNodeEntity } from "@/lib/generate-metadata";
 import { FragmentMetaTagFragment } from "@/lib/gql/graphql";
-import {
-  GET_ENTITY_AT_DRUPAL_PATH,
-  GET_STATIC_PATHS,
-} from "@/lib/graphql/queries";
+import { GET_STATIC_PATHS } from "@/lib/graphql/queries";
 import {
   extractEntityFromRouteQueryResult,
   extractRedirectFromRouteQueryResult,
@@ -33,20 +23,22 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const path = Array.isArray(slug) ? `/${slug?.join("/")}` : slug;
-  const variables = { path, langcode: locale };
 
-  // Fetch the node entity for the current page.
-  const data = await drupalClientViewer.doGraphQlRequest(
-    GET_ENTITY_AT_DRUPAL_PATH,
-    variables,
-  );
+  // Fetch the node entity from Drupal used to generate metadata.
+  // Here we need to pass false as the third argument match the parameters
+  // sent to the function in the page.tsx This ensures the react cache() is used
+  // and only one request is made for the node across the page and layout components when not in draft mode.
+  const data = await getNodeQueryResult(path, locale, false);
   const nodeEntity = extractEntityFromRouteQueryResult(data);
 
-  // Extract metadata from the node entity:
+  // Generate metadata for the node entity.:
   const metadata = await generateMetadataForNodeEntity({
     title: nodeEntity.title,
     metatags: nodeEntity.metatag as FragmentMetaTagFragment[],
-    context: variables,
+    context: {
+      path,
+      locale,
+    },
   });
 
   return metadata;
@@ -70,12 +62,12 @@ export async function generateStaticParams({ params: { locale } }) {
   // To create the params object for each path, we need to remove the locale prefix from the path: /en/path -> path
   // and split the path into an array of slugs.
   // Example: /en/articles/article-1 -> { slug: ["articles", "article-1"] }
-
   return pathsArray.map(({ path }) => ({
-    slug: path.replace(`/${locale}/`, "").split("/").filter(Boolean),
+    slug: path.replace(`/${locale}/`, "").split("/"),
   }));
 }
 
+// Revalidate the page every 60 seconds.
 export const revalidate = 60;
 
 export default async function CustomPage({
@@ -83,18 +75,13 @@ export default async function CustomPage({
 }: PageParams) {
   unstable_setRequestLocale(locale);
   const path = Array.isArray(slug) ? `/${slug?.join("/")}` : slug;
-  const variables = { path, langcode: locale };
 
   // Are we in Next.js draft mode?
   const isDraftMode = draftMode().isEnabled;
 
-  // Get the node entity from Drupal.
-  const drupalClient = isDraftMode ? drupalClientPreviewer : drupalClientViewer;
+  // Get the node entity from Drupal. We tell the function if we are in draft mode so it can use the correct client:
+  const data = await getNodeQueryResult(path, locale, isDraftMode);
 
-  const data = await drupalClient.doGraphQlRequest(
-    GET_ENTITY_AT_DRUPAL_PATH,
-    variables,
-  );
   // If the data contains a RedirectResponse, we redirect to the path:
   const redirectResult = extractRedirectFromRouteQueryResult(data);
 
@@ -138,18 +125,14 @@ export default async function CustomPage({
       // Get the node id from the entity we already have:
       const revisionId = draftData.resourceVersion.split(":").slice(1);
       const revisionPath = `/node/${nodeEntity.id}/revisions/${revisionId}/view`;
-      const revisionRouteQueryResult = await drupalClient.doGraphQlRequest(
-        GET_ENTITY_AT_DRUPAL_PATH,
 
-        {
-          path: revisionPath,
-          langcode: locale,
-        },
+      const revisionData = await getNodeQueryResult(
+        revisionPath,
+        locale,
+        isDraftMode,
       );
 
-      const revisedNodeEntity = extractEntityFromRouteQueryResult(
-        revisionRouteQueryResult,
-      );
+      const revisedNodeEntity = extractEntityFromRouteQueryResult(revisionData);
 
       // If we can't find the revision, return 404:
       if (!revisedNodeEntity) {
@@ -166,18 +149,5 @@ export default async function CustomPage({
     notFound();
   }
 
-  // Add information about possible other language versions of this node.
-  // Not all node types necessarily have translations enabled,
-  // if so, only show the standard language links.
-
-  const languageLinks =
-    "translations" in nodeEntity
-      ? createLanguageLinks(nodeEntity.translations)
-      : getStandardLanguageLinks();
-
-  return (
-    <PageLayout languageLinks={languageLinks}>
-      <Node node={nodeEntity} />
-    </PageLayout>
-  );
+  return <Node node={nodeEntity} />;
 }

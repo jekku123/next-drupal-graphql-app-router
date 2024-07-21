@@ -7,7 +7,7 @@ import { getTranslations } from "next-intl/server";
 
 interface MetaProps {
   title?: string;
-  context: { path: string; langcode: string };
+  context: { path: string; locale: string };
   metatags?: FragmentMetaTagFragment[];
 }
 
@@ -17,7 +17,7 @@ type AttributeKey = keyof NonNullable<FragmentMetaTagFragment>["attributes"];
 export async function generateMetadataForNodeEntity({
   title,
   metatags,
-  context: { path, langcode },
+  context: { path, locale },
 }: MetaProps): Promise<Metadata> {
   const t = await getTranslations();
 
@@ -28,7 +28,7 @@ export async function generateMetadataForNodeEntity({
 
   // We want to determine if we need to add the language path
   // to create the canonical link for this page:
-  const languagePathFragment = langcode === defaultLocale ? "" : `/${langcode}`;
+  const languagePathFragment = locale === defaultLocale ? "" : `/${locale}`;
 
   const data = {
     title: getTag("title")?.content ?? title,

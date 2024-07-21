@@ -3,12 +3,11 @@ import { ContactList } from "@/components/contact-list";
 import { ContactForm } from "@/components/forms/contact-form";
 import { LogoStrip } from "@/components/logo-strip";
 import { Node } from "@/components/node";
-import { drupalClientViewer } from "@/lib/drupal/drupal-client";
 import { getArticleTeasers } from "@/lib/drupal/get-article-teasers";
+import { getNodeQueryResult } from "@/lib/drupal/get-node";
 
 import { generateMetadataForNodeEntity } from "@/lib/generate-metadata";
 import { FragmentMetaTagFragment } from "@/lib/gql/graphql";
-import { GET_ENTITY_AT_DRUPAL_PATH } from "@/lib/graphql/queries";
 import { extractEntityFromRouteQueryResult } from "@/lib/graphql/utils";
 import { Divider } from "@/ui/divider";
 import { Metadata } from "next";
@@ -23,23 +22,18 @@ type FrontpageParams = {
 export async function generateMetadata({
   params: { locale },
 }: FrontpageParams): Promise<Metadata> {
-  const variables = {
-    // This works because it matches the pathauto pattern for the Frontpage content type defined in Drupal:
-    path: `/frontpage-${locale}`,
-    langcode: locale,
-  };
+  const path = `/frontpage-${locale}`;
 
-  const data = await drupalClientViewer.doGraphQlRequest(
-    GET_ENTITY_AT_DRUPAL_PATH,
-    variables,
-  );
-
+  const data = await getNodeQueryResult(path, locale);
   let nodeEntity = extractEntityFromRouteQueryResult(data);
 
   const metadata = await generateMetadataForNodeEntity({
     title: nodeEntity.title,
     metatags: nodeEntity.metatag as FragmentMetaTagFragment[],
-    context: variables,
+    context: {
+      path,
+      locale,
+    },
   });
 
   return metadata;
@@ -51,34 +45,24 @@ export default async function FrontPage({
   params: { locale },
 }: FrontpageParams) {
   unstable_setRequestLocale(locale);
-
   const t = await getTranslations();
 
-  const variables = {
-    // This works because it matches the pathauto pattern for the Frontpage content type defined in Drupal:
-    path: `frontpage-${locale}`,
-    langcode: locale,
-  };
+  // This works because it matches the pathauto pattern for the Frontpage content type defined in Drupal
+  const path = `/frontpage-${locale}`;
 
-  const data = await drupalClientViewer.doGraphQlRequest(
-    GET_ENTITY_AT_DRUPAL_PATH,
-    variables,
-  );
-
+  const data = await getNodeQueryResult(path, locale);
   const frontpage = extractEntityFromRouteQueryResult(data);
 
   if (!frontpage || !(frontpage.__typename === "NodeFrontpage")) {
     return notFound();
   }
 
-  const isDraftMode = draftMode().isEnabled;
-
-  // Unless we are in preview, return 404 if the node is set to unpublished:
-  if (!isDraftMode && frontpage.status !== true) {
+  // Unless we are in draftMode, return 404 if the node is set to unpublished:
+  if (!draftMode().isEnabled && frontpage.status !== true) {
     notFound();
   }
 
-  const articles = await getArticleTeasers({
+  const articleTeasers = await getArticleTeasers({
     limit: 3,
     locale,
     sticky: true,
@@ -90,7 +74,10 @@ export default async function FrontPage({
       <Divider className="max-w-4xl" />
       <ContactForm />
       <Divider className="max-w-4xl" />
-      <ArticleTeasers heading={t("promoted-articles")} articles={articles} />
+      <ArticleTeasers
+        heading={t("promoted-articles")}
+        articles={articleTeasers}
+      />
       <ContactList />
       <LogoStrip />
     </>
