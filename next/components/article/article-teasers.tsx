@@ -1,6 +1,6 @@
 import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
-import Link from "next/link";
 
+import { LinkWithLocale } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/ui/button";
 import { useTranslations } from "next-intl";
@@ -30,7 +30,7 @@ export function ArticleTeasers({ articles, heading }: LatestArticlesProps) {
       <div className="flex items-center justify-center">
         {!articles?.length && <p className="py-4">{t("no-content-found")}</p>}
         {articles?.length && (
-          <Link
+          <LinkWithLocale
             href="/all-articles"
             className={cn(
               buttonVariants({ variant: "primary" }),
@@ -39,7 +39,7 @@ export function ArticleTeasers({ articles, heading }: LatestArticlesProps) {
           >
             {t("all-articles")}
             <Icons.arrowIcon aria-hidden className="w-6 h-6 ml-3 -rotate-90" />
-          </Link>
+          </LinkWithLocale>
         )}
       </div>
     </>

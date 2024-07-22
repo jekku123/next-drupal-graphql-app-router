@@ -6,7 +6,7 @@ import { useEventListener } from "@/lib/hooks/use-event-listener";
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
 import type { MenuItemType, MenuType } from "@/types/graphql";
 
-import { usePathNameWithoutLocale } from "@/navigation";
+import { usePathNameWithoutLocale } from "@/lib/navigation";
 import { useLocale } from "next-intl";
 import {
   MenuBack,

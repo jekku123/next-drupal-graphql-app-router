@@ -2,7 +2,7 @@
 
 import { createContext, useContext } from "react";
 
-import { usePathNameWithoutLocale } from "@/navigation";
+import { usePathNameWithoutLocale } from "@/lib/navigation";
 import siteConfig from "@/site.config";
 import { createLanguageLinksForNextOnlyPage } from "./language-links";
 

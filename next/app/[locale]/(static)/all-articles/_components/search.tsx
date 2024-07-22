@@ -6,8 +6,10 @@ import { useDebouncedCallback } from "use-debounce";
 import { Icons } from "@/components/icons";
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
+import { useTranslations } from "next-intl";
 
 export default function Search({ placeholder }: { placeholder: string }) {
+  const t = useTranslations();
   const searchParams = useSearchParams();
   const { replace } = useRouter();
   const pathname = usePathname();
@@ -26,7 +28,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
   return (
     <div className="relative">
       <Label htmlFor="search" className="sr-only">
-        Search Articles
+        {t("search-articles")}
       </Label>
       <Input
         className="peer block w-full rounded-md border border-border py-[9px] pl-9 text-sm outline-2 placeholder:text-gray-500"

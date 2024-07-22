@@ -1,9 +1,8 @@
-import Link from "next/link";
-
 import { auth } from "@/auth";
 import { HeadingPage } from "@/components/heading--page";
 import { redirectExpiredSessionToLoginPage } from "@/lib/auth/redirect-expired-login";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
+import { LinkWithLocale } from "@/lib/navigation";
 import { formatDate } from "@/lib/utils";
 import {
   isWebformSubmissionsListEmpty,
@@ -84,12 +83,12 @@ export default async function DashboardPage({
                 {formatDate(submission.completed[0]["value"], locale)}
               </td>
               <td className="p-3">
-                <Link
+                <LinkWithLocale
                   href={`/dashboard/webforms/${submission.webform_id[0]["target_id"]}/${submission.uuid[0]["value"]}`}
                   className="hyperlink"
                 >
                   {t("see-more")}
-                </Link>
+                </LinkWithLocale>
               </td>
             </tr>
           ))}

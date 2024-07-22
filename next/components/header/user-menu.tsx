@@ -1,6 +1,7 @@
 "use client";
 
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
+import { LinkWithLocale } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 import AccountIcon from "@/styles/icons/account-circle.svg";
 import { signOut, useSession } from "next-auth/react";
@@ -51,13 +52,13 @@ export function UserMenu() {
           )}
         >
           <li>
-            <Link
+            <LinkWithLocale
               className="block p-2 hover:bg-primary-50"
               href="/dashboard"
               onClick={close}
             >
               {t("user-dashboard")}
-            </Link>
+            </LinkWithLocale>
           </li>
           <li>
             <button

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Suspense, useState } from "react";
 
 import { MainMenu, MenuToggle } from "@/components/main-menu/main-menu";
@@ -8,7 +7,8 @@ import SearchIcon from "@/styles/icons/search.svg";
 import WunderIcon from "@/styles/icons/wunder.svg";
 import type { MenuType } from "@/types/graphql";
 
-import { useLocale, useTranslations } from "next-intl";
+import { LinkWithLocale } from "@/lib/navigation";
+import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "./language-switcher";
 import { UserMenu } from "./user-menu";
 
@@ -43,26 +43,24 @@ export function Header({ menu }: HeaderProps) {
 
 function HomeLink() {
   const t = useTranslations();
-  const locale = useLocale();
 
   return (
-    <Link href="/" locale={locale} className="inline">
+    <LinkWithLocale href="/" className="inline">
       <WunderIcon className="w-32" />
       <span className="sr-only">{t("homepage-link")}</span>
-    </Link>
+    </LinkWithLocale>
   );
 }
 
 function SearchLink() {
   const t = useTranslations();
-  const locale = useLocale();
 
   return (
-    <Link href="/search" locale={locale} className="hover:underline">
+    <LinkWithLocale href="/search" className="hover:underline">
       <span className="sr-only sm:not-sr-only sm:mr-2 sm:inline">
         {t("search")}
       </span>
       <SearchIcon className="inline-block w-6 h-6" aria-hidden="true" />
-    </Link>
+    </LinkWithLocale>
   );
 }

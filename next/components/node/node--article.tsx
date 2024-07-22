@@ -4,14 +4,14 @@ import { FormattedText } from "@/components/formatted-text";
 import { HeadingPage } from "@/components/heading--page";
 import { formatDateTimestamp } from "@/lib/utils";
 import { ArticleType } from "@/types/graphql";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
 interface ArticleProps {
   article: ArticleType;
 }
 
-export async function NodeArticle({ article, ...props }: ArticleProps) {
-  const t = await getTranslations();
+export function NodeArticle({ article, ...props }: ArticleProps) {
+  const t = useTranslations();
 
   return (
     <article {...props}>

@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { HeadingPage } from "@/components/heading--page";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 import {
@@ -8,6 +6,7 @@ import {
 } from "@/lib/zod/webform-submission";
 
 import { auth } from "@/auth";
+import { LinkWithLocale } from "@/lib/navigation";
 import { Metadata } from "next";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -17,9 +16,6 @@ type DashboardPageParams = {
     locale: string;
     webformName: string;
     webformSubmissionUuid: string;
-  };
-  searchParams: {
-    [key: string]: string | string[] | undefined;
   };
 };
 
@@ -33,7 +29,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function DashboardPage({
   params: { locale, webformName, webformSubmissionUuid },
-  searchParams,
 }: DashboardPageParams) {
   unstable_setRequestLocale(locale);
 
@@ -64,9 +59,9 @@ export default async function DashboardPage({
   return (
     <>
       <HeadingPage>{t("form-submission-details")}</HeadingPage>
-      <Link href="/dashboard" className="block mt-4 hyperlink">
+      <LinkWithLocale href="/dashboard" className="block mt-4 hyperlink">
         {t("back-to-dashboard")}
-      </Link>
+      </LinkWithLocale>
       <p className="my-6 text-justify text-md/xl text-scapaflow sm:text-lg">
         {t("form-submission-intro-text", { form: submission.formTitle })}
       </p>

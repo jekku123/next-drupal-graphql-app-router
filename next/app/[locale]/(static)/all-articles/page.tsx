@@ -46,7 +46,7 @@ export default async function AllArticlesPage({
     <>
       <div className="flex flex-col items-start justify-between w-full gap-2 sm:flex-row sm:items-center sm:gap-0">
         <HeadingPage>{t("all-articles")}</HeadingPage>
-        <Search placeholder="Search.." />
+        <Search placeholder={t("search-articles-placeholder")} />
       </div>
       <Suspense key={query + currentPage} fallback={<ListingSkeleton />}>
         <Listing currentPage={currentPage} query={query} />

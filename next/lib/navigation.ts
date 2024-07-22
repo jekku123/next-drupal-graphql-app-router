@@ -2,8 +2,9 @@ import { locales } from "@/i18n";
 import { createSharedPathnamesNavigation } from "next-intl/navigation";
 
 export const {
-  Link,
-  redirect,
+  Link: LinkWithLocale,
+  redirect: redirectWithLocale,
+  permanentRedirect: permanentRedirectWithLocale,
   usePathname: usePathNameWithoutLocale,
-  useRouter,
+  useRouter: useRouterWithoutLocale,
 } = createSharedPathnamesNavigation({ locales /* ... */ });

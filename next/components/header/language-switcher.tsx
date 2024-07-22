@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 
 // TODO: LOCALE HANDLING FOR APP ROUTER
 export function LanguageSwitcher() {
+  const t = useTranslations();
   const languageLinks = useLanguageLinks();
   const locale = useLocale();
 
@@ -23,7 +24,6 @@ export function LanguageSwitcher() {
 
   // Close on click outside
   const ref = useOnClickOutside<HTMLDivElement>(close);
-  const t = useTranslations();
 
   return (
     <div ref={ref}>

@@ -9,8 +9,8 @@ import CloseIcon from "@/styles/icons/close.svg";
 import MenuIcon from "@/styles/icons/menu.svg";
 import type { MenuItemType } from "@/types/graphql";
 
+import { usePathNameWithoutLocale } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
-import { usePathNameWithoutLocale } from "@/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import css from "./main-menu.module.css";
 import {
