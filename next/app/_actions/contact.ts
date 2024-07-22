@@ -2,29 +2,10 @@
 
 import { auth } from "@/auth";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
-import { ContactForm, ContactFormSchema } from "@/lib/zod/contact-form";
+import { ContactForm } from "@/lib/zod/contact-form";
 import { getLocale } from "next-intl/server";
 
-export async function contactAction(values: ContactForm) {
-  // Validate the form fields:
-  const validatedFields = ContactFormSchema.safeParse(values);
-
-  // If the fields are not valid, return the errors:
-  if (!validatedFields.success) {
-    const errors = validatedFields.error.flatten().fieldErrors;
-
-    return {
-      success: false,
-      error: { type: "ValidationError", message: "Validation error" },
-      formErrors: {
-        name: errors.name?.[0] ?? "",
-        email: errors.email?.[0] ?? "",
-        subject: errors.subject?.[0] ?? "",
-        message: errors.message?.[0] ?? "",
-      },
-    };
-  }
-
+export async function createContactSubmissionAction(values: ContactForm) {
   // Because we want to allow only registered users to submit
   // to the contact webform, let's get the session:
   const session = await auth();
@@ -61,26 +42,17 @@ export async function contactAction(values: ContactForm) {
     });
 
     if (!result.ok) {
-      console.error("Submission error:", JSON.stringify(result, null, 2));
-      return {
-        success: false,
-        error: {
-          type: "SubmissionError",
-          message: "Submission error",
-        },
-      };
+      throw new Error();
     }
 
     return {
       success: true,
     };
   } catch (error) {
-    console.error(error.message);
-
     return {
       success: false,
       error: {
-        type: "SubmissionError",
+        type: "Error",
         message: error.message,
       },
     };

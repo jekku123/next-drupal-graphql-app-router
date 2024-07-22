@@ -2,14 +2,13 @@
 
 import { useForm } from "react-hook-form";
 
-import { contactAction } from "@/app/_actions/contact";
+import { createContactSubmissionAction } from "@/app/_actions/contact";
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
 import { StatusMessage } from "@/ui/status-message";
 import { Textarea } from "@/ui/textarea";
 import { useTranslations } from "next-intl";
-import { useState, useTransition } from "react";
 import { AuthGate } from "../auth-gate";
 
 type Inputs = {
@@ -26,54 +25,19 @@ export function ContactForm() {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
-    setError,
-    clearErrors,
+    formState: { isSubmitSuccessful, isSubmitting },
   } = useForm<Inputs>();
 
-  const [isSubmitting, startTransition] = useTransition();
-  const [isSuccess, setIsSuccess] = useState(false);
-
   const onSubmit = async (data: Inputs) => {
-    clearErrors();
-    startTransition(async () => {
-      const response = await contactAction(data);
-      if (!response.success) {
-        if (response.error.type === "ValidationError") {
-          setError("name", {
-            message: response.formErrors.name,
-            type: "server",
-          });
-          setError("email", {
-            message: response.formErrors.email,
-            type: "server",
-          });
-          setError("subject", {
-            message: response.formErrors.subject,
-            type: "server",
-          });
-          setError("message", {
-            message: response.formErrors.message,
-            type: "server",
-          });
-        }
-
-        if (response.error.type === "AuthorizationError") {
-          alert("You are not authorized to submit this form.");
-        }
-
-        setIsSuccess(false);
-      }
-
-      if (response.success) {
-        setIsSuccess(true);
-      }
-    });
+    const response = await createContactSubmissionAction(data);
+    if (!response.success) {
+      alert(t("there-was-an-error"));
+    }
   };
 
   const onErrors = (errors) => console.error(errors);
 
-  if (isSuccess) {
+  if (isSubmitSuccessful) {
     return (
       <StatusMessage level="success" className="w-full max-w-3xl mx-auto">
         <p className="mb-4">{t("form-thank-you-message")}</p>
@@ -101,12 +65,9 @@ export function ContactForm() {
               type="text"
               id="name"
               {...register("name", {
-                // required: true,
+                required: true,
               })}
             />
-            {errors.name && (
-              <span className="text-sm text-error">{errors.name.message}</span>
-            )}
           </div>
           <div>
             <Label htmlFor="email">{t("form-label-email")}</Label>
@@ -114,12 +75,9 @@ export function ContactForm() {
               type="email"
               id="email"
               {...register("email", {
-                // required: true,
+                required: true,
               })}
             />
-            {errors.email && (
-              <span className="text-sm text-error">{errors.email.message}</span>
-            )}
           </div>
           <div>
             <Label htmlFor="subject">{t("form-label-subject")}</Label>
@@ -127,28 +85,18 @@ export function ContactForm() {
               type="text"
               id="subject"
               {...register("subject", {
-                // required: true,
+                required: true,
               })}
             />
-            {errors.subject && (
-              <span className="text-sm text-error">
-                {errors.subject.message}
-              </span>
-            )}
           </div>
           <div>
             <Label htmlFor="message">{t("form-label-message")}</Label>
             <Textarea
               id="message"
               {...register("message", {
-                // required: true,
+                required: true,
               })}
             />
-            {errors.message && (
-              <span className="text-sm text-error">
-                {errors.message.message}
-              </span>
-            )}
           </div>
 
           <Button type="submit" disabled={isSubmitting}>
