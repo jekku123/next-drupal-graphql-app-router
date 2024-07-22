@@ -7,7 +7,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/pagination2";
+} from "@/ui/pagination";
 
 export type PaginationControllerProps = {
   pageRoot: string;
