@@ -11,7 +11,7 @@ import { Textarea } from "@/ui/textarea";
 import { useTranslations } from "next-intl";
 import { AuthGate } from "../auth-gate";
 
-type Inputs = {
+export type ContactFormInputs = {
   name: string;
   email: string;
   subject: string;
@@ -26,9 +26,9 @@ export function ContactForm() {
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful, isSubmitting },
-  } = useForm<Inputs>();
+  } = useForm<ContactFormInputs>();
 
-  const onSubmit = async (data: Inputs) => {
+  const onSubmit = async (data: ContactFormInputs) => {
     const response = await createContactSubmissionAction(data);
     if (!response.success) {
       alert(t("there-was-an-error"));

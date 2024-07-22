@@ -48,19 +48,23 @@ const PaginationLink = ({
   size = "icon",
   ...props
 }: PaginationLinkProps) => (
-  <Link
-    aria-current={isActive ? "page" : undefined}
-    className={cn(
-      buttonVariants({
-        variant: isActive ? "primary" : "tertiary",
-        size,
-      }),
-      !isEnabled && "pointer-events-none cursor-not-allowed",
-      className,
-    )}
-    {...props}
-  />
+  <div className={cn(!isEnabled && "cursor-not-allowed")}>
+    <Link
+      aria-current={isActive ? "page" : undefined}
+      scroll={false}
+      className={cn(
+        buttonVariants({
+          variant: isActive ? "primary" : "tertiary",
+          size,
+        }),
+        !isEnabled && "pointer-events-none",
+        className,
+      )}
+      {...props}
+    />
+  </div>
 );
+
 PaginationLink.displayName = "PaginationLink";
 
 const PaginationPrevious = ({
@@ -74,13 +78,14 @@ const PaginationPrevious = ({
     aria-label="Go to previous page"
     className={cn("gap-1 pl-2.5", !isEnabled && "text-primary-200", className)}
     size={size}
-    isEnabled
+    isEnabled={isEnabled}
     {...props}
   >
     <Icons.arrowIcon className="w-6 h-6 mr-2 rotate-90" aria-hidden />
     <span>{title}</span>
   </PaginationLink>
 );
+
 PaginationPrevious.displayName = "PaginationPrevious";
 
 const PaginationNext = ({
@@ -94,6 +99,7 @@ const PaginationNext = ({
     aria-label="Go to next page"
     className={cn("gap-1 pr-2.5", !isEnabled && "text-primary-200", className)}
     size={size}
+    isEnabled={isEnabled}
     {...props}
   >
     <span>{title}</span>
@@ -108,10 +114,13 @@ const PaginationEllipsis = ({
 }: React.ComponentProps<"span">) => (
   <span
     aria-hidden
-    className={cn("flex h-9 w-9 items-center justify-center", className)}
+    className={cn(
+      "flex h-9 w-9 items-center justify-center text-primary-600",
+      className,
+    )}
     {...props}
   >
-    {/* <MoreHorizontal className="w-4 h-4" /> */}
+    <Icons.moreHorizontalIcon className="w-8 h-8" fill="currentColor" />
     <span className="sr-only">More pages</span>
   </span>
 );

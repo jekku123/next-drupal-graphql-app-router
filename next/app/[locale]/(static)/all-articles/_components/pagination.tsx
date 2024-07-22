@@ -44,7 +44,6 @@ export async function PaginationController({
           <PaginationPrevious
             href={prevPageHref || ""}
             title={t("search-previous")}
-            scroll={false}
             isEnabled={prevEnabled}
           />
         </PaginationItem>
@@ -53,7 +52,6 @@ export async function PaginationController({
             <PaginationItem key={pageNumber}>
               <PaginationLink
                 href={href}
-                scroll={false}
                 isActive={pageNumber === currentPage}
                 isEnabled={pageNumber !== currentPage}
               >
@@ -66,7 +64,6 @@ export async function PaginationController({
           <PaginationNext
             href={nextPageHref || ""}
             title={t("search-next")}
-            scroll={false}
             isEnabled={nextEnabled}
           />
         </PaginationItem>

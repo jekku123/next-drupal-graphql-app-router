@@ -1,11 +1,11 @@
 "use server";
 
 import { auth } from "@/auth";
+import { ContactFormInputs } from "@/components/forms/contact-form";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
-import { ContactForm } from "@/lib/zod/contact-form";
 import { getLocale } from "next-intl/server";
 
-export async function createContactSubmissionAction(values: ContactForm) {
+export async function createContactSubmissionAction(values: ContactFormInputs) {
   // Because we want to allow only registered users to submit
   // to the contact webform, let's get the session:
   const session = await auth();
