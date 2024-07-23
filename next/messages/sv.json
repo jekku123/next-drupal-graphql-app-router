@@ -86,5 +86,6 @@
   "your-session-has-expired": "Din session har gått ut. Logga in igen för att fortsätta.",
   "field-is-required": "{field} är obligatoriskt.",
   "toggle-menu": "Visa/dölj meny",
-  "there-was-an-error": "Det uppstod ett fel"
+  "there-was-an-error": "Det uppstod ett fel",
+  "under-construction": "Under konstruktion"
 }

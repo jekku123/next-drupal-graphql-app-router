@@ -85,5 +85,6 @@
   "your-session-has-expired": "Your session has expired. Please log in again to continue.",
   "field-is-required": "The {field} field is required.",
   "toggle-menu": "Toggle menu",
-  "there-was-an-error": "There was an error."
+  "there-was-an-error": "There was an error.",
+  "under-construction": "Under construction"
 }

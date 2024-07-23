@@ -86,5 +86,6 @@
   "your-session-has-expired": "Istuntosi on vanhentunut. Kirjaudu sisään jatkaaksesi.",
   "field-is-required": "'{field}' kenttä on pakollinen",
   "toggle-menu": "Näytä/piilota valikko",
-  "there-was-an-error": "Tapahtui virhe"
+  "there-was-an-error": "Tapahtui virhe",
+  "under-construction": "Työn alla"
 }
