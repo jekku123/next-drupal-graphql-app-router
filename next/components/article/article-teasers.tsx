@@ -2,9 +2,9 @@ import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
 
 import { LinkWithLocale } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
+import ArrowIcon from "@/styles/icons/arrow-down.svg";
 import { buttonVariants } from "@/ui/button";
 import { useTranslations } from "next-intl";
-import { Icons } from "../icons";
 import { ArticleTeaser } from "./article-teaser";
 
 interface LatestArticlesProps {
@@ -38,7 +38,8 @@ export function ArticleTeasers({ articles, heading }: LatestArticlesProps) {
             )}
           >
             {t("all-articles")}
-            <Icons.arrowIcon aria-hidden className="w-6 h-6 ml-3 -rotate-90" />
+
+            <ArrowIcon className="w-6 h-6 ml-3 -rotate-90" aria-hidden />
           </LinkWithLocale>
         )}
       </div>

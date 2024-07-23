@@ -1,8 +1,8 @@
 "use client";
 
+import ChevronDownIcon from "@/styles/icons/chevron-down.svg";
+import ListIcon from "@/styles/icons/list.svg";
 import * as AccordionUI from "@radix-ui/react-accordion";
-
-import { Icons } from "@/components/icons";
 
 interface AccordionProps {
   heading?: string | React.ReactNode;
@@ -26,12 +26,9 @@ export function Accordion({ heading, items }: AccordionProps) {
           <AccordionUI.Item key={item.id} value={item.id}>
             <AccordionUI.Header>
               <AccordionUI.Trigger className="group flex w-full flex-row items-center justify-between gap-1 rounded border border-finnishwinter bg-white p-6 text-md text-steelgray aria-expanded:rounded-b-none aria-expanded:bg-mischka md:gap-1.5 md:text-lg">
-                <Icons.listIcon
-                  aria-hidden
-                  className="w-6 h-6 shrink-0 text-primary-600"
-                />
+                <ListIcon className="w-6 h-6 shrink-0 text-primary-600" />
                 <span className="mx-5 text-left grow">{item.heading}</span>
-                <Icons.chevronDown
+                <ChevronDownIcon
                   aria-hidden
                   className="w-6 h-6 shrink-0 text-primary-600 group-aria-expanded:rotate-180"
                 />

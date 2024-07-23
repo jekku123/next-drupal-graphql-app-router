@@ -2,7 +2,11 @@ import Link from "next/link";
 
 import type { MenuItemType, MenuType } from "@/types/graphql";
 import { useLocale } from "next-intl";
-import { Icons } from "../icons";
+
+import FacebookIcon from "@/styles/icons/facebook.svg";
+import LinkedInIcon from "@/styles/icons/linkedin.svg";
+import TwitterIcon from "@/styles/icons/twitter.svg";
+import WunderCarrotIcon from "@/styles/icons/wunder-carrot.svg";
 import { SocialShare } from "./social-share";
 
 interface FooterProps {
@@ -53,10 +57,10 @@ function FooterLink({ href, icon, newTab = false, children }: FooterLinkProps) {
   const [target, rel] = newTab ? ["_blank", "noreferrer"] : [];
 
   const Icon = {
-    facebook: Icons.facebook,
-    linkedin: Icons.linkedIn,
-    twitter: Icons.twitter,
-    wunder: Icons.wunderCarrot,
+    facebook: FacebookIcon,
+    linkedin: LinkedInIcon,
+    twitter: TwitterIcon,
+    wunder: WunderCarrotIcon,
   }[icon];
 
   return (

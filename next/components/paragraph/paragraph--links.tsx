@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import type { FragmentParagraphLinkFragment } from "@/lib/gql/graphql";
-import { Icons } from "../icons";
+import ArrowIcon from "@/styles/icons/arrow-down.svg";
 
 export function ParagraphLinks({
   paragraph,
@@ -20,10 +20,8 @@ export function ParagraphLinks({
           className="relative min-h-[6em] cursor-pointer rounded border border-finnishwinter bg-primary-100 p-8 text-lg text-steelgray hover:bg-primary-200"
         >
           {link.title}
-          <Icons.arrowIcon
-            aria-hidden
-            className="absolute w-6 h-6 -rotate-90 right-2 top-1/4 text-primary-600"
-          />
+
+          <ArrowIcon className="w-6 h-6 ml-3 -rotate-90" aria-hidden />
         </Link>
       ))}
     </ul>

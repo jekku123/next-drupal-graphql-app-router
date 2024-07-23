@@ -9,7 +9,6 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { Icons } from "../icons";
 
 export function UserMenu() {
   const t = useTranslations();
@@ -81,7 +80,7 @@ export function UserMenu() {
         <span className="capitalize sr-only sm:not-sr-only sm:mr-2 sm:inline">
           {t("user-menu-account")}
         </span>
-        <Icons.accountIcon className="inline-block w-6 h-6" />
+        <AccountIcon className="inline-block w-6 h-6" />
       </button>
       <ul
         className={cn(

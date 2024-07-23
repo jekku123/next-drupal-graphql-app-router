@@ -4,9 +4,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import ArrowIcon from "@/styles/icons/arrow.svg";
 import { Button } from "@/ui/button";
 import { useTranslations } from "next-intl";
-import { Icons } from "./icons";
 
 export type PaginationProps = {
   currentPage?: number;
@@ -98,7 +98,7 @@ export function Pagination({
           onClick={handlePrevClick}
           tabIndex={props["aria-hidden"] ? -1 : undefined}
         >
-          <Icons.arrowIcon className="w-6 h-6 mr-4 rotate-90" aria-hidden />
+          <ArrowIcon className="w-6 h-6 mr-4 rotate-90" aria-hidden />
           {t("search-previous")}
         </Button>
       </MaybeLink>
@@ -111,7 +111,7 @@ export function Pagination({
           tabIndex={props["aria-hidden"] ? -1 : undefined}
         >
           {t("search-next")}
-          <Icons.arrowIcon className="w-6 h-6 ml-4 -rotate-90" aria-hidden />
+          <ArrowIcon className="w-6 h-6 ml-4 -rotate-90" aria-hidden />
         </Button>
       </MaybeLink>
     </div>

@@ -9,9 +9,9 @@ import {
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
+import ArrowIcon from "@/styles/icons/arrow-down.svg";
 import { Accordion } from "@/ui/accordion";
 import { buttonVariants } from "@/ui/button";
-import { Icons } from "../icons";
 
 export function ParagraphAccordionTwoColumns({
   paragraph,
@@ -47,10 +47,8 @@ export function ParagraphAccordionTwoColumns({
                 )}
               >
                 {paragraph.primaryLink.title}
-                <Icons.arrowIcon
-                  aria-hidden
-                  className="w-6 h-6 ml-3 -rotate-90"
-                />
+
+                <ArrowIcon className="w-6 h-6 ml-3 -rotate-90" aria-hidden />
               </Link>
             </div>
           )}

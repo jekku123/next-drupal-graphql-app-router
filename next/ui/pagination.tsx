@@ -1,9 +1,9 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import ArrowIcon from "@/styles/icons/arrow-down.svg";
 import { ButtonProps, buttonVariants } from "@/ui/button";
 import Link from "next/link";
-import { Icons } from "../components/icons";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav
@@ -81,7 +81,7 @@ const PaginationPrevious = ({
     isEnabled={isEnabled}
     {...props}
   >
-    <Icons.arrowIcon className="w-6 h-6 mr-2 rotate-90" aria-hidden />
+    <ArrowIcon className="w-6 h-6 mr-2 rotate-90" aria-hidden />
     <span>{title}</span>
   </PaginationLink>
 );
@@ -103,7 +103,7 @@ const PaginationNext = ({
     {...props}
   >
     <span>{title}</span>
-    <Icons.arrowIcon className="w-6 h-6 ml-2 -rotate-90" aria-hidden />
+    <ArrowIcon className="w-6 h-6 ml-2 -rotate-90" aria-hidden />
   </PaginationLink>
 );
 PaginationNext.displayName = "PaginationNext";
@@ -120,7 +120,7 @@ const PaginationEllipsis = ({
     )}
     {...props}
   >
-    <Icons.moreHorizontalIcon className="w-8 h-8" fill="currentColor" />
+    // TODO: Add ellipsis icon
     <span className="sr-only">More pages</span>
   </span>
 );
