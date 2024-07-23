@@ -1,5 +1,7 @@
 import { HeadingParagraph } from "@/components/heading--paragraph";
 import type { FragmentParagraphListingArticleFragment } from "@/lib/gql/graphql";
+import { Suspense } from "react";
+import { ArticleListingSkeleton } from "../article/article-listing-skeleton";
 import { ArticlesListing } from "../article/articles-listing";
 
 export function ParagraphListingArticles({
@@ -14,9 +16,9 @@ export function ParagraphListingArticles({
           {paragraph.paragraphListingArticleHeading}
         </HeadingParagraph>
       )}
-      {/* <Suspense fallback={<LoadingSpinner />}> */}
-      <ArticlesListing key={paragraph.id} limit={paragraph.limit} />
-      {/* </Suspense> */}
+      <Suspense fallback={<ArticleListingSkeleton />}>
+        <ArticlesListing key={paragraph.id} limit={paragraph.limit} />
+      </Suspense>
     </>
   );
 }
