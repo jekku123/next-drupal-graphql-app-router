@@ -1,10 +1,10 @@
 import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 import { cache } from "react";
-import { GET_ENTITY_AT_DRUPAL_PATH } from "../graphql/queries";
 import {
-  extractEntityFromRouteQueryResult,
-  extractRedirectFromRouteQueryResult,
-} from "../graphql/utils";
+  GET_ENTITY_AT_DRUPAL_PATH,
+  GET_STATIC_PATHS,
+} from "../graphql/queries";
+import { extractEntityFromRouteQueryResult } from "../graphql/utils";
 import { drupalClientPreviewer } from "./drupal-client-previewer";
 
 export const getNodeQueryResult = cache(
@@ -25,6 +25,21 @@ export const getNodeQueryResult = cache(
   },
 );
 
+export async function getNodeStaticPaths({
+  limit,
+  locale,
+}: {
+  limit: number;
+  locale: string;
+}) {
+  const paths = await drupalClientViewer.doGraphQlRequest(GET_STATIC_PATHS, {
+    number: limit,
+    langcode: locale,
+  });
+
+  return paths;
+}
+
 export async function getNodeEntity(
   path: string,
   locale: string,
@@ -32,19 +47,4 @@ export async function getNodeEntity(
 ) {
   const data = await getNodeQueryResult(path, locale, isDraftMode);
   return extractEntityFromRouteQueryResult(data);
-}
-
-export async function getNodeResult(
-  path: string,
-  locale: string,
-  isDraftMode: boolean = false,
-) {
-  const data = await getNodeQueryResult(path, locale, isDraftMode);
-  const nodeEntity = extractEntityFromRouteQueryResult(data) || null;
-  const redirectResult = extractRedirectFromRouteQueryResult(data) || null;
-
-  return {
-    nodeEntity,
-    redirectResult,
-  };
 }

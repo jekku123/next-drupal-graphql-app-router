@@ -9,7 +9,7 @@ type GetArticlesArgs = {
   query?: string;
 };
 
-export const fetchArticlesTotalPages = async ({
+export const getArticlesTotalPages = async ({
   limit = 5,
   offset = 0,
   locale = siteConfig.defaultLocale,
@@ -40,14 +40,6 @@ export const fetchArticlesTotalPages = async ({
   } catch (error) {
     console.error(error);
   }
-
-  return totalPages;
-};
-
-export const getArticlesTotalPages = async (
-  args: GetArticlesArgs,
-): Promise<number> => {
-  const totalPages = await fetchArticlesTotalPages(args);
 
   return totalPages;
 };
