@@ -51,7 +51,8 @@ const PaginationLink = ({
   <div className={cn(!isEnabled && "cursor-not-allowed")}>
     <Link
       aria-current={isActive ? "page" : undefined}
-      scroll={false}
+      // Enable if implement smooth scrolling
+      // scroll={false}
       className={cn(
         buttonVariants({
           variant: isActive ? "primary" : "tertiary",

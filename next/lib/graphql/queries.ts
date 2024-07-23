@@ -4,7 +4,7 @@ import { graphql } from "@/lib/gql";
  * Given a path, this query will return the node, or a redirect.
  */
 export const GET_ENTITY_AT_DRUPAL_PATH = graphql(`
-  query GetNodeByPath($path: String!, $langcode: String!) {
+  query getNodeByPath($path: String!, $langcode: String!) {
     route(path: $path, langcode: $langcode) {
       __typename
       ... on RouteInternal {
@@ -163,7 +163,7 @@ export const GET_MENU = graphql(`
 `);
 
 export const LISTING_ARTICLES = graphql(`
-  query ArticleListing(
+  query articleListing(
     $langcode: String = "en"
     $sticky: Boolean
     $offset: Int = 0
@@ -192,7 +192,7 @@ export const LISTING_ARTICLES = graphql(`
 `);
 
 export const LISTING_ARTICLES_TOTAL_PAGES = graphql(`
-  query ArticleListing(
+  query articleListingTotalPages(
     $langcode: String = "en"
     $sticky: Boolean
     $offset: Int = 0
