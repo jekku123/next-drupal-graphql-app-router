@@ -6,6 +6,7 @@ import {
 } from "@/lib/zod/webform-submission";
 
 import { auth } from "@/auth";
+import { redirectExpiredSessionToLoginPage } from "@/lib/auth/redirect-expired-login";
 import { LinkWithLocale } from "@/lib/navigation";
 import { Metadata } from "next";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
@@ -35,6 +36,13 @@ export default async function DashboardPage({
   const t = await getTranslations();
 
   const session = await auth();
+
+  if (!session) {
+    return redirectExpiredSessionToLoginPage(
+      locale,
+      `/dashboard/webforms/${webformName}/${webformSubmissionUuid}`,
+    );
+  }
 
   const url = drupalClientViewer.buildUrl(
     `/${locale}/webform_rest/${webformName}/complete_submission/${webformSubmissionUuid}`,

@@ -1,5 +1,3 @@
-import { withAuth } from "next-auth/middleware";
-
 import createMiddleware from "next-intl/middleware";
 import { NextRequest } from "next/server";
 import { defaultLocale, locales } from "./i18n";
@@ -18,30 +16,30 @@ const intlMiddleware = createMiddleware({
   localePrefix: "as-needed",
 });
 
-const authMiddleware = withAuth(
-  // Note that this callback is only invoked if
-  // the `authorized` callback has returned `true`
-  // and not for pages listed in `pages`.
-  function onSuccess(req) {
-    return intlMiddleware(req);
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => token != null,
-    },
-  },
-);
+// const authMiddleware = withAuth(
+//   // Note that this callback is only invoked if
+//   // the `authorized` callback has returned `true`
+//   // and not for pages listed in `pages`.
+//   function onSuccess(req) {
+//     return intlMiddleware(req);
+//   },
+//   {
+//     callbacks: {
+//       authorized: ({ token }) => token != null,
+//     },
+//   },
+// );
 
 export default function middleware(req: NextRequest) {
   const isProtected = PROTECTED_ROUTES.some((page) =>
     req.nextUrl.pathname.startsWith(page),
   );
 
-  if (!isProtected) {
-    return intlMiddleware(req);
-  } else {
-    return (authMiddleware as any)(req);
-  }
+  // if (!isProtected) {
+  return intlMiddleware(req);
+  // } else {
+  //   return (authMiddleware as any)(req);
+  // }
 }
 
 export const config = {

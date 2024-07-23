@@ -30,12 +30,10 @@ export default async function DashboardPage({
 
   const t = await getTranslations();
 
-  // This is not needed as middleware handles, so maybe make a function to
-  // fetch the submission and check the session in the function
   const session = await auth();
 
   if (!session) {
-    return redirectExpiredSessionToLoginPage(locale, "/dashboard");
+    return redirectExpiredSessionToLoginPage(locale, `/dashboard`);
   }
 
   const url = drupalClientViewer.buildUrl(

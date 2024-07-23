@@ -1,19 +1,18 @@
 "use client";
 
-import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { ErrorRequired } from "@/components/forms/error-required";
-import { useEffectOnce } from "@/lib/hooks/use-effect-once";
 
 import { env } from "@/env";
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
 import { StatusMessage } from "@/ui/status-message";
+import { signIn } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
 
 type Inputs = {
@@ -55,10 +54,6 @@ export default function LoginForm() {
   };
 
   const resetPasswordBackendUrl = `${env.NEXT_PUBLIC_DRUPAL_BASE_URL}/${locale}/user/password`;
-
-  useEffectOnce(() => {
-    if (logout) void signOut();
-  });
 
   return (
     <>
