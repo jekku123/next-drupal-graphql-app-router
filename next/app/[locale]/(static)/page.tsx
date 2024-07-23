@@ -50,9 +50,16 @@ export default async function FrontPage({
   // This works because it matches the pathauto pattern for the Frontpage content type defined in Drupal
   const path = `/frontpage-${locale}`;
 
-  const data = await getNodeQueryResult(path, locale);
-  const frontpage = extractEntityFromRouteQueryResult(data);
+  // Fetch the node and the article teasers in parallel to save time
+  const [node, articleTeasers] = await Promise.all([
+    getNodeQueryResult(path, locale),
+    getArticleTeasers({ limit: 3, locale, sticky: true }),
+  ]);
 
+  // Extract the frontpage node from the query result
+  const frontpage = extractEntityFromRouteQueryResult(node);
+
+  // If the node does not exist or is not a frontpage, return 404
   if (!frontpage || !(frontpage.__typename === "NodeFrontpage")) {
     return notFound();
   }
@@ -61,12 +68,6 @@ export default async function FrontPage({
   if (!draftMode().isEnabled && frontpage.status !== true) {
     notFound();
   }
-
-  const articleTeasers = await getArticleTeasers({
-    limit: 3,
-    locale,
-    sticky: true,
-  });
 
   return (
     <>
