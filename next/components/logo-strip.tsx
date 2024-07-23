@@ -1,7 +1,11 @@
 import { ReactElement } from "react";
 
+import Drupal from "@/styles/icons/drupal-icon.svg";
+import Lando from "@/styles/icons/lando-logo.svg";
+import NextJS from "@/styles/icons/nextjs-logo.svg";
+import React from "@/styles/icons/react-icon.svg";
+import Tailwind from "@/styles/icons/tailwindcss.svg";
 import { useTranslations } from "next-intl";
-import { Icons } from "./icons";
 
 interface Logo {
   image: ReactElement;
@@ -12,31 +16,38 @@ interface Logo {
 const logos: Logo[] = [
   {
     image: (
-      <Icons.reactIcon className="h-auto max-h-[5rem] w-[100%] max-w-[11.25rem] align-middle" />
+      <React className="h-auto max-h-[5rem] w-[100%] max-w-[11.25rem] align-middle" />
     ),
     label: "React logo",
     id: "react-logo",
   },
   {
     image: (
-      <Icons.nextJsIcon className="h-auto max-h-[5rem] w-[100%] max-w-[11.25rem] align-middle" />
+      <NextJS className="h-auto max-h-[5rem] w-[100%] max-w-[11.25rem] align-middle" />
     ),
     label: "NextJS logo",
     id: "nextjs-logo",
   },
   {
     image: (
-      <Icons.tailwindCssIcon className="h-auto max-h-[5rem] w-[100%] max-w-[11.25rem] align-middle" />
+      <Tailwind className="h-auto max-h-[5rem] w-[100%] max-w-[11.25rem] align-middle" />
     ),
     label: "Tailwind CSS logo",
     id: "tailwindcss-logo",
   },
   {
     image: (
-      <Icons.drupalIcon className="h-auto max-h-[5rem] w-[100%] max-w-[11.25rem] align-middle" />
+      <Drupal className="h-auto max-h-[5rem] w-[100%] max-w-[11.25rem] align-middle" />
     ),
     label: "Drupal logo",
     id: "drupal-logo",
+  },
+  {
+    image: (
+      <Lando className="h-auto max-h-[5rem] w-[100%] max-w-[11.25rem] align-middle" />
+    ),
+    label: "Lando logo",
+    id: "lando-logo",
   },
 ];
 
