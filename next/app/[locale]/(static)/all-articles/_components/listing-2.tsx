@@ -1,4 +1,5 @@
 import { getLatestArticlesItems } from "@/lib/drupal/get-articles";
+
 import { ArticleListItem } from "./list-item";
 
 type PaginationListingProps = {

@@ -1,8 +1,9 @@
+import { never } from "zod";
+
 import { NodeArticle } from "@/components/node/node--article";
 import { NodeFrontpage } from "@/components/node/node--frontpage";
 import { NodePage } from "@/components/node/node--page";
 import { TypedRouteEntity } from "@/types/graphql";
-import { never } from "zod";
 
 export function Node({ node }: { node: TypedRouteEntity }) {
   if (!node) return null;

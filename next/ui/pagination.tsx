@@ -1,9 +1,10 @@
+import Link from "next/link";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
 import ArrowIcon from "@/styles/icons/arrow-down.svg";
+
 import { ButtonProps, buttonVariants } from "@/ui/button";
-import Link from "next/link";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav
@@ -51,8 +52,6 @@ const PaginationLink = ({
   <div className={cn(!isEnabled && "cursor-not-allowed")}>
     <Link
       aria-current={isActive ? "page" : undefined}
-      // Enable if implement smooth scrolling
-      // scroll={false}
       className={cn(
         buttonVariants({
           variant: isActive ? "primary" : "tertiary",
@@ -121,7 +120,7 @@ const PaginationEllipsis = ({
     )}
     {...props}
   >
-    // TODO: Add ellipsis icon
+    {/* ADD ELLIPSIS ICON */}
     <span className="sr-only">More pages</span>
   </span>
 );

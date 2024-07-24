@@ -1,13 +1,15 @@
 "use client";
 
-import { locales } from "@/i18n";
+import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
+
 import { useLanguageLinks } from "@/lib/contexts/language-links-context";
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
 import { cn } from "@/lib/utils";
 import LanguageIcon from "@/styles/icons/language.svg";
-import { useLocale, useTranslations } from "next-intl";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+
+import { locales } from "@/i18n";
 
 // TODO: LOCALE HANDLING FOR APP ROUTER
 export function LanguageSwitcher() {

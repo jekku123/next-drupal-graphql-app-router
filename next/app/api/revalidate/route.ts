@@ -1,7 +1,9 @@
-import { env } from "@/env";
 import { revalidatePath } from "next/cache";
 import type { NextRequest } from "next/server";
 
+import { env } from "@/env";
+
+// @esling-disable-next-line import/require-await
 async function handler(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
 

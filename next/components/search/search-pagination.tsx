@@ -1,11 +1,12 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import Arrow from "@/styles/icons/arrow-down.svg";
+import { useTranslations } from "next-intl";
 import { Paging } from "@elastic/react-search-ui";
 
+import { cn } from "@/lib/utils";
+import Arrow from "@/styles/icons/arrow-down.svg";
+
 import { Button } from "@/ui/button";
-import { useTranslations } from "next-intl";
 
 /**
  * Pagination component. To be used within the context of @elastic/react-search-ui.

@@ -1,6 +1,7 @@
+import { getTranslations } from "next-intl/server";
+
 import { auth } from "@/auth";
 import { StatusMessage } from "@/ui/status-message";
-import { getTranslations } from "next-intl/server";
 
 type AuthGateServerProps = {
   children: React.ReactNode;

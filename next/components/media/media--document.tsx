@@ -1,9 +1,9 @@
+import { getTranslations } from "next-intl/server";
+
 import type { FragmentMediaDocumentFragment } from "@/lib/gql/graphql";
 import { formatFileSizeInBytes } from "@/lib/utils";
 import ListIcon from "@/styles/icons/list.svg";
 import PdfIcon from "@/styles/icons/pdf.svg";
-import { getTranslations } from "next-intl/server";
-
 import TextIcon from "@/styles/icons/text-doc.svg";
 
 const getIcon = (fileType: string) => {

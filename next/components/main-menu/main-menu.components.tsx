@@ -1,17 +1,17 @@
 "use client";
 
-import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import NextLink from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 import { Dispatch, forwardRef, ReactNode, SetStateAction } from "react";
+import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
+import { usePathNameWithoutLocale } from "@/lib/navigation";
+import { cn } from "@/lib/utils";
 import Chevron from "@/styles/icons/chevron-down.svg";
 import CloseIcon from "@/styles/icons/close.svg";
 import MenuIcon from "@/styles/icons/menu.svg";
 import type { MenuItemType } from "@/types/graphql";
 
-import { usePathNameWithoutLocale } from "@/lib/navigation";
-import { cn } from "@/lib/utils";
-import { useLocale, useTranslations } from "next-intl";
 import css from "./main-menu.module.css";
 import {
   disableHoverEvents,

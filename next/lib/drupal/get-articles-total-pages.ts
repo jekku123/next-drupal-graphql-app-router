@@ -1,6 +1,8 @@
 import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
-import siteConfig from "@/site.config";
+
 import { LISTING_ARTICLES } from "../graphql/queries";
+
+import siteConfig from "@/site.config";
 
 type GetArticlesArgs = {
   limit?: number;

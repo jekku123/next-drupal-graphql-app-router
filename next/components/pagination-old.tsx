@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useCallback, useEffect, useState } from "react";
 
 import ArrowIcon from "@/styles/icons/arrow-down.svg";
+
 import { Button } from "@/ui/button";
-import { useTranslations } from "next-intl";
 
 export type PaginationProps = {
   currentPage?: number;
@@ -54,7 +55,20 @@ export function Pagination({
   const [isLoading, setIsLoading] = useState<"forward" | "back" | false>(false);
   const numbers = [currentPage, totalPages].filter((n) => !isNaN(n));
 
-  const restoreScroll = () => {
+  // const restoreScroll = () => {
+  //   focusRestoreRef?.current.scrollIntoView({
+  //     behavior: "smooth",
+  //     block: "start",
+  //   });
+  //   const focusable = focusRestoreRef?.current.querySelector(
+  //     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+  //   );
+  //   if (focusable) {
+  //     (focusable as HTMLElement).focus({ preventScroll: true });
+  //   }
+  // };
+
+  const restoreScroll = useCallback(() => {
     focusRestoreRef?.current.scrollIntoView({
       behavior: "smooth",
       block: "start",
@@ -65,14 +79,14 @@ export function Pagination({
     if (focusable) {
       (focusable as HTMLElement).focus({ preventScroll: true });
     }
-  };
+  }, [focusRestoreRef]);
 
   // Having these methods in the handlers didnt work with app router
   // these happend before the router change
   useEffect(() => {
     setIsLoading(false);
     restoreScroll();
-  }, [currentPage]);
+  }, [currentPage, restoreScroll]);
 
   const handlePrevClick = (e) => {
     setPrevPage && setPrevPage();

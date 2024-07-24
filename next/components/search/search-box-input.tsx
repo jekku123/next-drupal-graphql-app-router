@@ -1,13 +1,13 @@
 "use client";
 
-import { InputViewProps } from "@elastic/react-search-ui-views";
+import { useTranslations } from "next-intl";
 import { InputHTMLAttributes, useId } from "react";
+import { InputViewProps } from "@elastic/react-search-ui-views";
 
 import SearchIcon from "@/styles/icons/search.svg";
 
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
-import { useTranslations } from "next-intl";
 
 export function SearchBoxInput({
   getInputProps,

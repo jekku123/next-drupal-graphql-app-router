@@ -1,9 +1,9 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 import { StatusMessage } from "@/ui/status-message";
-import { useTranslations } from "next-intl";
 
 type AuthGateProps = {
   children: React.ReactNode;

@@ -1,7 +1,9 @@
-import { HeadingPage } from "@/components/heading--page";
-import { getLatestArticlesItems } from "@/lib/drupal/get-articles";
 import { Metadata } from "next";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
+
+import { HeadingPage } from "@/components/heading--page";
+import { getLatestArticlesItems } from "@/lib/drupal/get-articles";
+
 import PaginationListing from "./_components/listing";
 import { PaginationController } from "./_components/pagination";
 import Search from "./_components/search";
@@ -16,9 +18,7 @@ type ArticlesListingPageParams = {
   };
 };
 
-export async function generateMetadata({
-  params: { locale },
-}: ArticlesListingPageParams): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations();
 
   return {

@@ -1,5 +1,6 @@
-import { env } from "@/env";
 import { createGraphQlDrupalClient } from "./drupal-client";
+
+import { env } from "@/env";
 
 // This instance of the client will connect to the Drupal API using a consumer
 // which is associated with a role with additional permissions. Use this instance

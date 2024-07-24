@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -12,8 +14,6 @@ import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
 import { StatusMessage } from "@/ui/status-message";
-import { signIn } from "next-auth/react";
-import { useLocale, useTranslations } from "next-intl";
 
 type Inputs = {
   username: string;

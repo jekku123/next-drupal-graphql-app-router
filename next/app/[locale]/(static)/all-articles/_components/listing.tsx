@@ -1,4 +1,5 @@
 import { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
+
 import { ArticleListItem } from "./list-item";
 
 type PaginationListingProps = {

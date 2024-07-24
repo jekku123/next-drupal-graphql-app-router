@@ -1,6 +1,7 @@
-import { cn } from "@/lib/utils";
-import { cva } from "cva";
 import * as React from "react";
+import { cva } from "cva";
+
+import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
   "border font-semibold inline rounded text-md transition-colors uppercase tracking-wide cursor-arrow",

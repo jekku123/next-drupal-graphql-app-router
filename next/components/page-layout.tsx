@@ -1,9 +1,10 @@
+import { getLocale } from "next-intl/server";
+
 import { Header } from "@/components/header/header";
 import { LanguageLinks } from "@/lib/contexts/language-links";
 import { LanguageLinksProvider } from "@/lib/contexts/language-links-context";
 import { getMenu } from "@/lib/drupal/get-menus";
 import { MenuAvailable } from "@/lib/gql/graphql";
-import { getLocale } from "next-intl/server";
 
 export default async function PageLayout({
   children,

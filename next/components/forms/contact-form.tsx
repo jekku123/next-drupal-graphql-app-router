@@ -1,15 +1,17 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 import { createContactSubmissionAction } from "@/app/_actions/contact";
+
+import { AuthGate } from "../auth-gate";
+
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
 import { StatusMessage } from "@/ui/status-message";
 import { Textarea } from "@/ui/textarea";
-import { useTranslations } from "next-intl";
-import { AuthGate } from "../auth-gate";
 
 export type ContactFormInputs = {
   name: string;

@@ -1,12 +1,13 @@
-import createMiddleware from "next-intl/middleware";
 import { NextRequest } from "next/server";
+import createMiddleware from "next-intl/middleware";
+
 import { defaultLocale, locales } from "./i18n";
 
 // List of protected pages, which require authentication
 // Add more pages as needed
-const PROTECTED_ROUTES = ["/dashboard"];
-const AUTH_ROUTES = ["/auth/login", "/auth/register"];
-const DEFAULT_LOGIN_REDIRECT = "/";
+// const PROTECTED_ROUTES = ["/dashboard"];
+// const AUTH_ROUTES = ["/auth/login", "/auth/register"];
+// const DEFAULT_LOGIN_REDIRECT = "/";
 
 const intlMiddleware = createMiddleware({
   // A list of all locales that are supported
@@ -31,9 +32,9 @@ const intlMiddleware = createMiddleware({
 // );
 
 export default function middleware(req: NextRequest) {
-  const isProtected = PROTECTED_ROUTES.some((page) =>
-    req.nextUrl.pathname.startsWith(page),
-  );
+  // const isProtected = PROTECTED_ROUTES.some((page) =>
+  //   req.nextUrl.pathname.startsWith(page),
+  // );
 
   // if (!isProtected) {
   return intlMiddleware(req);

@@ -1,7 +1,8 @@
 "use server";
 
-import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 import { getLocale } from "next-intl/server";
+
+import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 
 export async function registerAction(values: { name: string; email: string }) {
   const locale = await getLocale();

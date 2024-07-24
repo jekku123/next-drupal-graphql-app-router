@@ -1,6 +1,7 @@
-import { cn } from "@/lib/utils";
-import { cva } from "cva";
 import React from "react";
+import { cva } from "cva";
+
+import { cn } from "@/lib/utils";
 
 export const buttonVariants = cva(
   "flex justify-center items-center border-2 rounded transition-colors duration-200 active:scale-[0.98] disabled:cursor-not-allowed",

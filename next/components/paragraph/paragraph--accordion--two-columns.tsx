@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { FormattedText } from "@/components/formatted-text";
 import { HeadingParagraph } from "@/components/heading--paragraph";
 import { Paragraph } from "@/components/paragraph";
@@ -6,10 +8,9 @@ import {
   FragmentParagraphAccordionItemFragment,
   FragmentParagraphUnionFragment,
 } from "@/lib/gql/graphql";
-import Link from "next/link";
-
 import { cn } from "@/lib/utils";
 import ArrowIcon from "@/styles/icons/arrow-down.svg";
+
 import { Accordion } from "@/ui/accordion";
 import { buttonVariants } from "@/ui/button";
 

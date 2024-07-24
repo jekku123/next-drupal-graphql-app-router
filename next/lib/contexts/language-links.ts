@@ -1,6 +1,6 @@
-import { locales } from "@/i18n";
 import { FragmentNodeTranslationFragment } from "@/lib/gql/graphql";
 
+import { locales } from "@/i18n";
 import siteConfig from "@/site.config";
 
 export type LanguageLinks = typeof siteConfig.locales;

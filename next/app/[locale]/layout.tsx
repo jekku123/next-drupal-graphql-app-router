@@ -1,19 +1,20 @@
+import "styles/globals.css";
+
+import { Viewport } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages, unstable_setRequestLocale } from "next-intl/server";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 import DraftAlert from "@/components/draft-alert";
 import { Footer } from "@/components/footer/footer";
 import NextAuthProvider from "@/components/next-auth-provider";
 import ReactQueryClientProvider from "@/components/query-client-provider";
-import { locales } from "@/i18n";
 import { getAuth } from "@/lib/auth/get-auth";
 import { getMenu } from "@/lib/drupal/get-menus";
 import { MenuAvailable } from "@/lib/gql/graphql";
 import { inter, overpass } from "@/styles/fonts";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Viewport } from "next";
-import { NextIntlClientProvider } from "next-intl";
 
-import { getMessages, unstable_setRequestLocale } from "next-intl/server";
-
-import "styles/globals.css";
+import { locales } from "@/i18n";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));

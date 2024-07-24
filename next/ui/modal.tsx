@@ -1,11 +1,11 @@
 "use client";
 
-import * as ModalPrimitive from "@radix-ui/react-dialog";
+import { useTranslations } from "next-intl";
 import React from "react";
+import * as ModalPrimitive from "@radix-ui/react-dialog";
 
 import { cn } from "@/lib/utils";
 import CloseIcon from "@/styles/icons/close.svg";
-import { useTranslations } from "next-intl";
 
 const Modal = ModalPrimitive.Root;
 

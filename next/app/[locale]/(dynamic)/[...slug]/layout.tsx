@@ -1,3 +1,6 @@
+import { draftMode } from "next/headers";
+import { unstable_setRequestLocale } from "next-intl/server";
+
 import PageLayout from "@/components/page-layout";
 import {
   createLanguageLinks,
@@ -5,8 +8,6 @@ import {
 } from "@/lib/contexts/language-links";
 import { getNodeQueryResult } from "@/lib/drupal/get-node";
 import { extractEntityFromRouteQueryResult } from "@/lib/graphql/utils";
-import { unstable_setRequestLocale } from "next-intl/server";
-import { draftMode } from "next/headers";
 
 export default async function DynamicLayout({
   children,

@@ -1,9 +1,10 @@
+import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
+
 import { FragmentMetaTagFragment } from "@/lib/gql/graphql";
 
 import { env } from "@/env";
 import { defaultLocale } from "@/i18n";
-import { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
 
 interface MetaProps {
   title?: string;

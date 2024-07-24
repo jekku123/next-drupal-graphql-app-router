@@ -1,6 +1,8 @@
+import { getLocale, getTranslations } from "next-intl/server";
+
 import { getArticleTeasers } from "@/lib/drupal/get-article-teasers";
 import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
-import { getLocale, getTranslations } from "next-intl/server";
+
 import { ArticleTeaser } from "./article-teaser";
 
 export async function ArticlesListing({ limit }: { limit: number }) {

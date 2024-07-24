@@ -1,12 +1,12 @@
 import Link from "next/link";
-
-import type { MenuItemType, MenuType } from "@/types/graphql";
 import { useLocale } from "next-intl";
 
 import FacebookIcon from "@/styles/icons/facebook.svg";
 import LinkedInIcon from "@/styles/icons/linkedin.svg";
 import TwitterIcon from "@/styles/icons/twitter.svg";
 import WunderCarrotIcon from "@/styles/icons/wunder-carrot.svg";
+import type { MenuItemType, MenuType } from "@/types/graphql";
+
 import { SocialShare } from "./social-share";
 
 interface FooterProps {

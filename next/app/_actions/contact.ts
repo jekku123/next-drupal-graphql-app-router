@@ -1,10 +1,10 @@
 "use server";
 
+import { getLocale } from "next-intl/server";
+
 import { ContactFormInputs } from "@/components/forms/contact-form";
 import { getAuth } from "@/lib/auth/get-auth";
-
 import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
-import { getLocale } from "next-intl/server";
 
 export async function createContactSubmissionAction(values: ContactFormInputs) {
   // Because we want to allow only registered users to submit

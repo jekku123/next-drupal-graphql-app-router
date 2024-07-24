@@ -1,6 +1,8 @@
-import { getLatestArticlesItems } from "@/lib/drupal/get-articles";
 import { Metadata } from "next";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
+
+import { getLatestArticlesItems } from "@/lib/drupal/get-articles";
+
 import ArticlesPagination from "./_components/articles-pagination";
 
 type ArticlesListingPageParams = {
@@ -13,9 +15,7 @@ type ArticlesListingPageParams = {
   };
 };
 
-export async function generateMetadata({
-  params: { locale },
-}: ArticlesListingPageParams): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations();
 
   return {
@@ -30,7 +30,6 @@ export default async function AllArticlesPage({
   searchParams,
 }: ArticlesListingPageParams) {
   unstable_setRequestLocale(locale);
-  const t = await getTranslations();
 
   // Get the page searchParams and set the default values
   const query = searchParams?.query || "";

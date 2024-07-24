@@ -1,12 +1,13 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import {
   BaseContainerProps,
   Rename,
 } from "@elastic/react-search-ui/lib/esm/types";
 import type { SearchContextState } from "@elastic/search-ui";
-import { useTranslations } from "next-intl";
+
+import { cn } from "@/lib/utils";
 
 type PagingInfoContainerContext = Pick<
   SearchContextState,

@@ -1,9 +1,9 @@
-import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import React from "react";
-
-import Checkmark from "@/styles/icons/checkmark.svg";
+import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 
 import { cn } from "@/lib/utils";
+import Checkmark from "@/styles/icons/checkmark.svg";
+
 import css from "./checkbox.module.css";
 
 type CheckboxProps = React.ComponentPropsWithoutRef<

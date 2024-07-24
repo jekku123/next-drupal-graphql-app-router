@@ -1,3 +1,6 @@
+import { Metadata } from "next";
+import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
+
 import { HeadingPage } from "@/components/heading--page";
 import { getAuth } from "@/lib/auth/get-auth";
 import { redirectExpiredSessionToLoginPage } from "@/lib/auth/redirect-expired-login";
@@ -10,8 +13,6 @@ import {
   WebformSubmissionsListEmpty,
   WebformSubmissionsListItem,
 } from "@/lib/zod/webform-submission-list";
-import { Metadata } from "next";
-import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations();

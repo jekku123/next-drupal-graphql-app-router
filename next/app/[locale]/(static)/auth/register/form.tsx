@@ -1,16 +1,16 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 
+import { registerAction } from "@/app/_actions/register";
 import { ErrorRequired } from "@/components/forms/error-required";
 
-import { registerAction } from "@/app/_actions/register";
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
 import { StatusMessage } from "@/ui/status-message";
-import { useTranslations } from "next-intl";
-import { useState, useTransition } from "react";
 
 type Inputs = {
   name: string;
@@ -34,8 +34,8 @@ export default function RegisterForm() {
   const onSubmit = (data: Inputs) => {
     clearErrors("root.serverError");
 
-    startTransition(() => {
-      registerAction(data).then((res) => {
+    startTransition(async () => {
+      await registerAction(data).then((res) => {
         if (res.error) {
           console.error("Error registering user", JSON.stringify(res.error));
           setError("root.serverError", {

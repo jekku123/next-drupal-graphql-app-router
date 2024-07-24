@@ -1,13 +1,13 @@
 "use client";
 
+import { useLocale } from "next-intl";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import { useEventListener } from "@/lib/hooks/use-event-listener";
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
+import { usePathNameWithoutLocale } from "@/lib/navigation";
 import type { MenuItemType, MenuType } from "@/types/graphql";
 
-import { usePathNameWithoutLocale } from "@/lib/navigation";
-import { useLocale } from "next-intl";
 import {
   MenuBack,
   MenuContainer,
@@ -58,20 +58,9 @@ export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
   // Close on click outside
   const ref = useOnClickOutside<HTMLUListElement>(close);
 
-  /* OLD ONE using next/router */
-
-  // Close when route changes
-  // useEffectOnce(() => {
-  //   router.events.on("routeChangeComplete", close);
-  //   return () => {
-  //     router.events.off("routeChangeComplete", close);
-  //   };
-  // });
-
-  /* NEW ONE usingh next/navigation */
-
   useEffect(() => {
     close();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, locale]);
 
   useEffect(() => {
@@ -125,7 +114,7 @@ export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
 
       setDidInit(true);
     }
-  }, [isOpen, menu, locale]);
+  }, [isOpen, menu, locale, pathname]);
 
   const activeMenuTitle = menu?.items?.find((i) => i.id === activeMenu)?.title;
   const activeSubmenuTitle = menu?.items

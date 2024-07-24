@@ -1,9 +1,10 @@
 "use client"; // Error components must be Client Components
 
-import { HeadingPage } from "@/components/heading--page";
-import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useEffect } from "react";
+
+import { HeadingPage } from "@/components/heading--page";
 
 {
   /* <Meta title={t("Error")} metatags={[]} /> */
@@ -11,10 +12,8 @@ import { useEffect } from "react";
 
 export default function Error({
   error,
-  reset,
 }: {
   error: Error & { digest?: string };
-  reset: () => void;
 }) {
   const t = useTranslations();
 

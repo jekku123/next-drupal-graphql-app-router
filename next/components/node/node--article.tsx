@@ -1,10 +1,10 @@
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 import { FormattedText } from "@/components/formatted-text";
 import { HeadingPage } from "@/components/heading--page";
 import { formatDateTimestamp } from "@/lib/utils";
 import { ArticleType } from "@/types/graphql";
-import { useTranslations } from "next-intl";
 
 interface ArticleProps {
   article: ArticleType;

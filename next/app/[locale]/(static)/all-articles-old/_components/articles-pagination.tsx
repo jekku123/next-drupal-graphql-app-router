@@ -1,10 +1,12 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+import { useRef } from "react";
+
 import { HeadingPage } from "@/components/heading--page";
 import { Pagination, PaginationProps } from "@/components/pagination-old";
 import { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
-import { useTranslations } from "next-intl";
-import { useRef } from "react";
+
 import { ArticleListItem } from "./articles-list-item";
 
 type ArticlesListingPageParams = {

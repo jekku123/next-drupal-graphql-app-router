@@ -1,13 +1,13 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+import { useId } from "react";
 import { FacetViewProps } from "@elastic/react-search-ui-views";
 import type { FieldValue } from "@elastic/search-ui";
-import { useId } from "react";
 
 import { getFilterValueDisplay } from "@/lib/search-ui-helpers/getFilterValueDisplay";
 
 import { Checkbox } from "@/ui/checkbox";
-import { useTranslations } from "next-intl";
 
 export function MultiCheckboxFacet({
   label,

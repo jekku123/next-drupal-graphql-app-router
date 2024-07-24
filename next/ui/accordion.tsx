@@ -1,8 +1,9 @@
 "use client";
 
+import * as AccordionUI from "@radix-ui/react-accordion";
+
 import ChevronDownIcon from "@/styles/icons/chevron-down.svg";
 import ListIcon from "@/styles/icons/list.svg";
-import * as AccordionUI from "@radix-ui/react-accordion";
 
 interface AccordionProps {
   heading?: string | React.ReactNode;

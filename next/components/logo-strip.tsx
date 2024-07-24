@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { ReactElement } from "react";
 
 import Drupal from "@/styles/icons/drupal-icon.svg";
@@ -5,7 +6,6 @@ import Lando from "@/styles/icons/lando-logo.svg";
 import NextJS from "@/styles/icons/nextjs-logo.svg";
 import React from "@/styles/icons/react-icon.svg";
 import Tailwind from "@/styles/icons/tailwindcss.svg";
-import { useTranslations } from "next-intl";
 
 interface Logo {
   image: ReactElement;

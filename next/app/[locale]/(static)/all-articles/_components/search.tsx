@@ -1,12 +1,13 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useDebouncedCallback } from "use-debounce";
 
 import SearchIcon from "@/styles/icons/search.svg";
+
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
-import { useTranslations } from "next-intl";
 
 export default function Search({ placeholder }: { placeholder: string }) {
   const t = useTranslations();
@@ -14,6 +15,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
   const { replace } = useRouter();
   const pathname = usePathname();
 
+  // @eslint-disable-next-line react-hooks/exhaustive-deps
   const handleSearch = useDebouncedCallback((term) => {
     const params = new URLSearchParams(searchParams);
     params.set("page", "1");

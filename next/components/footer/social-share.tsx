@@ -1,11 +1,11 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import FacebookIcon from "@/styles/icons/facebook.svg";
 import LinkedInIcon from "@/styles/icons/linkedin.svg";
 import TwitterIcon from "@/styles/icons/twitter.svg";
-import { useTranslations } from "next-intl";
 
 export function SocialShare() {
   const [pageUrl, setPageUrl] = useState<string>("");

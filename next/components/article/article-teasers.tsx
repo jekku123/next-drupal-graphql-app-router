@@ -1,11 +1,13 @@
-import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
+import { useTranslations } from "next-intl";
 
+import type { FragmentArticleTeaserFragment } from "@/lib/gql/graphql";
 import { LinkWithLocale } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 import ArrowIcon from "@/styles/icons/arrow-down.svg";
-import { buttonVariants } from "@/ui/button";
-import { useTranslations } from "next-intl";
+
 import { ArticleTeaser } from "./article-teaser";
+
+import { buttonVariants } from "@/ui/button";
 
 interface LatestArticlesProps {
   articles?: FragmentArticleTeaserFragment[];

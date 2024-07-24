@@ -1,10 +1,13 @@
-import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 import { cache } from "react";
+
+import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
+
 import {
   GET_ENTITY_AT_DRUPAL_PATH,
   GET_STATIC_PATHS,
 } from "../graphql/queries";
 import { extractEntityFromRouteQueryResult } from "../graphql/utils";
+
 import { drupalClientPreviewer } from "./drupal-client-previewer";
 
 export const getNodeQueryResult = cache(

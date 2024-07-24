@@ -1,8 +1,10 @@
-import { SkipToContentLink } from "@/ui/skip-to-content-link";
-import { getTranslations } from "next-intl/server";
 import { draftMode } from "next/headers";
+import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
+
 import { DraftAlertClient } from "./draft-alert-client";
+
+import { SkipToContentLink } from "@/ui/skip-to-content-link";
 
 export default async function DraftAlert() {
   const { isEnabled } = draftMode();

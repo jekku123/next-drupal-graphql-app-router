@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
+
 import LoginForm from "./form";
 
 export async function generateMetadata(): Promise<Metadata> {

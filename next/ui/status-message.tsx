@@ -1,11 +1,11 @@
-import { cva } from "cva";
+import { useTranslations } from "next-intl";
 import React from "react";
+import { cva } from "cva";
 
 import { cn } from "@/lib/utils";
 import Success from "@/styles/icons/checkmark.svg";
 import Error from "@/styles/icons/error.svg";
 import Warning from "@/styles/icons/warning.svg";
-import { useTranslations } from "next-intl";
 
 export const variants = cva(
   "text-md text-steelgray w-full relative py-6 px-16",
