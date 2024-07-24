@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import ArrowIcon from "@/styles/icons/arrow.svg";
+import ArrowIcon from "@/styles/icons/arrow-down.svg";
 import { Button } from "@/ui/button";
 import { useTranslations } from "next-intl";
 
@@ -67,12 +67,21 @@ export function Pagination({
     }
   };
 
+  // Having these methods in the handlers didnt work with app router
+  // these happend before the router change
+  useEffect(() => {
+    setIsLoading(false);
+    restoreScroll();
+  }, [currentPage]);
+
   const handlePrevClick = (e) => {
     setPrevPage && setPrevPage();
     if (prevPageHref && focusRestoreRef) {
       e.preventDefault();
       setIsLoading("back");
       void router.push(prevPageHref, { scroll: false });
+      // setIsLoading(false);
+      // restoreScroll();
     } else if (focusRestoreRef) {
       restoreScroll();
     }
@@ -84,6 +93,8 @@ export function Pagination({
       e.preventDefault();
       setIsLoading("forward");
       void router.push(nextPageHref, { scroll: false });
+      // setIsLoading(false);
+      // restoreScroll();
     } else if (focusRestoreRef) {
       restoreScroll();
     }
