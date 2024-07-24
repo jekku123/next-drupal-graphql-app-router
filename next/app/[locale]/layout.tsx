@@ -1,9 +1,9 @@
-import { auth } from "@/auth";
 import DraftAlert from "@/components/draft-alert";
 import { Footer } from "@/components/footer/footer";
 import NextAuthProvider from "@/components/next-auth-provider";
 import ReactQueryClientProvider from "@/components/query-client-provider";
 import { locales } from "@/i18n";
+import { auth } from "@/lib/auth/get-auth";
 import { getMenu } from "@/lib/drupal/get-menus";
 import { MenuAvailable } from "@/lib/gql/graphql";
 import { inter, overpass } from "@/styles/fonts";

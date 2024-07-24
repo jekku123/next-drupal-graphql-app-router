@@ -1,5 +1,5 @@
-import { auth } from "@/auth";
 import { HeadingPage } from "@/components/heading--page";
+import { auth } from "@/lib/auth/get-auth";
 import { redirectExpiredSessionToLoginPage } from "@/lib/auth/redirect-expired-login";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 import { LinkWithLocale } from "@/lib/navigation";

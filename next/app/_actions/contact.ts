@@ -1,7 +1,7 @@
 "use server";
 
-import { auth } from "@/auth";
 import { ContactFormInputs } from "@/components/forms/contact-form";
+import { auth } from "@/lib/auth/get-auth";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 import { getLocale } from "next-intl/server";
 
