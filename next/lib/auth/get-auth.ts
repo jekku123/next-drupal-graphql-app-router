@@ -13,7 +13,7 @@ import { authOptions } from "./auth-options";
  * can call it in multiple places during the same request and it will
  * run only once.
  */
-export const auth = cache(
+export const getAuth = cache(
   (
     ...args:
       | [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]]

@@ -5,7 +5,7 @@ import {
   WebformSubmissionRaw,
 } from "@/lib/zod/webform-submission";
 
-import { auth } from "@/lib/auth/get-auth";
+import { getAuth } from "@/lib/auth/get-auth";
 import { redirectExpiredSessionToLoginPage } from "@/lib/auth/redirect-expired-login";
 import { LinkWithLocale } from "@/lib/navigation";
 import { Metadata } from "next";
@@ -35,7 +35,7 @@ export default async function DashboardPage({
 
   const t = await getTranslations();
 
-  const session = await auth();
+  const session = await getAuth();
 
   if (!session) {
     return redirectExpiredSessionToLoginPage(

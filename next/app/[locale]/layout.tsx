@@ -3,7 +3,7 @@ import { Footer } from "@/components/footer/footer";
 import NextAuthProvider from "@/components/next-auth-provider";
 import ReactQueryClientProvider from "@/components/query-client-provider";
 import { locales } from "@/i18n";
-import { auth } from "@/lib/auth/get-auth";
+import { getAuth } from "@/lib/auth/get-auth";
 import { getMenu } from "@/lib/drupal/get-menus";
 import { MenuAvailable } from "@/lib/gql/graphql";
 import { inter, overpass } from "@/styles/fonts";
@@ -36,7 +36,7 @@ export default async function RootLayout({
 }) {
   unstable_setRequestLocale(locale);
 
-  const session = await auth();
+  const session = await getAuth();
   const menu = await getMenu(MenuAvailable.Footer, locale);
   const messages = await getMessages();
 
