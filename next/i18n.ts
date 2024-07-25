@@ -11,12 +11,23 @@ export const pathnames = {
   // If locales use different paths, you can
   // specify each external path per locale
   "/all-articles": {
-    en: "/all-articles",
-    fi: "/kaikki-artikkelit",
-    sv: "/alla-artiklar",
+    en: "/articles",
+    fi: "/artikkelit",
+    sv: "/artiklar",
   },
 
-  // Dynamic params are supported via square brackets
+  "/auth/login": {
+    en: "/login",
+    fi: "/kirjaudu",
+    sv: "/logga-in",
+  },
+
+  "/auth/register": {
+    en: "/register",
+    fi: "/rekisteröidy",
+    sv: "/registrera",
+  },
+
   "/dashboard": {
     en: "/dashboard",
     fi: "/hallintapaneeli",

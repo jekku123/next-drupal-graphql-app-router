@@ -4,13 +4,13 @@ import { useTranslations } from "next-intl";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 
-import { registerAction } from "@/app/_actions/register";
 import { ErrorRequired } from "@/components/forms/error-required";
 
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
 import { StatusMessage } from "@/ui/status-message";
+import { registerAction } from "./actions";
 
 type Inputs = {
   name: string;
