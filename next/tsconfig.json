@@ -31,8 +31,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "app/[locale]/(static)/dashboard/webforms/[webformName]/[webformSubmissionUuid]"
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

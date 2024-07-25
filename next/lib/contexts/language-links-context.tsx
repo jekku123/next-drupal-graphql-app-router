@@ -2,7 +2,7 @@
 
 import { createContext, useContext } from "react";
 
-import { usePathNameWithoutLocale } from "@/lib/navigation";
+import { usePathnameWithoutLocale } from "@/lib/navigation";
 
 import { createLanguageLinksForNextOnlyPage } from "./language-links";
 
@@ -22,7 +22,7 @@ export function LanguageLinksProvider({
   languageLinks?: typeof siteConfig.locales;
   children: React.ReactNode;
 }) {
-  const pathname = usePathNameWithoutLocale();
+  const pathname = usePathnameWithoutLocale();
 
   // If the language links are not provided, create them for the current page.
   const locales = languageLinks ?? createLanguageLinksForNextOnlyPage(pathname);

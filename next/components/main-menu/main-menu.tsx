@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import { useEventListener } from "@/lib/hooks/use-event-listener";
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
-import { usePathNameWithoutLocale } from "@/lib/navigation";
+import { usePathnameWithoutLocale } from "@/lib/navigation";
 import type { MenuItemType, MenuType } from "@/types/graphql";
 
 import {
@@ -21,7 +21,7 @@ import {
   MenuToggle,
   MenuTrigger,
 } from "./main-menu.components";
-import { generateLocalePath, isMenuItemActive } from "./main-menu.utils";
+import { isMenuItemActive } from "./main-menu.utils";
 
 interface MainMenuProps {
   menu?: MenuType;
@@ -31,7 +31,7 @@ interface MainMenuProps {
 
 export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
   const locale = useLocale();
-  const pathname = usePathNameWithoutLocale();
+  const pathname = usePathnameWithoutLocale();
 
   const [didInit, setDidInit] = useState(false);
 
@@ -76,12 +76,7 @@ export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
       const didSetMenuAndSubmenu = menu?.items?.some((item) =>
         item.children?.some((subItem) =>
           subItem.children?.some((subSubItem) => {
-            if (
-              isMenuItemActive(
-                generateLocalePath(locale, pathname),
-                generateLocalePath(locale, subSubItem.url),
-              )
-            ) {
+            if (isMenuItemActive(locale, pathname, subSubItem.url)) {
               setActiveMenu(item.id);
               setActiveSubmenu(subItem.id);
               return true;
@@ -99,12 +94,7 @@ export function MainMenu({ menu, isOpen, setIsOpen }: MainMenuProps) {
       // User is not on a page matching a submenu item, so try to find a matching top-level menu item
       menu?.items?.some((item) =>
         item.children?.some((subItem) => {
-          if (
-            isMenuItemActive(
-              generateLocalePath(locale, pathname),
-              generateLocalePath(locale, subItem.url),
-            )
-          ) {
+          if (isMenuItemActive(locale, pathname, subItem.url)) {
             setActiveMenu(item.id);
             setActiveSubmenu(null);
             return true;

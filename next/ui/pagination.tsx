@@ -1,9 +1,11 @@
-import Link from "next/link";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
 import ArrowIcon from "@/styles/icons/arrow-down.svg";
+import DoubleArrowIcon from "@/styles/icons/double-arrow.svg";
 
+import { pathnames } from "@/i18n";
+import { LinkWithLocale } from "@/lib/navigation";
 import { ButtonProps, buttonVariants } from "@/ui/button";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
@@ -36,21 +38,26 @@ const PaginationItem = React.forwardRef<
 ));
 PaginationItem.displayName = "PaginationItem";
 
-type PaginationLinkProps = {
+type PaginationLinkProps<Pathname extends keyof typeof pathnames | string> = {
   isActive?: boolean;
   isEnabled?: boolean;
 } & Pick<ButtonProps, "size"> &
-  React.ComponentProps<typeof Link>;
+  React.ComponentProps<typeof LinkWithLocale<Pathname>>;
 
-const PaginationLink = ({
+/**
+ * Pagination link component
+ * It uses the `LinkWithLocale` component from `@/lib/navigation` to create a link
+ * with the current locale.
+ */
+const PaginationLink = <Pathname extends keyof typeof pathnames | string>({
   className,
   isActive,
   isEnabled = true,
   size = "icon",
   ...props
-}: PaginationLinkProps) => (
+}: PaginationLinkProps<Pathname>) => (
   <div className={cn(!isEnabled && "cursor-not-allowed")}>
-    <Link
+    <LinkWithLocale
       aria-current={isActive ? "page" : undefined}
       className={cn(
         buttonVariants({
@@ -60,6 +67,7 @@ const PaginationLink = ({
         !isEnabled && "pointer-events-none",
         className,
       )}
+      scroll={false}
       {...props}
     />
   </div>
@@ -108,6 +116,50 @@ const PaginationNext = ({
 );
 PaginationNext.displayName = "PaginationNext";
 
+const PaginationFirst = ({
+  className,
+  size = "md",
+  title,
+  isEnabled = true,
+  ...props
+}: React.ComponentProps<typeof PaginationLink>) => (
+  <PaginationLink
+    aria-label="Go to first page"
+    className={cn("gap-1 pr-2.5", !isEnabled && "text-primary-200", className)}
+    size={size}
+    isEnabled={isEnabled}
+    {...props}
+  >
+    <DoubleArrowIcon
+      className="w-4 h-4 mr-2 rotate-180"
+      fill="currentColor"
+      aria-hidden
+    />
+    <span>{title}</span>
+  </PaginationLink>
+);
+PaginationFirst.displayName = "PaginationFirst";
+
+const PaginationLast = ({
+  className,
+  size = "md",
+  title,
+  isEnabled = true,
+  ...props
+}: React.ComponentProps<typeof PaginationLink>) => (
+  <PaginationLink
+    aria-label="Go to last page"
+    className={cn("gap-1 pr-2.5", !isEnabled && "text-primary-200", className)}
+    size={size}
+    isEnabled={isEnabled}
+    {...props}
+  >
+    <span>{title}</span>
+    <DoubleArrowIcon className="w-4 h-4 ml-2" aria-hidden fill="currentColor" />
+  </PaginationLink>
+);
+PaginationLast.displayName = "PaginationLast";
+
 const PaginationEllipsis = ({
   className,
   ...props
@@ -121,6 +173,7 @@ const PaginationEllipsis = ({
     {...props}
   >
     {/* ADD ELLIPSIS ICON */}
+    <span>...</span>
     <span className="sr-only">More pages</span>
   </span>
 );
@@ -130,7 +183,9 @@ export {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
+  PaginationFirst,
   PaginationItem,
+  PaginationLast,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,

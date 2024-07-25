@@ -39,7 +39,9 @@ export default async function AllArticlesPage({
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
 
-  const PAGE_SIZE = 5;
+  const PAGE_SIZE = 3;
+  const PAGE_ROOT = `/all-articles`;
+  const MAX_LINKS = 3;
 
   const variables = {
     limit: PAGE_SIZE,
@@ -67,7 +69,8 @@ export default async function AllArticlesPage({
       <PaginationListing articles={articles} />
       <div className="flex justify-center w-full mt-5">
         <PaginationController
-          pageRoot={`${locale}/all-articles`}
+          pageRoot={PAGE_ROOT}
+          linkLimit={MAX_LINKS}
           currentPage={currentPage}
           totalPages={totalPages}
           query={query}

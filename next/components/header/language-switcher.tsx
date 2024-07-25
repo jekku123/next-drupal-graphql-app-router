@@ -1,28 +1,28 @@
 "use client";
 
-import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import { useLanguageLinks } from "@/lib/contexts/language-links-context";
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
-import { cn } from "@/lib/utils";
+import { cn, removeLocaleFromPath } from "@/lib/utils";
 import LanguageIcon from "@/styles/icons/language.svg";
 
 import { locales } from "@/i18n";
+import { LinkWithLocale } from "@/lib/navigation";
 
 // TODO: LOCALE HANDLING FOR APP ROUTER
 export function LanguageSwitcher() {
   const t = useTranslations();
   const languageLinks = useLanguageLinks();
-  const locale = useLocale();
+  const activeLocale = useLocale();
 
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen((o) => !o);
   const close = () => setIsOpen(false);
 
-  // Close on locale change
-  useEffect(close, [locale]);
+  // Close on activeLocale change
+  useEffect(close, [activeLocale]);
 
   // Close on click outside
   const ref = useOnClickOutside<HTMLDivElement>(close);
@@ -37,7 +37,7 @@ export function LanguageSwitcher() {
         aria-expanded={isOpen}
       >
         <span className="sr-only sm:not-sr-only sm:mr-2 sm:inline">
-          {languageLinks[locale].name}
+          {languageLinks[activeLocale].name}
         </span>
         <LanguageIcon className="inline-block w-6 h-6" aria-hidden="true" />
       </button>
@@ -48,18 +48,20 @@ export function LanguageSwitcher() {
         )}
       >
         {locales
-          .filter((l) => l !== locale)
-          .map((l) => {
-            const { name, path } = languageLinks[l];
+          .filter((locale) => locale !== activeLocale)
+          .map((locale) => {
+            const { name, path } = languageLinks[locale];
+            const href = removeLocaleFromPath(locale, path);
+
             return (
-              <li key={l}>
-                <Link
+              <li key={locale}>
+                <LinkWithLocale
                   className="block p-2 hover:bg-primary-50"
-                  locale={l}
-                  href={path}
+                  locale={locale}
+                  href={href || "/"}
                 >
                   {name}
-                </Link>
+                </LinkWithLocale>
               </li>
             );
           })}

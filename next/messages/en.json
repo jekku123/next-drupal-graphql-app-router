@@ -26,6 +26,8 @@
   "search-for": "for",
   "search-previous": "Previous",
   "search-next": "Next",
+  "search-first": "First",
+  "search-last": "Last",
   "search-go-to-page": "Go to page {page}",
   "skip-to-main-content": "Skip to main content",
   "filter-by": "Filter by {label}",

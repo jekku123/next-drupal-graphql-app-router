@@ -1,8 +1,8 @@
 import { Metadata } from "next";
-import { draftMode } from "next/headers";
-import { notFound, permanentRedirect, redirect } from "next/navigation";
 import { getDraftData } from "next-drupal/draft";
 import { unstable_setRequestLocale } from "next-intl/server";
+import { draftMode } from "next/headers";
+import { notFound, permanentRedirect, redirect } from "next/navigation";
 
 import { Node } from "@/components/node";
 import { getNodeQueryResult, getNodeStaticPaths } from "@/lib/drupal/get-node";
@@ -75,6 +75,9 @@ export default async function NodePage({
   params: { locale, slug },
 }: NodePageParams) {
   unstable_setRequestLocale(locale);
+  console.log(
+    "***********************************AT SLUG***********************************",
+  );
   const path = Array.isArray(slug) ? `/${slug?.join("/")}` : slug;
 
   // Are we in Next.js draft mode?

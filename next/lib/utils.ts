@@ -86,3 +86,14 @@ export const addSitemapLanguageVersionsOfFrontpage = (translations: any) => {
   });
   return languages;
 };
+
+export function removeLocaleFromPath(locale: string, path: string) {
+  return path.replace(`/${locale}`, "");
+}
+
+export function generateLocalePath(locale: string, path: string) {
+  // Remove locale from path if it's already there.
+  // Drupal returns paths with locale for node paths but not for Next.js menu routes.
+  const pathWithoutLocale = path.replace(`/${locale}`, "");
+  return `/${locale}${pathWithoutLocale}`;
+}

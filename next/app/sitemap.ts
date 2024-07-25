@@ -12,6 +12,7 @@ import siteConfig from "@/site.config";
 
 const DEFAULT_SITEMAP_PRIORITY = 0.7;
 
+// TODO: Add next only routes to the sitemap.
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Get all languages from site config:
   const languages = Object.keys(siteConfig.locales);

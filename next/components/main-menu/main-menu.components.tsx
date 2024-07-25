@@ -1,23 +1,18 @@
 "use client";
 
-import NextLink from "next/link";
+import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { useLocale, useTranslations } from "next-intl";
 import { Dispatch, forwardRef, ReactNode, SetStateAction } from "react";
-import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
-import { usePathNameWithoutLocale } from "@/lib/navigation";
-import { cn } from "@/lib/utils";
+import { LinkWithLocale, usePathnameWithoutLocale } from "@/lib/navigation";
+import { cn, removeLocaleFromPath } from "@/lib/utils";
 import Chevron from "@/styles/icons/chevron-down.svg";
 import CloseIcon from "@/styles/icons/close.svg";
 import MenuIcon from "@/styles/icons/menu.svg";
 import type { MenuItemType } from "@/types/graphql";
 
 import css from "./main-menu.module.css";
-import {
-  disableHoverEvents,
-  generateLocalePath,
-  isMenuItemActive,
-} from "./main-menu.utils";
+import { disableHoverEvents, isMenuItemActive } from "./main-menu.utils";
 
 export function MenuContainer({
   isOpen,
@@ -161,13 +156,20 @@ export function MenuLink({
   isTopLevel?: boolean;
   children: ReactNode;
 }) {
-  const pathname = usePathNameWithoutLocale();
+  const pathname = usePathnameWithoutLocale();
   const locale = useLocale();
 
-  const path = generateLocalePath(locale, pathname);
-  const hrefWithLocale = generateLocalePath(locale, href);
+  // TODO: Rethink this...
 
-  const isActive = isMenuItemActive(path, hrefWithLocale);
+  /**
+   * Drupal node menu  path comes with locale
+   * Drupal Next.js menu routes path comes without locale
+   * LinkWithLocale expects path without locale
+   */
+
+  const isActive = isMenuItemActive(locale, pathname, href);
+
+  const hrefWithoutLocale = removeLocaleFromPath(locale, href);
 
   return (
     <NavigationMenu.Link
@@ -179,7 +181,7 @@ export function MenuLink({
         isTopLevel && "lg:ring-white",
       )}
     >
-      <NextLink href={hrefWithLocale}>{children}</NextLink>
+      <LinkWithLocale href={hrefWithoutLocale}>{children}</LinkWithLocale>
     </NavigationMenu.Link>
   );
 }
