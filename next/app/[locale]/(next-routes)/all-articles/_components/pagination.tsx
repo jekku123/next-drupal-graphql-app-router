@@ -12,6 +12,7 @@ import {
   PaginationPrevious,
 } from "@/ui/pagination";
 import { useTranslations } from "next-intl";
+import { useEffect } from "react";
 
 export type PaginationControllerProps = {
   pageRoot: string;
@@ -75,6 +76,13 @@ export function PaginationController({
       href: getLocaleHref(page),
     }))
     .filter(({ page }) => page >= startPage && page <= endPage);
+
+  useEffect(() => {
+    window.scroll({
+      behavior: "smooth",
+      top: 0,
+    });
+  }, [currentPage]);
 
   return (
     <Pagination>
