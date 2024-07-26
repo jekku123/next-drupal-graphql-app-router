@@ -1,5 +1,6 @@
-import { locales, pathnames /* ... */ } from "@/i18n";
 import { createLocalizedPathnamesNavigation } from "next-intl/navigation";
+
+import { locales, pathnames /* ... */ } from "@/i18n";
 
 export const {
   Link: LinkWithLocale,
@@ -10,5 +11,5 @@ export const {
   getPathname,
 } = createLocalizedPathnamesNavigation({
   locales,
-  pathnames: pathnames as typeof pathnames & Record<string & {}, string>,
+  pathnames: pathnames as typeof pathnames & Record<string & unknown, string>,
 });

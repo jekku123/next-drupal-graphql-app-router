@@ -30,16 +30,20 @@ export async function PaginationController({
 }: PaginationControllerProps) {
   const t = await getTranslations();
 
-  const getUrl = (page: number) =>
-    `${pageRoot}?page=${page}` + (query && `&query=${query}`);
+  const getLocaleHref = (page: number) => {
+    return {
+      pathname: pageRoot,
+      query: query ? { page, query } : { page },
+    };
+  };
 
   const prevEnabled = currentPage > 1;
   const nextEnabled = currentPage < totalPages;
 
   const prevPage = currentPage - 1;
   const nextPage = currentPage + 1;
-  const prevPageHref = prevEnabled && getUrl(prevPage);
-  const nextPageHref = nextEnabled && getUrl(nextPage);
+  const prevPageHref = prevEnabled && getLocaleHref(prevPage);
+  const nextPageHref = nextEnabled && getLocaleHref(nextPage);
 
   const halfLimit = Math.floor(linkLimit / 2);
   let startPage = currentPage - halfLimit;
@@ -61,7 +65,7 @@ export async function PaginationController({
   const pageLinks = arr
     .map((page) => ({
       page,
-      href: getUrl(page),
+      href: getLocaleHref(page),
     }))
     .filter(({ page }) => page >= startPage && page <= endPage);
 
@@ -70,7 +74,7 @@ export async function PaginationController({
       <PaginationContent className="justify-center w-full">
         <PaginationItem>
           <PaginationFirst
-            href={getUrl(1)}
+            href={getLocaleHref(1)}
             title={t("search-first")}
             isEnabled={currentPage > 1}
           />
@@ -112,7 +116,7 @@ export async function PaginationController({
         </PaginationItem>
         <PaginationItem>
           <PaginationLast
-            href={getUrl(totalPages)}
+            href={getLocaleHref(totalPages)}
             title={t("search-last")}
             isEnabled={currentPage < totalPages}
           />

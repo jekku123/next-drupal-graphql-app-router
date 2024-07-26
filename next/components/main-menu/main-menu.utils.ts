@@ -1,5 +1,6 @@
-import { removeLocaleFromPath } from "@/lib/utils";
 import { PointerEvent } from "react";
+
+import { removeLocaleFromPath } from "@/lib/utils";
 
 // Disable hover events so click is required - https://github.com/radix-ui/primitives/issues/1630
 export const disableHoverEvents = {

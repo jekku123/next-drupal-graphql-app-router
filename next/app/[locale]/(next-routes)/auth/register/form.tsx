@@ -6,11 +6,12 @@ import { useForm } from "react-hook-form";
 
 import { ErrorRequired } from "@/components/forms/error-required";
 
+import { registerAction } from "./actions";
+
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
 import { StatusMessage } from "@/ui/status-message";
-import { registerAction } from "./actions";
 
 type Inputs = {
   name: string;

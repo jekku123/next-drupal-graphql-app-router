@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 
 import { HeadingPage } from "@/components/heading--page";
 import PageLayout from "@/components/page-layout";
+import { LinkWithLocale } from "@/lib/navigation";
 
 export default function NotFound() {
   const t = useTranslations();
@@ -13,9 +13,9 @@ export default function NotFound() {
         <HeadingPage>{t("Page not found")}</HeadingPage>
         <p className="mt-8 text-lg">
           {t("The page you are looking for does not exist")}{" "}
-          <Link href="/" className="underline hyperlink">
+          <LinkWithLocale href="/" className="underline hyperlink">
             {t("Go back to the homepage?")}
-          </Link>
+          </LinkWithLocale>
         </p>
       </PageLayout>
     </>

@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
@@ -23,10 +22,14 @@ export function UserMenu() {
   const toggle = () => setIsOpen((o) => !o);
   const close = () => setIsOpen(false);
 
-  const loginUrl = `/auth/login?callbackUrl=${encodeURIComponent(
-    searchParams.get("callbackUrl") ||
-      `${pathname}${searchParams.size ? `?${searchParams}` : ""}`,
-  )}`;
+  const loginUrl = {
+    pathname: "/auth/login",
+    query: {
+      callbackUrl:
+        searchParams.get("callbackUrl") ||
+        `${pathname}${searchParams.size ? `?${searchParams}` : ""}`,
+    },
+  };
 
   const ref = useOnClickOutside<HTMLDivElement>(close);
 
@@ -90,22 +93,22 @@ export function UserMenu() {
         )}
       >
         <li>
-          <Link
+          <LinkWithLocale
             className="block p-2 hover:bg-primary-50"
             href={loginUrl}
             onClick={close}
           >
             {t("log-in")}
-          </Link>
+          </LinkWithLocale>
         </li>
         <li>
-          <Link
+          <LinkWithLocale
             className="block p-2 hover:bg-primary-50"
             href="/auth/register"
             onClick={close}
           >
             {t("register")}
-          </Link>
+          </LinkWithLocale>
         </li>
       </ul>
     </div>

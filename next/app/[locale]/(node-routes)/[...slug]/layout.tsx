@@ -1,5 +1,5 @@
-import { unstable_setRequestLocale } from "next-intl/server";
 import { draftMode } from "next/headers";
+import { unstable_setRequestLocale } from "next-intl/server";
 
 import PageLayout from "@/components/page-layout";
 import {

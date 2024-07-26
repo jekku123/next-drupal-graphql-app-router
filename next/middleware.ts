@@ -1,5 +1,6 @@
-import createMiddleware from "next-intl/middleware";
 import { NextRequest } from "next/server";
+import createMiddleware from "next-intl/middleware";
+
 import { defaultLocale, locales, pathnames } from "./i18n";
 
 // List of protected pages, which require authentication

@@ -1,10 +1,10 @@
 "use client"; // Error components must be Client Components
 
 import { useTranslations } from "next-intl";
-import Link from "next/link";
 import { useEffect } from "react";
 
 import { HeadingPage } from "@/components/heading--page";
+import { LinkWithLocale } from "@/lib/navigation";
 
 export default function Error({
   error,
@@ -23,9 +23,9 @@ export default function Error({
       <HeadingPage>{t("Error")}</HeadingPage>
       <p className="mt-8 text-lg">
         {t("there-was-an-error")}{" "}
-        <Link href="/" className="underline hyperlink">
+        <LinkWithLocale href="/" className="underline hyperlink">
           {t("Go back to the homepage?")}
-        </Link>
+        </LinkWithLocale>
       </p>
     </>
   );

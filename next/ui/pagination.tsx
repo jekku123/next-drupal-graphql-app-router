@@ -1,11 +1,11 @@
 import * as React from "react";
 
+import { LinkWithLocale } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 import ArrowIcon from "@/styles/icons/arrow-down.svg";
 import DoubleArrowIcon from "@/styles/icons/double-arrow.svg";
 
 import { pathnames } from "@/i18n";
-import { LinkWithLocale } from "@/lib/navigation";
 import { ButtonProps, buttonVariants } from "@/ui/button";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
