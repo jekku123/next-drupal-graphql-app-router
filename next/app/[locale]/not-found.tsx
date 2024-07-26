@@ -2,7 +2,8 @@ import { useTranslations } from "next-intl";
 
 import { HeadingPage } from "@/components/heading--page";
 import PageLayout from "@/components/page-layout";
-import { LinkWithLocale } from "@/lib/navigation";
+
+import { LinkWithLocale } from "@/navigation";
 
 export default function NotFound() {
   const t = useTranslations();

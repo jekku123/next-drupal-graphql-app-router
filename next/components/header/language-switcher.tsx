@@ -6,11 +6,11 @@ import { useEffect, useState } from "react";
 
 import { useLanguageLinks } from "@/lib/contexts/language-links-context";
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
-import { LinkWithLocale } from "@/lib/navigation";
 import { cn, removeLocaleFromPath } from "@/lib/utils";
 import LanguageIcon from "@/styles/icons/language.svg";
 
 import { locales } from "@/i18n";
+import { LinkWithLocale } from "@/navigation";
 
 export function LanguageSwitcher() {
   const t = useTranslations();

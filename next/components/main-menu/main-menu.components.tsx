@@ -4,7 +4,6 @@ import { useLocale, useTranslations } from "next-intl";
 import { Dispatch, forwardRef, ReactNode, SetStateAction } from "react";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
-import { LinkWithLocale, usePathnameWithoutLocale } from "@/lib/navigation";
 import { cn, removeLocaleFromPath } from "@/lib/utils";
 import Chevron from "@/styles/icons/chevron-down.svg";
 import CloseIcon from "@/styles/icons/close.svg";
@@ -13,6 +12,8 @@ import type { MenuItemType } from "@/types/graphql";
 
 import css from "./main-menu.module.css";
 import { disableHoverEvents, isMenuItemActive } from "./main-menu.utils";
+
+import { LinkWithLocale, usePathnameWithoutLocale } from "@/navigation";
 
 export function MenuContainer({
   isOpen,

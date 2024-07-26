@@ -1,11 +1,11 @@
 import * as React from "react";
 
-import { LinkWithLocale } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 import ArrowIcon from "@/styles/icons/arrow-down.svg";
 import DoubleArrowIcon from "@/styles/icons/double-arrow.svg";
 
 import { pathnames } from "@/i18n";
+import { LinkWithLocale } from "@/navigation";
 import { ButtonProps, buttonVariants } from "@/ui/button";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
@@ -46,7 +46,7 @@ type PaginationLinkProps<Pathname extends keyof typeof pathnames | string> = {
 
 /**
  * Pagination link component
- * It uses the `LinkWithLocale` component from `@/lib/navigation` to create a link
+ * It uses the `LinkWithLocale` component from `@/navigation` to create a link
  * with the current locale.
  */
 const PaginationLink = <Pathname extends keyof typeof pathnames | string>({

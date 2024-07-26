@@ -2,10 +2,9 @@
 
 import { createContext, useContext } from "react";
 
-import { usePathnameWithoutLocale } from "@/lib/navigation";
-
 import { createLanguageLinksForNextOnlyPage } from "./language-links";
 
+import { usePathnameWithoutLocale } from "@/navigation";
 import siteConfig from "@/site.config";
 
 export type LanguageLinks = typeof siteConfig.locales;

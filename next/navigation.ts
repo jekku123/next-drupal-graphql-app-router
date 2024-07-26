@@ -11,5 +11,5 @@ export const {
   getPathname,
 } = createLocalizedPathnamesNavigation({
   locales,
-  pathnames: pathnames as typeof pathnames & Record<string & unknown, string>,
+  pathnames: pathnames as typeof pathnames & Record<string & {}, string>,
 });

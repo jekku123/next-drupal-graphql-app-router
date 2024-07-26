@@ -1,14 +1,15 @@
 "use client";
 
+import { usePathname, useSearchParams } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import { usePathname, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
-import { LinkWithLocale } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 import AccountIcon from "@/styles/icons/account-circle.svg";
+
+import { LinkWithLocale } from "@/navigation";
 
 export function UserMenu() {
   const t = useTranslations();

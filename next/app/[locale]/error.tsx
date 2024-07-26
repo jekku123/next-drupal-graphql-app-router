@@ -4,7 +4,8 @@ import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 
 import { HeadingPage } from "@/components/heading--page";
-import { LinkWithLocale } from "@/lib/navigation";
+
+import { LinkWithLocale } from "@/navigation";
 
 export default function Error({
   error,

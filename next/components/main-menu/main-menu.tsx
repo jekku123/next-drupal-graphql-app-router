@@ -5,7 +5,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import { useEventListener } from "@/lib/hooks/use-event-listener";
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
-import { usePathnameWithoutLocale } from "@/lib/navigation";
 import type { MenuItemType, MenuType } from "@/types/graphql";
 
 import {
@@ -22,6 +21,8 @@ import {
   MenuTrigger,
 } from "./main-menu.components";
 import { isMenuItemActive } from "./main-menu.utils";
+
+import { usePathnameWithoutLocale } from "@/navigation";
 
 interface MainMenuProps {
   menu?: MenuType;

@@ -5,7 +5,6 @@ import { HeadingPage } from "@/components/heading--page";
 import { getAuth } from "@/lib/auth/get-auth";
 import { redirectExpiredSessionToLoginPage } from "@/lib/auth/redirect-expired-login";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
-import { LinkWithLocale } from "@/lib/navigation";
 import { formatDate } from "@/lib/utils";
 import {
   isWebformSubmissionsListEmpty,
@@ -13,6 +12,8 @@ import {
   WebformSubmissionsListEmpty,
   WebformSubmissionsListItem,
 } from "@/lib/zod/webform-submission-list";
+
+import { LinkWithLocale } from "@/navigation";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations();
