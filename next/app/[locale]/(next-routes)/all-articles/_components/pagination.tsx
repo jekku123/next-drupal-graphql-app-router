@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server";
+"use client";
 
 import {
   Pagination,
@@ -11,6 +11,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/ui/pagination";
+import { useTranslations } from "next-intl";
 
 export type PaginationControllerProps = {
   pageRoot: string;
@@ -21,14 +22,14 @@ export type PaginationControllerProps = {
 };
 
 // TODO: SMOOOTH SCROLLING
-export async function PaginationController({
+export function PaginationController({
   pageRoot,
   currentPage,
   totalPages,
   query,
   linkLimit = 3,
 }: PaginationControllerProps) {
-  const t = await getTranslations();
+  const t = useTranslations();
 
   const getLocaleHref = (page: number) => {
     return {
@@ -37,15 +38,21 @@ export async function PaginationController({
     };
   };
 
-  const prevEnabled = currentPage > 1;
-  const nextEnabled = currentPage < totalPages;
-
   const prevPage = currentPage - 1;
   const nextPage = currentPage + 1;
+
+  const firstPageEnabled = currentPage > 1;
+  const lastPageEnabled = currentPage < totalPages;
+  const firstPageHref = firstPageEnabled && getLocaleHref(1);
+  const lastPageHref = lastPageEnabled && getLocaleHref(totalPages);
+
+  const prevEnabled = currentPage > 1;
+  const nextEnabled = currentPage < totalPages;
   const prevPageHref = prevEnabled && getLocaleHref(prevPage);
   const nextPageHref = nextEnabled && getLocaleHref(nextPage);
 
   const halfLimit = Math.floor(linkLimit / 2);
+
   let startPage = currentPage - halfLimit;
   let endPage = currentPage + halfLimit;
 
@@ -74,9 +81,9 @@ export async function PaginationController({
       <PaginationContent className="justify-center w-full">
         <PaginationItem>
           <PaginationFirst
-            href={getLocaleHref(1)}
+            href={firstPageHref || ""}
             title={t("search-first")}
-            isEnabled={currentPage > 1}
+            isEnabled={firstPageEnabled}
           />
         </PaginationItem>
         <PaginationItem>
@@ -116,9 +123,9 @@ export async function PaginationController({
         </PaginationItem>
         <PaginationItem>
           <PaginationLast
-            href={getLocaleHref(totalPages)}
+            href={lastPageHref || ""}
             title={t("search-last")}
-            isEnabled={currentPage < totalPages}
+            isEnabled={lastPageEnabled}
           />
         </PaginationItem>
       </PaginationContent>

@@ -1,7 +1,7 @@
-import { NextRequest } from "next/server";
 import createMiddleware from "next-intl/middleware";
+import { NextRequest } from "next/server";
 
-import { defaultLocale, locales, pathnames } from "./i18n";
+import { i18nConfig } from "./i18n";
 
 // List of protected pages, which require authentication
 // Add more pages as needed
@@ -9,15 +9,7 @@ import { defaultLocale, locales, pathnames } from "./i18n";
 // const AUTH_ROUTES = ["/auth/login", "/auth/register"];
 // const DEFAULT_LOGIN_REDIRECT = "/";
 
-const intlMiddleware = createMiddleware({
-  // A list of all locales that are supported
-  locales,
-  // Used when no locale matches
-  defaultLocale,
-  localePrefix: "as-needed",
-  alternateLinks: false,
-  pathnames,
-});
+const intlMiddleware = createMiddleware(i18nConfig);
 
 // const authMiddleware = withAuth(
 //   // Note that this callback is only invoked if

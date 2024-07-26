@@ -39,13 +39,13 @@ export default async function AllArticlesPage({
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
 
-  const PAGE_SIZE = 3;
-  const PAGE_ROOT = `/all-articles`;
-  const MAX_LINKS = 3;
+  const pageRoot = `/all-articles`;
+  const pageSize = 3;
+  const linkLimit = 3;
 
   const variables = {
-    limit: PAGE_SIZE,
-    offset: currentPage ? PAGE_SIZE * (currentPage - 1) : 0,
+    limit: pageSize,
+    offset: currentPage ? pageSize * (currentPage - 1) : 0,
     locale,
     query,
   };
@@ -69,8 +69,8 @@ export default async function AllArticlesPage({
       <PaginationListing articles={articles} />
       <div className="flex justify-center w-full mt-5">
         <PaginationController
-          pageRoot={PAGE_ROOT}
-          linkLimit={MAX_LINKS}
+          pageRoot={pageRoot}
+          linkLimit={linkLimit}
           currentPage={currentPage}
           totalPages={totalPages}
           query={query}
