@@ -10,12 +10,14 @@ import LanguageIcon from "@/styles/icons/language.svg";
 
 import { locales } from "@/i18n";
 import { LinkWithLocale } from "@/lib/navigation";
+import { useParams } from "next/navigation";
 
 // TODO: LOCALE HANDLING FOR APP ROUTER
 export function LanguageSwitcher() {
   const t = useTranslations();
   const languageLinks = useLanguageLinks();
   const activeLocale = useLocale();
+  const params = useParams();
 
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen((o) => !o);
@@ -52,13 +54,16 @@ export function LanguageSwitcher() {
           .map((locale) => {
             const { name, path } = languageLinks[locale];
             const href = removeLocaleFromPath(locale, path);
-
             return (
               <li key={locale}>
                 <LinkWithLocale
                   className="block p-2 hover:bg-primary-50"
                   locale={locale}
-                  href={href || "/"}
+                  href={{
+                    pathname: href || "/",
+                    // @ts-expect-error
+                    params: params,
+                  }}
                 >
                   {name}
                 </LinkWithLocale>

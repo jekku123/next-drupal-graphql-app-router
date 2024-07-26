@@ -35,11 +35,11 @@ export const pathnames = {
   },
 
   // Dynamic params are supported via square brackets
-  // "/dashboard/webforms/[webformName]/[webformSubmissionUuid]": {
-  //   en: "/dashboard/webforms/[webformName]/[webformSubmissionUuid]",
-  //   fi: "/hallintapaneeli/lomakkeet/[webformName]/[webformSubmissionUuid]",
-  //   sv: "/instrumentpanel/formulär/[webformName]/[webformSubmissionUuid]",
-  // },
+  "/dashboard/webforms/[webformName]/[webformSubmissionUuid]": {
+    en: "/dashboard/webforms/[webformName]/[webformSubmissionUuid]",
+    fi: "/hallintapaneeli/lomakkeet/[webformName]/[webformSubmissionUuid]",
+    sv: "/instrumentpanel/formulär/[webformName]/[webformSubmissionUuid]",
+  },
 } satisfies Pathnames<typeof locales>;
 
 export default getRequestConfig(async ({ locale }) => {
