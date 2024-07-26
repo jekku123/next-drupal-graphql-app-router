@@ -12,15 +12,16 @@ import { locales } from "@/i18n";
 import { LinkWithLocale } from "@/lib/navigation";
 import { useParams } from "next/navigation";
 
-// TODO: LOCALE HANDLING FOR APP ROUTER
 export function LanguageSwitcher() {
   const t = useTranslations();
   const languageLinks = useLanguageLinks();
   const activeLocale = useLocale();
   const params = useParams();
+  // const [isLoading, startTransition] = useTransition();
+  // const router = useRouterWithoutLocale();
 
   const [isOpen, setIsOpen] = useState(false);
-  const toggle = () => setIsOpen((o) => !o);
+  const toggle = () => setIsOpen((open) => !open);
   const close = () => setIsOpen(false);
 
   // Close on activeLocale change

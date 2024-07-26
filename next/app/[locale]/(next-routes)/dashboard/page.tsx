@@ -83,7 +83,6 @@ export default async function DashboardPage({
               </td>
               <td className="p-3">
                 <LinkWithLocale
-                  // href={`/dashboard/webforms/${submission.webform_id[0]["target_id"]}/${submission.uuid[0]["value"]}`}
                   href={{
                     pathname:
                       "/dashboard/webforms/[webformName]/[webformSubmissionUuid]",

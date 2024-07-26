@@ -75,9 +75,6 @@ export default async function NodePage({
   params: { locale, slug },
 }: NodePageParams) {
   unstable_setRequestLocale(locale);
-  console.log(
-    "***********************************AT SLUG***********************************",
-  );
   const path = Array.isArray(slug) ? `/${slug?.join("/")}` : slug;
 
   // Are we in Next.js draft mode?
