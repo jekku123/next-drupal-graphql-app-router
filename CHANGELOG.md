@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [2.6.0] 10.7.2024 - 27.7.2024
+
+- Update Next-Drupal => 2.0.0-beta.0
+- Install Next-intl 3.16.0 to handle translations
+- Update Next-Auth => 5.0.0-beta.19
+- Migrate all files from /pages => /app
+
 ## [2.5.0] 10.6.2024
 
 - Add DDEV support
