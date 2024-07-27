@@ -8,6 +8,6 @@ import { auth } from "@/auth";
  * can call it in multiple places during the same request and it will
  * run only once.
  */
-export const getAuth = cache(() => {
-  return auth();
+export const getAuth = cache(async () => {
+  return await auth();
 });
