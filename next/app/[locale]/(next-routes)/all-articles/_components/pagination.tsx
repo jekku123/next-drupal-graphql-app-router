@@ -22,7 +22,6 @@ export type PaginationControllerProps = {
   linkLimit?: number;
 };
 
-// TODO: SMOOOTH SCROLLING
 export function PaginationController({
   pageRoot,
   currentPage,
@@ -85,10 +84,11 @@ export function PaginationController({
   }, [currentPage]);
 
   return (
-    <Pagination>
-      <PaginationContent className="justify-center w-full">
+    <Pagination className="justify-between">
+      <PaginationContent>
         <PaginationItem>
           <PaginationFirst
+            className="hidden sm:flex"
             href={firstPageHref || ""}
             title={t("search-first")}
             isEnabled={firstPageEnabled}
@@ -101,6 +101,8 @@ export function PaginationController({
             isEnabled={prevEnabled}
           />
         </PaginationItem>
+      </PaginationContent>
+      <PaginationContent>
         {currentPage > halfLimit + 1 && (
           <PaginationItem>
             <PaginationEllipsis />
@@ -122,6 +124,8 @@ export function PaginationController({
             <PaginationEllipsis />
           </PaginationItem>
         )}
+      </PaginationContent>
+      <PaginationContent>
         <PaginationItem>
           <PaginationNext
             href={nextPageHref || ""}
@@ -131,6 +135,7 @@ export function PaginationController({
         </PaginationItem>
         <PaginationItem>
           <PaginationLast
+            className="hidden sm:flex"
             href={lastPageHref || ""}
             title={t("search-last")}
             isEnabled={lastPageEnabled}

@@ -90,7 +90,7 @@ const PaginationPrevious = ({
     {...props}
   >
     <ArrowIcon className="w-6 h-6 mr-2 rotate-90" aria-hidden />
-    <span>{title}</span>
+    <span className="hidden sm:block">{title}</span>
   </PaginationLink>
 );
 
@@ -110,7 +110,7 @@ const PaginationNext = ({
     isEnabled={isEnabled}
     {...props}
   >
-    <span>{title}</span>
+    <span className="hidden sm:block">{title}</span>
     <ArrowIcon className="w-6 h-6 ml-2 -rotate-90" aria-hidden />
   </PaginationLink>
 );
@@ -135,7 +135,7 @@ const PaginationFirst = ({
       fill="currentColor"
       aria-hidden
     />
-    <span>{title}</span>
+    <span className="hidden sm:block">{title}</span>
   </PaginationLink>
 );
 PaginationFirst.displayName = "PaginationFirst";
@@ -154,7 +154,7 @@ const PaginationLast = ({
     isEnabled={isEnabled}
     {...props}
   >
-    <span>{title}</span>
+    <span className="hidden sm:block">{title}</span>
     <DoubleArrowIcon className="w-4 h-4 ml-2" aria-hidden fill="currentColor" />
   </PaginationLink>
 );
