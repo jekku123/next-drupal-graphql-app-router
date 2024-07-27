@@ -1,10 +1,9 @@
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
+import { notFound } from "next/navigation";
 
 import { HeadingPage } from "@/components/heading--page";
 import { getAuth } from "@/lib/auth/get-auth";
-import { redirectExpiredSessionToLoginPage } from "@/lib/auth/redirect-expired-login";
 import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 import {
   validateAndCleanupWebformSubmission,
@@ -37,13 +36,6 @@ export default async function DashboardPage({
   const t = await getTranslations();
 
   const session = await getAuth();
-
-  if (!session) {
-    return redirectExpiredSessionToLoginPage(
-      locale,
-      `/dashboard/webforms/${webformName}/${webformSubmissionUuid}`,
-    );
-  }
 
   const url = drupalClientViewer.buildUrl(
     `/${locale}/webform_rest/${webformName}/complete_submission/${webformSubmissionUuid}`,

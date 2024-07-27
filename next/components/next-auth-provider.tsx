@@ -1,15 +1,11 @@
-"use client";
-
-import { Session } from "next-auth";
+import { getAuth } from "@/lib/auth/get-auth";
 import { SessionProvider } from "next-auth/react";
 
-// TODO: Move this to server component after updgarding to auth.js v5
-export default function NextAuthProvider({
+export default async function NextAuthProvider({
   children,
-  session,
 }: {
   children: React.ReactNode;
-  session: Session;
 }) {
+  const session = await getAuth();
   return <SessionProvider session={session}>{children}</SessionProvider>;
 }

@@ -1,12 +1,6 @@
-import {
-  GetServerSidePropsContext,
-  NextApiRequest,
-  NextApiResponse,
-} from "next";
-import { getServerSession } from "next-auth";
 import { cache } from "react";
 
-import { authOptions } from "./auth-options";
+import { auth } from "@/auth";
 
 /**
  * Helper function to get the session of the current user without passing the authOptions
@@ -14,13 +8,6 @@ import { authOptions } from "./auth-options";
  * can call it in multiple places during the same request and it will
  * run only once.
  */
-export const getAuth = cache(
-  (
-    ...args:
-      | [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]]
-      | [NextApiRequest, NextApiResponse]
-      | []
-  ) => {
-    return getServerSession(...args, authOptions);
-  },
-);
+export const getAuth = cache(() => {
+  return auth();
+});

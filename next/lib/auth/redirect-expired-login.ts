@@ -1,12 +1,15 @@
-import { redirect } from "next/navigation";
+import type { Redirect } from "next";
 
 export function redirectExpiredSessionToLoginPage(
   locale: string,
   callbackUrl: string,
 ) {
-  redirect(
-    `/${locale}/auth/login?logout=true&callbackUrl=${encodeURIComponent(
+  const redirect: Redirect = {
+    destination: `/${locale}/auth/login?logout=true&callbackUrl=${encodeURIComponent(
       callbackUrl,
     )}`,
-  );
+    permanent: false,
+  };
+
+  return { redirect };
 }

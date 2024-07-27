@@ -1,13 +1,17 @@
-import type { NextAuthOptions } from "next-auth";
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
 import { jwtDecode } from "jwt-decode";
+import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 
 import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 
 import { env } from "@/env";
 
-export const authOptions: NextAuthOptions = {
+export const {
+  handlers: { GET, POST },
+  auth,
+  signIn,
+  signOut,
+} = NextAuth({
   pages: {
     signIn: "/auth/login",
   },
@@ -17,9 +21,10 @@ export const authOptions: NextAuthOptions = {
   // The token expiration is set to 5 days in Drupal.
   session: {
     maxAge: 5 * 24 * 60 * 60, // 5 days
+    strategy: "jwt",
   },
   providers: [
-    CredentialsProvider({
+    Credentials({
       name: "Drupal",
       credentials: {
         username: { label: "Username", type: "text", placeholder: "Username" },
@@ -30,8 +35,8 @@ export const authOptions: NextAuthOptions = {
         formData.append("grant_type", "password");
         formData.append("client_id", env.DRUPAL_CLIENT_VIEWER_ID);
         formData.append("client_secret", env.DRUPAL_CLIENT_VIEWER_SECRET);
-        formData.append("username", credentials.username);
-        formData.append("password", credentials.password);
+        formData.append("username", credentials.username as string);
+        formData.append("password", credentials.password as string);
 
         // Get access token from Drupal.
         const response = await drupalClientViewer.fetch(
@@ -53,6 +58,7 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+
   callbacks: {
     async jwt({ token, user, account, trigger }) {
       if (account && user) {
@@ -88,10 +94,11 @@ export const authOptions: NextAuthOptions = {
         session.user.image = null;
         session.error = token.error || null;
       }
+
       return session;
     },
   },
-};
+});
 
 // Helper to obtain a new access_token from a refresh token.
 async function refreshAccessToken(token) {
@@ -133,5 +140,3 @@ async function refreshAccessToken(token) {
     };
   }
 }
-
-export const handler = NextAuth(authOptions);
