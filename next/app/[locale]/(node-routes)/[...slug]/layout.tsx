@@ -1,5 +1,5 @@
-import { draftMode } from "next/headers";
 import { unstable_setRequestLocale } from "next-intl/server";
+import { draftMode } from "next/headers";
 
 import PageLayout from "@/components/page-layout";
 import {
@@ -9,7 +9,7 @@ import {
 import { getNodeQueryResult } from "@/lib/drupal/get-node";
 import { extractEntityFromRouteQueryResult } from "@/lib/graphql/utils";
 
-export default async function DynamicLayout({
+export default async function NodeRouteLayout({
   children,
   params: { locale, slug },
 }: {

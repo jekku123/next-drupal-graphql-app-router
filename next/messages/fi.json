@@ -31,9 +31,6 @@
   "search-go-to-page": "Mene sivulle {page}",
   "skip-to-main-content": "Siirry pääsisältöön",
   "filter-by": "Suodata {label}",
-  "Page not found": "Sivua ei löydy",
-  "The page you are looking for does not exist": "Hakemaasi sivua ei löydy.",
-  "Go back to the homepage?": "Palaa etusivulle?",
   "meta-site-name": "Next-drupal wunder mallisivusto",
   "meta-site-description": "Esimerkkisivusto, joka esittelee next-drupalin käyttöä monikielisessä sivustossa.",
   "filter-search": "Suodata hakua",
@@ -89,5 +86,15 @@
   "field-is-required": "'{field}' kenttä on pakollinen",
   "toggle-menu": "Näytä/piilota valikko",
   "there-was-an-error": "Tapahtui virhe",
-  "under-construction": "Työn alla"
+  "under-construction": "Työn alla",
+  "Not-Found": {
+    "title": "Sivua ei löydy",
+    "content": "Hakemaasi sivua ei löydy.",
+    "back-to-homepage": "Palaa etusivulle?"
+  },
+  "Error": {
+    "title": "Virhe",
+    "content": "Tapahtui virhe.",
+    "back-to-homepage": "Palaa etusivulle?"
+  }
 }
