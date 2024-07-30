@@ -31,9 +31,6 @@
   "search-go-to-page": "Go to page {page}",
   "skip-to-main-content": "Skip to main content",
   "filter-by": "Filter by {label}",
-  "Page not found": "Page not found",
-  "The page you are looking for does not exist": "The page you are looking for does not exist.",
-  "Go back to the homepage?": "Go back to the homepage?",
   "meta-site-name": "Next-drupal wunder template",
   "meta-site-description": "Example website demonstrating the use of next-drupal in a multilingual site.",
   "filter-search": "Filter search",
@@ -88,5 +85,15 @@
   "field-is-required": "The {field} field is required.",
   "toggle-menu": "Toggle menu",
   "there-was-an-error": "There was an error.",
-  "under-construction": "Under construction"
+  "under-construction": "Under construction",
+  "Not-Found": {
+    "title": "Page not found",
+    "content": "The page you are looking for does not exist.",
+    "back-to-homepage": "Go back to the homepage?"
+  },
+  "Error": {
+    "title": "Error",
+    "content": "An error occurred.",
+    "back-to-homepage": "Go back to the homepage?"
+  }
 }

@@ -31,9 +31,6 @@
   "search-go-to-page": "Gå till sida {page}",
   "skip-to-main-content": "Hoppa till huvudinnehåll",
   "filter-by": "Filtrera efter {label}",
-  "Page not found": "Sidan kunde inte hittas",
-  "The page you are looking for does not exist": "Sidan du söker finns inte.",
-  "Go back to the homepage?": "Gå tillbaka till hemsidan?",
   "meta-site-name": "Next-drupal Wunder mall webbplats",
   "meta-site-description": "Exempelwebbplats som visar användningen av next-drupal på en flerspråkig webbplats.",
   "form-description": "Detta kontaktformulär skickas till standardwebbformuläret för kontakt på Drupal-sidan.",
@@ -89,5 +86,15 @@
   "field-is-required": "{field} är obligatoriskt.",
   "toggle-menu": "Visa/dölj meny",
   "there-was-an-error": "Det uppstod ett fel",
-  "under-construction": "Under konstruktion"
+  "under-construction": "Under konstruktion",
+  "Not-Found": {
+    "title": "Sidan kunde inte hittas",
+    "content": "Sidan du letar efter finns inte.",
+    "back-to-homepage": "Gå tillbaka till hemsidan?"
+  },
+  "Error": {
+    "title": "Fel",
+    "content": "Det uppstod ett fel.",
+    "back-to-homepage": "Gå tillbaka till hemsidan?"
+  }
 }
