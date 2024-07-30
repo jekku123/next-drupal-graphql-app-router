@@ -3,6 +3,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import ArrowIcon from "@/styles/icons/arrow-down.svg";
 import DoubleArrowIcon from "@/styles/icons/double-arrow.svg";
+import EllipsisIcon from "@/styles/icons/ellipsis.svg";
 
 import { pathnames } from "@/i18n";
 import { LinkWithLocale } from "@/navigation";
@@ -172,8 +173,7 @@ const PaginationEllipsis = ({
     )}
     {...props}
   >
-    {/* ADD ELLIPSIS ICON */}
-    <span>...</span>
+    <EllipsisIcon className="w-6 h-4" />
     <span className="sr-only">More pages</span>
   </span>
 );
