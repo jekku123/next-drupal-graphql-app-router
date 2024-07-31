@@ -2,7 +2,7 @@ import { unstable_setRequestLocale } from "next-intl/server";
 
 import PageLayout from "@/components/page-layout";
 
-export default function NextRouteLayout({
+export default function StaticLayout({
   children,
   params: { locale },
 }: {

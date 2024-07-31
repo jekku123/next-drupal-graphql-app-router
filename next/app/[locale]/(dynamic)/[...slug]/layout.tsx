@@ -9,7 +9,7 @@ import {
 import { getNodeQueryResult } from "@/lib/drupal/get-node";
 import { extractEntityFromRouteQueryResult } from "@/lib/graphql/utils";
 
-export default async function NodeRouteLayout({
+export default async function DynamicLayout({
   children,
   params: { locale, slug },
 }: {
