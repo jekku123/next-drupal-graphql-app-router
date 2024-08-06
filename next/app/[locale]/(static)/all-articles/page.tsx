@@ -54,7 +54,6 @@ export default async function AllArticlesPage({
   // instead of fetching em in the Listing component so that Pagination can be always shown
   // and could show a skeleton loader while fetching the articles
 
-  // const totalPages = await getArticlesTotalPages(variables);
   const { articles, totalPages } = await getLatestArticlesItems(variables);
 
   return (

@@ -1,6 +1,8 @@
-import { HeadingPage } from "@/components/heading--page";
-import { LinkWithLocale } from "@/navigation";
 import { useTranslations } from "next-intl";
+
+import { HeadingPage } from "@/components/heading--page";
+
+import { LinkWithLocale } from "@/navigation";
 
 export default function NotFoundPage() {
   const t = useTranslations("Not-Found");

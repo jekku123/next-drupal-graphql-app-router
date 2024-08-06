@@ -1,6 +1,6 @@
-import { jwtDecode } from "jwt-decode";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { jwtDecode } from "jwt-decode";
 
 import { drupalClientViewer } from "@/lib/drupal/drupal-client-viewer";
 

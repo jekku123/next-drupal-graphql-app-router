@@ -39,6 +39,7 @@ const PaginationItem = React.forwardRef<
 ));
 PaginationItem.displayName = "PaginationItem";
 
+// eslint-disable-next-line
 type PaginationLinkProps<Pathname extends keyof typeof pathnames | string> = {
   isActive?: boolean;
   isEnabled?: boolean;
@@ -50,6 +51,8 @@ type PaginationLinkProps<Pathname extends keyof typeof pathnames | string> = {
  * It uses the `LinkWithLocale` component from `@/navigation` to create a link
  * with the current locale.
  */
+
+// eslint-disable-next-line
 const PaginationLink = <Pathname extends keyof typeof pathnames | string>({
   className,
   isActive,

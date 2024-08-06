@@ -1,9 +1,9 @@
 import "styles/globals.css";
 
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, unstable_setRequestLocale } from "next-intl/server";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import DraftAlert from "@/components/draft-alert";
 import { Footer } from "@/components/footer/footer";

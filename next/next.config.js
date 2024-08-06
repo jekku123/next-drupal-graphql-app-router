@@ -6,6 +6,9 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig = {
   // Only generate standalone output in circle ci:
   output: process.env.CIRCLECI ? "standalone" : undefined,
+  // eslint: {
+  //   ignoreDuringBuilds: true,
+  // },
   poweredByHeader: false,
   images: {
     remotePatterns: [

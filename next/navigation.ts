@@ -11,5 +11,6 @@ export const {
   getPathname,
 } = createLocalizedPathnamesNavigation({
   locales,
+  // eslint-disable-next-line
   pathnames: pathnames as typeof pathnames & Record<string & {}, string>,
 });

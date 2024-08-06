@@ -1,5 +1,8 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+import { useEffect } from "react";
+
 import {
   Pagination,
   PaginationContent,
@@ -11,8 +14,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/ui/pagination";
-import { useTranslations } from "next-intl";
-import { useEffect } from "react";
 
 export type PaginationControllerProps = {
   pageRoot: string;

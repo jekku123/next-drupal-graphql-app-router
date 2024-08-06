@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 
 import { getAuth } from "@/lib/auth/get-auth";
+
 import { StatusMessage } from "@/ui/status-message";
 
 type AuthGateServerProps = {

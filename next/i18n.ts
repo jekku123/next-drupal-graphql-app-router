@@ -1,6 +1,6 @@
+import { notFound } from "next/navigation";
 import { LocalePrefix, Pathnames } from "next-intl/routing";
 import { getRequestConfig } from "next-intl/server";
-import { notFound } from "next/navigation";
 
 // Can be imported from a shared config
 export const locales = ["en", "fi", "sv"];
@@ -33,7 +33,6 @@ export const pathnames = {
     sv: "/instrumentpanel",
   },
 
-  // Dynamic params are supported via square brackets
   "/dashboard/webforms/[webformName]/[webformSubmissionUuid]": {
     en: "/dashboard/webforms/[webformName]/[webformSubmissionUuid]",
     fi: "/hallintapaneeli/lomakkeet/[webformName]/[webformSubmissionUuid]",

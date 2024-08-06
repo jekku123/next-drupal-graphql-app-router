@@ -1,5 +1,6 @@
-import { getAuth } from "@/lib/auth/get-auth";
 import { SessionProvider } from "next-auth/react";
+
+import { getAuth } from "@/lib/auth/get-auth";
 
 export default async function NextAuthProvider({
   children,
