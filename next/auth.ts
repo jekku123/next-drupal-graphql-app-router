@@ -14,6 +14,7 @@ export const {
 } = NextAuth({
   pages: {
     signIn: "/auth/login",
+    error: "/auth/login",
   },
   // We set the maxAge of the session to the same value as the token expiration
   // with the idea that the user will be logged out automatically when the token
