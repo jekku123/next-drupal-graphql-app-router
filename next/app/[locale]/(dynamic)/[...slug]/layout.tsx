@@ -1,4 +1,3 @@
-import { draftMode } from "next/headers";
 import { unstable_setRequestLocale } from "next-intl/server";
 
 import PageLayout from "@/components/page-layout";
@@ -19,13 +18,14 @@ export default async function DynamicLayout({
   unstable_setRequestLocale(locale);
 
   const path = Array.isArray(slug) ? `/${slug?.join("/")}` : slug;
-  const isDraftMode = draftMode().isEnabled;
 
-  // Here we need to pass false as the third argument to getNodeQueryResult(),
-  // to match the parameters sent to the function in the page.tsx
-  // This ensures the react cache() is used and only one request is made for
-  // the node across the page and layout components.
+  // Do we need need to check for draft mode here?
+  /* 
+  const isDraftMode = draftMode().isEnabled;
   const data = await getNodeQueryResult(path, locale, isDraftMode);
+  */
+
+  const data = await getNodeQueryResult(path, locale);
   const nodeEntity = extractEntityFromRouteQueryResult(data);
 
   // Add information about possible other language versions of this node.

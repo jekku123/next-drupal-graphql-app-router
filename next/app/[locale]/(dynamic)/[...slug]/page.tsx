@@ -26,7 +26,7 @@ export async function generateMetadata({
   // Here we need to pass false as the third argument match the parameters
   // sent to the function in the page.tsx This ensures the react cache() is used
   // and only one request is made for the node across the page and layout components when not in draft mode.
-  const data = await getNodeQueryResult(path, locale, false);
+  const data = await getNodeQueryResult(path, locale);
   const nodeEntity = extractEntityFromRouteQueryResult(data);
 
   // Generate metadata for the node entity.:
